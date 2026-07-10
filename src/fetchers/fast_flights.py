@@ -2,7 +2,8 @@
 
 Design constraints:
   * fast-flights is treated as a "may-die-any-day" dependency: pinned version
-    (3.0.2), lazy import (missing lib -> available()=False, never a crash),
+    (2.2 — 3.0.2 verified broken 2026-07-10: missing typing_extensions dep +
+    parser IndexError), lazy import (missing lib -> available()=False, never a crash),
     and a >0-results assertion (empty -> retryable FetchError so the pipeline
     retries then degrades to the next source).
   * Prices are pinned to CNY where possible; currency is recorded explicitly.
@@ -35,11 +36,20 @@ DEFAULT_FX_RATES = {
     "JPY": 0.048,
     "KRW": 0.0053,
     "HKD": 0.92,
+    "CAD": 5.2,
+    "AUD": 4.7,
+    "SGD": 5.3,
+    "TWD": 0.22,
 }
 
 _SYMBOL_TO_CODE = {
+    "CA$": "CAD",
+    "AU$": "AUD",
+    "A$": "AUD",
     "US$": "USD",
     "HK$": "HKD",
+    "NT$": "TWD",
+    "S$": "SGD",
     "$": "USD",
     "¥": "CNY",   # pinned locale means ¥ denotes CNY, not JPY
     "￥": "CNY",
@@ -119,9 +129,20 @@ def refresh_fx_rates(state_dir: str) -> None:  # pragma: no cover - placeholder
 def _airline_allowed(airline: str, airlines_cfg: dict) -> bool:
     wl = airlines_cfg.get("whitelist") or []
     bl = airlines_cfg.get("blacklist") or []
-    if wl and airline not in wl:
+    # fast-flights 2.2 sometimes fails to parse airline names (empty string).
+    # An empty name must NOT be dropped by a whitelist, otherwise a configured
+    # whitelist would silently discard every quote. Filtering only applies to
+    # quotes whose airline was actually parsed.
+    if not airline:
+        return True
+    # fast-flights returns full carrier names ("China Southern"), not IATA
+    # codes — configure whitelist/blacklist with names; match case-insensitively.
+    a = airline.strip().lower()
+    wl_n = [w.strip().lower() for w in wl]
+    bl_n = [b.strip().lower() for b in bl]
+    if wl_n and a not in wl_n:
         return False
-    if airline in bl:
+    if a in bl_n:
         return False
     return True
 
@@ -151,30 +172,37 @@ class FastFlightsFetcher(FetcherAdapter):
 
         rates = load_fx_rates(self.state_dir)
         try:
-            # fast-flights 3.x API. Kept defensive since the library is fragile.
-            result = ff.get_flights(
-                flight_data=[
-                    ff.FlightData(date=depart_date, from_airport=route.origin, to_airport=route.dest)
-                ],
-                trip="one-way",
-                seat="economy",
-                passengers=ff.Passengers(adults=1),
-                fetch_mode="fallback",
-                hl=PINNED_HL,
-                currency=PINNED_CURRENCY,
-            )
-            flights = getattr(result, "flights", result) or []
-        except TypeError:
-            # Older/newer signature without hl/currency kwargs.
-            result = ff.get_flights(
-                flight_data=[
-                    ff.FlightData(date=depart_date, from_airport=route.origin, to_airport=route.dest)
-                ],
-                trip="one-way",
-                seat="economy",
-                passengers=ff.Passengers(adults=1),
-            )
-            flights = getattr(result, "flights", result) or []
+            if hasattr(ff, "FlightData"):
+                # fast-flights 2.x API (pinned 2.2 — last version verified
+                # working end-to-end on 2026-07-10; 3.0.2 has a broken parser).
+                # 2.x has no hl/currency kwargs: the returned currency follows
+                # Google's geo-detection, so we record raw_currency and convert
+                # to CNY via the FX table instead of pinning.
+                result = ff.get_flights(
+                    flight_data=[
+                        ff.FlightData(date=depart_date, from_airport=route.origin, to_airport=route.dest)
+                    ],
+                    trip="one-way",
+                    seat="economy",
+                    passengers=ff.Passengers(adults=1),
+                    fetch_mode="fallback",
+                )
+                flights = getattr(result, "flights", result) or []
+            else:
+                # fast-flights 3.x API (create_query/FlightQuery). Parser was
+                # broken in 3.0.2; this branch exists for a future fixed 3.x.
+                query = ff.create_query(
+                    flights=[
+                        ff.FlightQuery(date=depart_date, from_airport=route.origin, to_airport=route.dest)
+                    ],
+                    trip="one-way",
+                    seat="economy",
+                    passengers=ff.Passengers(adults=1),
+                    language=PINNED_HL,
+                    currency=PINNED_CURRENCY,
+                )
+                result = ff.get_flights(query)
+                flights = list(result) or []
         except Exception as e:  # network / parse failure -> retryable
             raise FetchError(f"fast_flights query failed: {e}", retryable=True)
 

@@ -1,6 +1,10 @@
 # flight-watch runtime dependencies (pinned).
 # fast-flights is treated as a "may-die-any-day" dependency (report red-team fix #2):
 # pin the exact version; the code lazily imports it so its absence never crashes.
-fast-flights==3.0.2
+# NOTE: 3.0.2 has a packaging bug (missing typing_extensions dep) AND a broken
+# parser (IndexError on current Google Flights responses, verified 2026-07-10).
+# 2.2 is the last version verified working end-to-end (59 results SHA->NRT).
+fast-flights==2.2
+typing-extensions==4.15.0  # needed if fast-flights is ever bumped to 3.x
 PyYAML==6.0.2
 requests==2.32.3

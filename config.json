@@ -13,7 +13,7 @@
       "from": "SHA",
       "to": "NRT",
       "dates": {"mode": "fixed", "fixed_dates": ["2026-10-01", "2026-10-02", "2026-10-03"]},
-      "airlines": {"whitelist": [], "blacklist": ["MM"]},
+      "airlines": {"whitelist": [], "blacklist": ["Peach"]},
       "target_price": 1500,
       "drop_alert_pct": 15,
       "sources": ["fast_flights"],

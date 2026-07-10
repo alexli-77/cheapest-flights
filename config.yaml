@@ -20,7 +20,7 @@ routes:
       fixed_dates: ["2026-10-01", "2026-10-02", "2026-10-03"]
     airlines:
       whitelist: []         # 空 = 不限
-      blacklist: ["MM"]     # 排除乐桃
+      blacklist: ["Peach"]  # 排除乐桃（注意：填航司全名而非二字码，如 "China Eastern"）
     target_price: 1500      # 低于此价 → urgent
     drop_alert_pct: 15      # 单日跌幅超 15% → urgent
     sources: [fast_flights]
