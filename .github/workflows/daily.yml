@@ -1,0 +1,76 @@
+name: daily-flight-watch
+
+# 每日抓取 → 生成 dashboard 数据 → 提交回库。
+# cron 23 0 * * * = UTC 00:23 = 北京 08:23（避开整点高峰，降低被限流概率）。
+on:
+  schedule:
+    - cron: "23 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write        # 需要把 data/ state/ docs/data/ 的变更 push 回库
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+      FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # persist-credentials 默认为 true，后续 git push 复用 GITHUB_TOKEN
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline (fetch + build summary.json)
+        run: python -m src.main
+
+      - name: Generate dashboard metadata
+        run: |
+          python scripts/gen_routes_meta.py
+          python scripts/gen_detail.py
+
+      - name: Commit & push data
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ state/ docs/data/
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "chore(data): daily update $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+            # 先 rebase 拉取远端（防并发/手动触发冲突），再 push
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Notify Feishu on failure
+        if: failure()
+        # 用 curl 直接发文本，不依赖 Python 进程存活。若配置了 FEISHU_SECRET 则加签。
+        run: |
+          set +e
+          if [ -z "${FEISHU_WEBHOOK}" ]; then
+            echo "FEISHU_WEBHOOK not set; skip alert."
+            exit 0
+          fi
+          MSG="⚠️ flight-watch 每日任务失败：${GITHUB_REPOSITORY} run #${GITHUB_RUN_NUMBER} (${GITHUB_REF_NAME})。请查看 Actions 日志。"
+          if [ -n "${FEISHU_SECRET}" ]; then
+            TS=$(date +%s)
+            SIGN=$(printf "" | openssl dgst -sha256 -hmac "$(printf '%s\n%s' "${TS}" "${FEISHU_SECRET}")" -binary | base64)
+            PAYLOAD=$(printf '{"timestamp":"%s","sign":"%s","msg_type":"text","content":{"text":"%s"}}' "${TS}" "${SIGN}" "${MSG}")
+          else
+            PAYLOAD=$(printf '{"msg_type":"text","content":{"text":"%s"}}' "${MSG}")
+          fi
+          curl -sS -X POST "${FEISHU_WEBHOOK}" \
+            -H "Content-Type: application/json" \
+            -d "${PAYLOAD}" || echo "Feishu alert curl failed (non-fatal)."

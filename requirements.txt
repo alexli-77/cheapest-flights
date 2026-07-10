@@ -1,0 +1,6 @@
+# flight-watch runtime dependencies (pinned).
+# fast-flights is treated as a "may-die-any-day" dependency (report red-team fix #2):
+# pin the exact version; the code lazily imports it so its absence never crashes.
+fast-flights==3.0.2
+PyYAML==6.0.2
+requests==2.32.3

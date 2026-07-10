@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>机票价格监控 · Flight Watch</title>
+<!--
+  数据流：本页 fetch ./data/summary.json（由 src.main 的 build_summary 生成）
+         + ./data/routes_meta.json（由 scripts/gen_routes_meta.py 生成）。
+  两文件都在站点根 docs/ 内，Pages 可直接访问。
+  图表引擎特性检测：若 docs/vendor/echarts.min.js 存在则用 ECharts，否则用
+  docs/vendor/charts.js（零依赖 SVG 回退）。首页 sparkline 一律用内联 SVG。
+-->
+<!-- 如已 vendor ECharts，取消下一行注释即可自动启用：
+<script src="./vendor/echarts.min.js"></script> -->
+<script src="./vendor/charts.js"></script>
+<style>
+  :root {
+    --fw-bg: #f5f6f8;
+    --fw-card-bg: #ffffff;
+    --fw-text: #1f2329;
+    --fw-text-sub: #8a919f;
+    --fw-border: #e6e8eb;
+    --fw-accent: #3370ff;
+    --fw-good: #2ea121;
+    --fw-bad: #d83931;
+    --fw-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fw-bg: #17171a;
+      --fw-card-bg: #232326;
+      --fw-text: #e6e6e8;
+      --fw-text-sub: #9a9aa2;
+      --fw-border: #34343a;
+      --fw-accent: #4d7fff;
+      --fw-good: #43c463;
+      --fw-bad: #f16b62;
+      --fw-shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fw-bg); color: var(--fw-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    padding: 20px 16px 8px; max-width: 1080px; margin: 0 auto;
+  }
+  header h1 { font-size: 20px; margin: 0 0 4px; }
+  header .meta { color: var(--fw-text-sub); font-size: 12px; }
+  main { max-width: 1080px; margin: 0 auto; padding: 12px 16px 48px; }
+  .grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .card {
+    background: var(--fw-card-bg); border: 1px solid var(--fw-border);
+    border-radius: 12px; padding: 16px; box-shadow: var(--fw-shadow);
+    cursor: pointer; text-decoration: none; color: inherit;
+    transition: transform .12s ease, box-shadow .12s ease; display: block;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+  .card .route-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card .route-sub { color: var(--fw-text-sub); font-size: 12px; margin-top: 2px; }
+  .card .price-row { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 6px; }
+  .card .price { font-size: 28px; font-weight: 700; }
+  .card .cur { color: var(--fw-text-sub); font-size: 13px; }
+  .chip {
+    font-size: 12px; padding: 2px 7px; border-radius: 999px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .chip.up { color: var(--fw-bad); background: color-mix(in srgb, var(--fw-bad) 12%, transparent); }
+  .chip.down { color: var(--fw-good); background: color-mix(in srgb, var(--fw-good) 14%, transparent); }
+  .chip.flat { color: var(--fw-text-sub); background: color-mix(in srgb, var(--fw-text-sub) 14%, transparent); }
+  .target { font-size: 12px; color: var(--fw-text-sub); display: flex; justify-content: space-between; margin-top: 8px; }
+  .target b.hit { color: var(--fw-good); }
+  .target b.miss { color: var(--fw-text); }
+  .spark { margin-top: 12px; height: 44px; }
+  .badge-disabled { font-size: 10px; color: var(--fw-text-sub); border: 1px solid var(--fw-border); border-radius: 4px; padding: 0 5px; }
+  .empty, .error { text-align: center; color: var(--fw-text-sub); padding: 60px 16px; }
+  .error { color: var(--fw-bad); }
+  footer { text-align: center; color: var(--fw-text-sub); font-size: 11px; padding: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>机票价格监控</h1>
+  <div class="meta" id="meta">加载中…</div>
+</header>
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">还没有可展示的航线数据。运行一次抓取后即可看到卡片。</div>
+</main>
+<footer>Flight Watch · 数据每日自动更新 · GitHub Pages 静态托管</footer>
+
+<script>
+"use strict";
+
+function fmtMoney(v, cur) {
+  if (v == null) return "—";
+  return (cur === "CNY" || !cur ? "¥" : "") + Number(v).toLocaleString() + (cur && cur !== "CNY" ? " " + cur : "");
+}
+
+// 每个 route 的「每日最低价」序列：跨 depart_dates，对每个 fetch_date 取最小 latest?
+// series 里每个 depart_date 已是「该 fetch_date 的最低价」。跨 depart_date 再取 min。
+function dailyMinSeries(routeObj) {
+  var byDate = {};
+  var dds = routeObj.depart_dates || {};
+  Object.keys(dds).forEach(function (dd) {
+    (dds[dd].series || []).forEach(function (pt) {
+      var d = pt.fetch_date, p = pt.price;
+      if (byDate[d] == null || p < byDate[d]) byDate[d] = p;
+    });
+  });
+  return Object.keys(byDate).sort().map(function (d) { return { fetch_date: d, price: byDate[d] }; });
+}
+
+// 最近抓取日的跨-depart_date 最低 latest.price
+function latestLowest(routeObj) {
+  var best = null, cur = "CNY";
+  var dds = routeObj.depart_dates || {};
+  Object.keys(dds).forEach(function (dd) {
+    var l = dds[dd].latest;
+    if (l && l.price != null && (best == null || l.price < best)) { best = l.price; cur = l.currency || cur; }
+  });
+  return { price: best, currency: cur };
+}
+
+function sparkline(series, w, h) {
+  if (!series.length) return "";
+  var vals = series.map(function (s) { return s.price; });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  var pad = 4, n = series.length;
+  function X(i) { return pad + (n <= 1 ? (w - 2 * pad) / 2 : (i / (n - 1)) * (w - 2 * pad)); }
+  function Y(v) { return h - pad - (max === min ? (h - 2 * pad) / 2 : ((v - min) / (max - min)) * (h - 2 * pad)); }
+  var d = "M" + series.map(function (s, i) { return X(i) + " " + Y(s.price); }).join(" L");
+  var area = d + " L" + X(n - 1) + " " + (h - pad) + " L" + X(0) + " " + (h - pad) + " Z";
+  var last = series[n - 1];
+  var trendUp = n >= 2 && last.price > series[n - 2].price;
+  var color = trendUp ? "var(--fw-bad)" : "var(--fw-good)";
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" width="100%" height="' + h + '" preserveAspectRatio="none">' +
+    '<path d="' + area + '" fill="' + color + '" opacity="0.12"></path>' +
+    '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>' +
+    '<circle cx="' + X(n - 1) + '" cy="' + Y(last.price) + '" r="2.6" fill="' + color + '"></circle>' +
+    '</svg>';
+}
+
+function arrowChip(series) {
+  if (series.length < 2) return '<span class="chip flat">— 无环比</span>';
+  var a = series[series.length - 1].price, b = series[series.length - 2].price;
+  var diff = a - b;
+  var pct = b ? (diff / b * 100) : 0;
+  if (diff === 0) return '<span class="chip flat">— 持平</span>';
+  var cls = diff > 0 ? "up" : "down";
+  var ar = diff > 0 ? "▲" : "▼";
+  return '<span class="chip ' + cls + '">' + ar + " " + Math.abs(pct).toFixed(1) + "%</span>";
+}
+
+function render(summary, meta) {
+  var metaMap = {};
+  (meta.routes || []).forEach(function (r) { metaMap[r.route_id] = r; });
+  document.getElementById("meta").textContent =
+    "更新于 " + (summary.generated_at || "?") +
+    (summary.meta && summary.meta.serpapi_remaining_quota != null
+      ? " · SerpAPI 剩余额度 " + summary.meta.serpapi_remaining_quota : "");
+
+  var routes = summary.routes || {};
+  var ids = Object.keys(routes);
+  var grid = document.getElementById("grid");
+  if (!ids.length) { document.getElementById("empty").style.display = "block"; return; }
+
+  ids.sort();
+  ids.forEach(function (rid) {
+    var robj = routes[rid];
+    var m = metaMap[rid] || {};
+    var ll = latestLowest(robj);
+    var series = dailyMinSeries(robj);
+    var target = m.target_price;
+    var hit = target != null && ll.price != null && ll.price <= target;
+    var diff = (target != null && ll.price != null) ? (ll.price - target) : null;
+
+    var a = document.createElement("a");
+    a.className = "card";
+    a.href = "route.html?route=" + encodeURIComponent(rid);
+    a.innerHTML =
+      '<div class="route-title">' +
+        (m.from || "?") + ' <span style="color:var(--fw-text-sub)">→</span> ' + (m.to || "?") +
+        (m.enabled === false ? ' <span class="badge-disabled">未启用</span>' : '') +
+      '</div>' +
+      '<div class="route-sub">' + rid + '</div>' +
+      '<div class="price-row">' +
+        '<span class="price">' + fmtMoney(ll.price, ll.currency) + '</span>' +
+        arrowChip(series) +
+      '</div>' +
+      '<div class="target">' +
+        '<span>目标价 ' + (target != null ? fmtMoney(target, ll.currency) : "—") + '</span>' +
+        (diff != null
+          ? '<span>' + (hit
+              ? '<b class="hit">已达标 省 ' + fmtMoney(-diff, ll.currency) + '</b>'
+              : '<b class="miss">还差 ' + fmtMoney(diff, ll.currency) + '</b>') + '</span>'
+          : '<span></span>') +
+      '</div>' +
+      '<div class="spark">' + sparkline(series, 260, 44) + '</div>';
+    grid.appendChild(a);
+  });
+}
+
+Promise.all([
+  fetch("./data/summary.json").then(function (r) { if (!r.ok) throw new Error("summary " + r.status); return r.json(); }),
+  fetch("./data/routes_meta.json").then(function (r) { return r.ok ? r.json() : { routes: [] }; }).catch(function () { return { routes: [] }; })
+]).then(function (res) {
+  render(res[0], res[1]);
+}).catch(function (e) {
+  document.getElementById("meta").textContent = "";
+  var main = document.querySelector("main");
+  main.innerHTML = '<div class="error">加载数据失败：' + e.message +
+    '<br>请确认 docs/data/summary.json 已生成（本地预览需通过 HTTP 服务器打开，而非 file://）。</div>';
+});
+</script>
+</body>
+</html>

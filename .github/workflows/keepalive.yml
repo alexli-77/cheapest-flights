@@ -1,0 +1,82 @@
+name: keepalive
+
+# 每月 1 日：
+#  1) 写一次 state/.keepalive 并 commit —— GitHub 会在仓库 60 天无活动后自动
+#     停用 schedule 触发器，这个提交保证 daily.yml 的 cron 不被冻结。
+#  2) 用 gh api 检查 daily.yml 最近一次运行是否在 3 天内，异常则 curl 飞书告警。
+on:
+  schedule:
+    - cron: "0 0 1 * *"     # 每月 1 日 UTC 00:00
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: read             # gh api 读取 workflow runs
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+      FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Touch keepalive & commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p state
+          echo "keepalive $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> state/.keepalive
+          git add state/.keepalive
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "chore: keepalive $(date -u +%Y-%m-%d) [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Check daily.yml freshness
+        run: |
+          set +e
+          LAST=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/daily.yml/runs?per_page=1" \
+                   --jq '.workflow_runs[0].created_at' 2>/dev/null)
+          echo "Last daily run: ${LAST:-<none>}"
+          STALE=0
+          REASON=""
+          if [ -z "${LAST}" ] || [ "${LAST}" = "null" ]; then
+            STALE=1; REASON="从未成功记录到 daily.yml 运行"
+          else
+            LAST_TS=$(date -d "${LAST}" +%s 2>/dev/null || echo 0)
+            NOW_TS=$(date +%s)
+            AGE_DAYS=$(( (NOW_TS - LAST_TS) / 86400 ))
+            echo "Age: ${AGE_DAYS} days"
+            if [ "${LAST_TS}" -eq 0 ] || [ "${AGE_DAYS}" -gt 3 ]; then
+              STALE=1; REASON="daily.yml 最近一次运行距今 ${AGE_DAYS} 天（>3 天）"
+            fi
+          fi
+
+          if [ "${STALE}" -eq 1 ]; then
+            echo "STALE detected: ${REASON}"
+            if [ -n "${FEISHU_WEBHOOK}" ]; then
+              MSG="⚠️ flight-watch keepalive 告警：${REASON}（仓库 ${GITHUB_REPOSITORY}）。请检查 daily 工作流是否被停用。"
+              if [ -n "${FEISHU_SECRET}" ]; then
+                TS=$(date +%s)
+                SIGN=$(printf "" | openssl dgst -sha256 -hmac "$(printf '%s\n%s' "${TS}" "${FEISHU_SECRET}")" -binary | base64)
+                PAYLOAD=$(printf '{"timestamp":"%s","sign":"%s","msg_type":"text","content":{"text":"%s"}}' "${TS}" "${SIGN}" "${MSG}")
+              else
+                PAYLOAD=$(printf '{"msg_type":"text","content":{"text":"%s"}}' "${MSG}")
+              fi
+              curl -sS -X POST "${FEISHU_WEBHOOK}" -H "Content-Type: application/json" -d "${PAYLOAD}" \
+                || echo "Feishu alert curl failed (non-fatal)."
+            else
+              echo "FEISHU_WEBHOOK not set; skip alert."
+            fi
+          else
+            echo "daily.yml is healthy."
+          fi

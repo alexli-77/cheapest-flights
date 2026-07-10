@@ -1,0 +1,88 @@
+{
+  "airlines_by_depart": {
+    "2026-10-01": {
+      "CA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "CA929",
+        "price": 1730,
+        "source": "mock",
+        "stops": 1
+      },
+      "HO": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "HO1339",
+        "price": 1790,
+        "source": "mock",
+        "stops": 0
+      },
+      "MU": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "MU523",
+        "price": 1670,
+        "source": "mock",
+        "stops": 0
+      }
+    },
+    "2026-10-02": {
+      "CA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "CA929",
+        "price": 1515,
+        "source": "mock",
+        "stops": 1
+      },
+      "HO": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "HO1339",
+        "price": 1575,
+        "source": "mock",
+        "stops": 0
+      },
+      "MU": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "MU523",
+        "price": 1455,
+        "source": "mock",
+        "stops": 0
+      }
+    },
+    "2026-10-03": {
+      "CA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "CA929",
+        "price": 1934,
+        "source": "mock",
+        "stops": 1
+      },
+      "HO": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "HO1339",
+        "price": 1994,
+        "source": "mock",
+        "stops": 0
+      },
+      "MU": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-11",
+        "flight_no": "MU523",
+        "price": 1874,
+        "source": "mock",
+        "stops": 0
+      }
+    }
+  },
+  "generated_at": "2026-07-11T03:06:15+08:00",
+  "latest_fetch_date": "2026-07-11",
+  "route": "sha-nrt",
+  "sources": [
+    "mock"
+  ]
+}

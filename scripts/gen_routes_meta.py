@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""Generate docs/data/routes_meta.json from config.yaml (fallback config.json).
+
+Display metadata for the static dashboard. The frontend reads this file to know
+each route's human labels, target price and currency WITHOUT ever touching the
+Python config loader. Kept dependency-optional: uses PyYAML if present, else the
+config.json mirror shipped alongside config.yaml.
+
+Run from repo root:  python scripts/gen_routes_meta.py
+Called by .github/workflows/daily.yml after `python -m src.main`.
+"""
+from __future__ import annotations
+
+import json
+import os
+from datetime import datetime, timezone, timedelta
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(ROOT, "docs", "data", "routes_meta.json")
+
+SHANGHAI = timezone(timedelta(hours=8))
+
+
+def _load_config() -> dict:
+    """Load config.yaml if PyYAML is available, else the config.json mirror."""
+    yaml_path = os.path.join(ROOT, "config.yaml")
+    json_path = os.path.join(ROOT, "config.json")
+    try:
+        import yaml  # type: ignore
+
+        if os.path.exists(yaml_path):
+            with open(yaml_path, "r", encoding="utf-8") as f:
+                return yaml.safe_load(f)
+    except Exception:
+        pass
+    with open(json_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def build_meta(cfg: dict) -> dict:
+    defaults = cfg.get("defaults", {}) or {}
+    default_currency = defaults.get("currency", "CNY")
+    routes_out = []
+    for r in cfg.get("routes", []) or []:
+        routes_out.append(
+            {
+                "route_id": r.get("id"),
+                "from": r.get("from"),
+                "to": r.get("to"),
+                "target_price": r.get("target_price"),
+                "currency": r.get("currency", default_currency),
+                "drop_alert_pct": r.get("drop_alert_pct"),
+                "enabled": bool(r.get("enabled", True)),
+                "sources": r.get("sources", []),
+            }
+        )
+    return {
+        "generated_at": datetime.now(SHANGHAI).replace(microsecond=0).isoformat(),
+        "timezone": cfg.get("timezone", "Asia/Shanghai"),
+        "routes": routes_out,
+    }
+
+
+def main() -> int:
+    cfg = _load_config()
+    meta = build_meta(cfg)
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2, sort_keys=True)
+    print(f"routes_meta.json written: {len(meta['routes'])} routes -> {OUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

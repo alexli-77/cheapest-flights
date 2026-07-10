@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Local credentials — NEVER commit.
+# Keep webhook / API keys out of the repo. Put them in GitHub Secrets
+# (FEISHU_WEBHOOK, SERPAPI_KEY) for CI, and in ~/.flightwatch/ for local runs.
+# ~/.flightwatch/
+.env
+
+# NOTE: data/ is intentionally NOT ignored — JSONL is the database (Git-as-DB).
+# NOTE: state/serpapi_usage.json is intentionally NOT ignored — the monthly
+#       SerpAPI quota counter must persist across runs/commits.

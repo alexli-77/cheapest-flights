@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>航线详情 · Flight Watch</title>
+<!--
+  数据流：本页 fetch
+    ./data/summary.json               (build_summary → 折线/对比/热力用)
+    ./data/routes_meta.json           (gen_routes_meta.py → target_price / 标签)
+    ./data/detail/{route}.json        (gen_detail.py → 航司最低价柱状图 + 数据源)
+  三者都在站点根 docs/ 内 —— 明细「懒加载」的是 docs/data/detail/*.json，
+  绝不去 fetch 站点外的 repo/data/*.jsonl（Pages 无法访问，会 404）。
+  图表引擎特性检测：window.echarts 存在用 ECharts，否则用 vendor/charts.js 回退。
+-->
+<!-- 如已 vendor ECharts，取消下一行注释即可自动启用：
+<script src="./vendor/echarts.min.js"></script> -->
+<script src="./vendor/charts.js"></script>
+<style>
+  :root {
+    --fw-bg:#f5f6f8; --fw-card-bg:#fff; --fw-text:#1f2329; --fw-text-sub:#8a919f;
+    --fw-border:#e6e8eb; --fw-accent:#3370ff; --fw-good:#2ea121; --fw-bad:#d83931;
+    --fw-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fw-bg:#17171a; --fw-card-bg:#232326; --fw-text:#e6e6e8; --fw-text-sub:#9a9aa2;
+      --fw-border:#34343a; --fw-accent:#4d7fff; --fw-good:#43c463; --fw-bad:#f16b62;
+      --fw-shadow:0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--fw-bg); color:var(--fw-text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  header { max-width:1080px; margin:0 auto; padding:18px 16px 6px; }
+  header a.back { color:var(--fw-accent); text-decoration:none; font-size:13px; }
+  header h1 { font-size:20px; margin:8px 0 2px; }
+  header .sub { color:var(--fw-text-sub); font-size:12px; }
+  main { max-width:1080px; margin:0 auto; padding:8px 16px 48px; }
+  .filters { display:flex; flex-wrap:wrap; gap:16px; background:var(--fw-card-bg);
+    border:1px solid var(--fw-border); border-radius:12px; padding:12px 14px; margin:12px 0 18px;
+    box-shadow:var(--fw-shadow); }
+  .filter-group { font-size:12px; }
+  .filter-group > label { color:var(--fw-text-sub); display:block; margin-bottom:6px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .toggle { font-size:12px; padding:4px 10px; border-radius:999px; cursor:pointer; user-select:none;
+    border:1px solid var(--fw-border); background:transparent; color:var(--fw-text); }
+  .toggle.on { background:var(--fw-accent); border-color:var(--fw-accent); color:#fff; }
+  .charts { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); }
+  @media (max-width:520px){ .charts { grid-template-columns:1fr; } }
+  .panel { background:var(--fw-card-bg); border:1px solid var(--fw-border); border-radius:12px;
+    padding:14px 16px 16px; box-shadow:var(--fw-shadow); }
+  .panel h3 { font-size:14px; margin:0 0 4px; }
+  .panel .desc { color:var(--fw-text-sub); font-size:11px; margin:0 0 10px; }
+  .panel .chart { width:100%; min-height:200px; }
+  .note { color:var(--fw-text-sub); font-size:12px; }
+  .error { color:var(--fw-bad); }
+  footer { text-align:center; color:var(--fw-text-sub); font-size:11px; padding:24px; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="index.html">← 返回全部航线</a>
+  <h1 id="title">航线详情</h1>
+  <div class="sub" id="subtitle"></div>
+</header>
+<main>
+  <div class="filters" id="filters" style="display:none">
+    <div class="filter-group">
+      <label>出发日期（可多选）</label>
+      <div class="chips" id="ddFilter"></div>
+    </div>
+    <div class="filter-group" id="srcGroup">
+      <label>数据源</label>
+      <div class="chips" id="srcFilter"></div>
+    </div>
+  </div>
+
+  <div id="body">
+    <div class="note" id="loading">加载中…</div>
+  </div>
+</main>
+<footer>Flight Watch · 图表引擎：<span id="engine">检测中</span></footer>
+
+<script>
+"use strict";
+
+var USE_ECHARTS = !!window.echarts;
+document.getElementById("engine").textContent = USE_ECHARTS ? "ECharts" : "内置 SVG 回退 (charts.js)";
+
+function qs(name) {
+  var m = new RegExp("[?&]" + name + "=([^&]*)").exec(location.search);
+  return m ? decodeURIComponent(m[1]) : "";
+}
+function fmtMoney(v, cur) {
+  if (v == null) return "—";
+  return (cur === "CNY" || !cur ? "¥" : "") + Number(v).toLocaleString();
+}
+var PALETTE = (window.FWCharts && FWCharts.palette) ||
+  ["#5b8ff9","#61ddaa","#f6bd16","#e8684a","#6dc8ec","#9270ca","#ff9d4d","#269a99"];
+
+var ROUTE = qs("route");
+var STATE = { summary:null, meta:null, detail:null, selectedDD:{}, selectedSrc:{}, currency:"CNY", target:null };
+
+// ---- ECharts theme-aware helpers ----
+function ecTextStyle() {
+  var cs = getComputedStyle(document.documentElement);
+  return { textColor: (cs.getPropertyValue("--fw-text-sub")||"#888").trim(),
+           grid: (cs.getPropertyValue("--fw-border")||"#eee").trim() };
+}
+var _ecInstances = {};
+function ecInit(el) {
+  if (_ecInstances[el.id]) { _ecInstances[el.id].dispose(); }
+  var inst = echarts.init(el, null, { renderer: "svg" });
+  _ecInstances[el.id] = inst;
+  return inst;
+}
+
+// ---------------------------------------------------------- chart facades
+function drawLine(el, cfg) {
+  // cfg: { series:[{name,data:[[i,price]]}], xLabels, markLines:[{y,label}], yName }
+  if (USE_ECHARTS) {
+    var th = ecTextStyle();
+    ecInit(el).setOption({
+      tooltip: { trigger: "axis" },
+      legend: { textStyle: { color: th.textColor }, type: "scroll", top: 0 },
+      grid: { left: 56, right: 20, top: 34, bottom: 40 },
+      xAxis: { type: "category", data: cfg.xLabels,
+        axisLabel: { color: th.textColor, formatter: function(v){return (v||"").slice(5);} },
+        axisLine: { lineStyle: { color: th.grid } } },
+      yAxis: { type: "value", name: cfg.yName || "价格", scale: true,
+        axisLabel: { color: th.textColor }, nameTextStyle: { color: th.textColor },
+        splitLine: { lineStyle: { color: th.grid } } },
+      series: cfg.series.map(function (s, i) {
+        var o = { name: s.name, type: "line", data: s.data.map(function(p){return p[1];}),
+          connectNulls: true, showSymbol: true, symbolSize: 5,
+          lineStyle: { width: 2 }, itemStyle: { color: PALETTE[i % PALETTE.length] } };
+        if (i === 0 && cfg.markLines && cfg.markLines.length) {
+          o.markLine = { silent: true, symbol: "none",
+            lineStyle: { type: "dashed", color: "#e8684a" },
+            data: cfg.markLines.map(function (m) { return { yAxis: m.y, label: { formatter: m.label, color: "#e8684a" } }; }) };
+        }
+        return o;
+      })
+    });
+  } else {
+    FWCharts.renderLine(el, {
+      series: cfg.series, xLabels: cfg.xLabels, markLines: cfg.markLines,
+      yName: cfg.yName, formatter: function (v) { return fmtMoney(v, STATE.currency); }
+    });
+  }
+}
+function drawBar(el, cfg) {
+  if (USE_ECHARTS) {
+    var th = ecTextStyle();
+    ecInit(el).setOption({
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      grid: { left: 56, right: 20, top: 20, bottom: 40 },
+      xAxis: { type: "category", data: cfg.categories, axisLabel: { color: th.textColor },
+        axisLine: { lineStyle: { color: th.grid } } },
+      yAxis: { type: "value", scale: true, axisLabel: { color: th.textColor },
+        splitLine: { lineStyle: { color: th.grid } } },
+      series: [{ type: "bar", data: cfg.values, barMaxWidth: 46,
+        itemStyle: { color: function (p) { return PALETTE[p.dataIndex % PALETTE.length]; }, borderRadius: [3,3,0,0] },
+        label: { show: true, position: "top", color: th.textColor, fontSize: 10 } }]
+    });
+  } else {
+    FWCharts.renderBar(el, {
+      categories: cfg.categories, values: cfg.values,
+      formatter: function (v) { return fmtMoney(v, STATE.currency); }
+    });
+  }
+}
+function drawHeatmap(el, cfg) {
+  // cfg: { xLabels(fetch), yLabels(depart), cells:[[xi,yi,val]], min, max }
+  if (USE_ECHARTS) {
+    var th = ecTextStyle();
+    ecInit(el).setOption({
+      tooltip: { position: "top", formatter: function (p) {
+        return cfg.yLabels[p.value[1]] + " 出发<br>" + cfg.xLabels[p.value[0]] + " 抓取<br><b>" + fmtMoney(p.value[2], STATE.currency) + "</b>"; } },
+      grid: { left: 96, right: 20, top: 10, bottom: 60 },
+      xAxis: { type: "category", data: cfg.xLabels, splitArea: { show: true },
+        axisLabel: { color: th.textColor, formatter: function(v){return (v||"").slice(5);} } },
+      yAxis: { type: "category", data: cfg.yLabels, splitArea: { show: true },
+        axisLabel: { color: th.textColor } },
+      visualMap: { min: cfg.min, max: cfg.max, calculable: true, orient: "horizontal",
+        left: "center", bottom: 0, textStyle: { color: th.textColor },
+        inRange: { color: ["#50c878", "#f6bd16", "#e8684a"] } },
+      series: [{ type: "heatmap", data: cfg.cells, label: { show: false } }]
+    });
+  } else {
+    FWCharts.renderHeatmap(el, {
+      xLabels: cfg.xLabels, yLabels: cfg.yLabels, cells: cfg.cells, min: cfg.min, max: cfg.max,
+      formatter: function (v) { return fmtMoney(v, STATE.currency); }
+    });
+  }
+}
+
+// ---------------------------------------------------------- data shaping
+function activeDDs() {
+  return Object.keys(STATE.selectedDD).filter(function (k) { return STATE.selectedDD[k]; });
+}
+function activeSrcs() {
+  return Object.keys(STATE.selectedSrc).filter(function (k) { return STATE.selectedSrc[k]; });
+}
+function routeObj() { return (STATE.summary.routes || {})[ROUTE] || { depart_dates: {} }; }
+
+// union of fetch_dates across selected depart_dates
+function fetchDateAxis(dds) {
+  var set = {};
+  var dobj = routeObj().depart_dates || {};
+  dds.forEach(function (dd) {
+    (dobj[dd] && dobj[dd].series || []).forEach(function (p) { set[p.fetch_date] = 1; });
+  });
+  return Object.keys(set).sort();
+}
+
+function chart1_history() {
+  var dds = activeDDs();
+  var xLabels = fetchDateAxis(dds);
+  var idx = {}; xLabels.forEach(function (d, i) { idx[d] = i; });
+  var dobj = routeObj().depart_dates || {};
+  var series = dds.map(function (dd) {
+    var data = xLabels.map(function () { return null; });
+    (dobj[dd] && dobj[dd].series || []).forEach(function (p) {
+      data[idx[p.fetch_date]] = [idx[p.fetch_date], p.price];
+    });
+    // ensure x index present even for nulls
+    data = data.map(function (v, i) { return v == null ? [i, null] : v; });
+    return { name: dd, data: data };
+  });
+  var markLines = STATE.target != null ? [{ y: STATE.target, label: "目标价 " + fmtMoney(STATE.target, STATE.currency) }] : [];
+  drawLine(document.getElementById("chart1"), { series: series, xLabels: xLabels, markLines: markLines, yName: "每日最低价" });
+}
+
+function chart2_compare() {
+  // same data as chart1 but framed as multi-depart comparison; identical rendering,
+  // kept separate so future divergence (e.g. normalized index) is easy.
+  var dds = activeDDs();
+  var xLabels = fetchDateAxis(dds);
+  var idx = {}; xLabels.forEach(function (d, i) { idx[d] = i; });
+  var dobj = routeObj().depart_dates || {};
+  var series = dds.map(function (dd) {
+    var data = xLabels.map(function (_, i) { return [i, null]; });
+    (dobj[dd] && dobj[dd].series || []).forEach(function (p) { data[idx[p.fetch_date]] = [idx[p.fetch_date], p.price]; });
+    return { name: dd, data: data };
+  });
+  drawLine(document.getElementById("chart2"), { series: series, xLabels: xLabels, markLines: [], yName: "各出发日最低价" });
+}
+
+function chart3_heatmap() {
+  var dds = activeDDs().slice().sort();
+  var xLabels = fetchDateAxis(dds);
+  var xIdx = {}; xLabels.forEach(function (d, i) { xIdx[d] = i; });
+  var dobj = routeObj().depart_dates || {};
+  var cells = [];
+  var vals = [];
+  dds.forEach(function (dd, yi) {
+    var byDate = {};
+    (dobj[dd] && dobj[dd].series || []).forEach(function (p) { byDate[p.fetch_date] = p.price; });
+    xLabels.forEach(function (d) {
+      if (byDate[d] != null) { cells.push([xIdx[d], yi, byDate[d]]); vals.push(byDate[d]); }
+    });
+  });
+  var min = vals.length ? Math.min.apply(null, vals) : 0;
+  var max = vals.length ? Math.max.apply(null, vals) : 1;
+  drawHeatmap(document.getElementById("chart3"), { xLabels: xLabels, yLabels: dds, cells: cells, min: min, max: max });
+}
+
+function chart4_airlines() {
+  var el = document.getElementById("chart4");
+  if (!STATE.detail) { el.innerHTML = '<div class="note">航司明细未加载。</div>'; return; }
+  var dds = activeDDs();
+  var srcs = activeSrcs();
+  var abd = STATE.detail.airlines_by_depart || {};
+  // aggregate: lowest price per airline across selected depart_dates & sources
+  var best = {};
+  dds.forEach(function (dd) {
+    var bucket = abd[dd] || {};
+    Object.keys(bucket).forEach(function (air) {
+      var e = bucket[air];
+      if (srcs.length && e.source && srcs.indexOf(e.source) === -1) return;
+      if (best[air] == null || e.price < best[air]) best[air] = e.price;
+    });
+  });
+  var airlines = Object.keys(best).sort(function (a, b) { return best[a] - best[b]; });
+  if (!airlines.length) { el.innerHTML = '<div class="note">当前筛选下暂无航司明细。</div>'; return; }
+  drawBar(el, { categories: airlines, values: airlines.map(function (a) { return best[a]; }) });
+}
+
+function redraw() {
+  if (!activeDDs().length) {
+    ["chart1","chart2","chart3","chart4"].forEach(function (id) {
+      document.getElementById(id).innerHTML = '<div class="note">请至少选择一个出发日期。</div>';
+    });
+    return;
+  }
+  chart1_history();
+  chart2_compare();
+  chart3_heatmap();
+  chart4_airlines();
+}
+
+// ---------------------------------------------------------- filters UI
+function buildFilters() {
+  var dobj = routeObj().depart_dates || {};
+  var dds = Object.keys(dobj).sort();
+  var ddWrap = document.getElementById("ddFilter");
+  ddWrap.innerHTML = "";
+  dds.forEach(function (dd) {
+    STATE.selectedDD[dd] = true;
+    var b = document.createElement("button");
+    b.className = "toggle on"; b.textContent = dd;
+    b.onclick = function () {
+      STATE.selectedDD[dd] = !STATE.selectedDD[dd];
+      b.classList.toggle("on", STATE.selectedDD[dd]);
+      redraw();
+    };
+    ddWrap.appendChild(b);
+  });
+
+  // sources: prefer detail.sources, fallback to meta.sources
+  var srcs = (STATE.detail && STATE.detail.sources && STATE.detail.sources.length)
+    ? STATE.detail.sources
+    : ((STATE.meta && (STATE.meta.sources || [])) || []);
+  var srcWrap = document.getElementById("srcFilter");
+  srcWrap.innerHTML = "";
+  if (!srcs.length) {
+    document.getElementById("srcGroup").style.display = "none";
+  } else {
+    srcs.forEach(function (s) {
+      STATE.selectedSrc[s] = true;
+      var b = document.createElement("button");
+      b.className = "toggle on"; b.textContent = s;
+      b.onclick = function () {
+        STATE.selectedSrc[s] = !STATE.selectedSrc[s];
+        b.classList.toggle("on", STATE.selectedSrc[s]);
+        chart4_airlines();
+      };
+      srcWrap.appendChild(b);
+    });
+  }
+  document.getElementById("filters").style.display = "flex";
+}
+
+function scaffold() {
+  document.getElementById("body").innerHTML =
+    '<div class="charts">' +
+      panel("chart1","① 价格历史折线","x=抓取日期，y=每日最低价；每条出发日一条线，虚线为目标价") +
+      panel("chart2","② 多出发日期对比","横向比较不同出发日的价格走势") +
+      panel("chart3","③ 出发×抓取 热力图","颜色越绿越便宜，越红越贵") +
+      panel("chart4","④ 航司最低价柱状图","各航司在所选出发日/数据源下的历史最低价") +
+    '</div>';
+}
+function panel(id, title, desc) {
+  return '<div class="panel"><h3>' + title + '</h3><div class="desc">' + desc + '</div>' +
+    '<div class="chart" id="' + id + '"></div></div>';
+}
+
+// ---------------------------------------------------------- boot
+if (!ROUTE) {
+  document.getElementById("body").innerHTML = '<div class="error">缺少 route 参数。请从首页进入。</div>';
+} else {
+  Promise.all([
+    fetch("./data/summary.json").then(function (r) { if (!r.ok) throw new Error("summary " + r.status); return r.json(); }),
+    fetch("./data/routes_meta.json").then(function (r) { return r.ok ? r.json() : { routes: [] }; }).catch(function () { return { routes: [] }; }),
+    fetch("./data/detail/" + encodeURIComponent(ROUTE) + ".json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+  ]).then(function (res) {
+    STATE.summary = res[0];
+    var metaList = (res[1].routes || []);
+    STATE.meta = metaList.filter(function (m) { return m.route_id === ROUTE; })[0] || {};
+    STATE.detail = res[2];
+    STATE.currency = STATE.meta.currency || "CNY";
+    STATE.target = STATE.meta.target_price != null ? STATE.meta.target_price : null;
+
+    if (!STATE.summary.routes || !STATE.summary.routes[ROUTE]) {
+      document.getElementById("body").innerHTML = '<div class="error">未找到航线「' + ROUTE + '」的数据。</div>';
+      return;
+    }
+    document.getElementById("title").textContent =
+      (STATE.meta.from || "?") + " → " + (STATE.meta.to || "?") + "  ·  " + ROUTE;
+    document.getElementById("subtitle").textContent =
+      "目标价 " + (STATE.target != null ? fmtMoney(STATE.target, STATE.currency) : "—") +
+      " · 更新于 " + (STATE.summary.generated_at || "?");
+
+    scaffold();
+    buildFilters();
+    redraw();
+    window.addEventListener("resize", function () {
+      if (USE_ECHARTS) { Object.keys(_ecInstances).forEach(function (k) { _ecInstances[k].resize(); }); }
+      else { redraw(); }
+    });
+  }).catch(function (e) {
+    document.getElementById("body").innerHTML = '<div class="error">加载失败：' + e.message +
+      '<br>本地预览需通过 HTTP 服务器打开（非 file://）。</div>';
+  });
+}
+</script>
+</body>
+</html>
