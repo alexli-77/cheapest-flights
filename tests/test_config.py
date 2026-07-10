@@ -50,7 +50,7 @@ class TestLoadConfig(unittest.TestCase):
         nrt = cfg.route_by_id("sha-nrt")
         self.assertEqual(nrt.origin, "SHA")
         self.assertEqual(nrt.dest, "NRT")
-        self.assertIn("MM", nrt.airlines["blacklist"])
+        self.assertIn("Peach", nrt.airlines["blacklist"])
         self.assertTrue(nrt.enabled)
         self.assertFalse(cfg.route_by_id("sha-can").enabled)
 
