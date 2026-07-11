@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>配置面板 · Flight Watch</title>
+<!--
+  纯前端配置面板：通过 GitHub REST API 读写仓库根目录的 config.json / config.yaml，
+  并可一键触发 daily.yml 抓取工作流。零后端、零 CDN 依赖。
+  Token（fine-grained PAT）仅保存在浏览器 localStorage('fw_gh_token')，不上传任何服务器。
+  机场库来自同目录 airports.js（window.AIRPORTS）。
+  生成的 config.yaml 与现有文件风格一致（2 空格缩进、日期加双引号、标量数组用 []），
+  且能被 src/config.py 的 yaml.safe_load / json.load 等价解析。
+-->
+<script src="./airports.js"></script>
+<style>
+  :root {
+    --fw-bg:#f5f6f8; --fw-card-bg:#fff; --fw-text:#1f2329; --fw-text-sub:#8a919f;
+    --fw-border:#e6e8eb; --fw-accent:#3370ff; --fw-good:#2ea121; --fw-bad:#d83931;
+    --fw-warn:#d98e00; --fw-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    --fw-input-bg:#fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fw-bg:#17171a; --fw-card-bg:#232326; --fw-text:#e6e6e8; --fw-text-sub:#9a9aa2;
+      --fw-border:#34343a; --fw-accent:#4d7fff; --fw-good:#43c463; --fw-bad:#f16b62;
+      --fw-warn:#e6a723; --fw-shadow:0 1px 3px rgba(0,0,0,.4); --fw-input-bg:#1c1c1f;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--fw-bg); color:var(--fw-text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  header { max-width:900px; margin:0 auto; padding:18px 16px 6px; }
+  header a.back { color:var(--fw-accent); text-decoration:none; font-size:13px; }
+  header h1 { font-size:20px; margin:8px 0 2px; }
+  header .sub { color:var(--fw-text-sub); font-size:12px; }
+  main { max-width:900px; margin:0 auto; padding:8px 16px 60px; }
+  .panel { background:var(--fw-card-bg); border:1px solid var(--fw-border); border-radius:12px;
+    padding:16px; box-shadow:var(--fw-shadow); margin:14px 0; }
+  .panel h2 { font-size:15px; margin:0 0 4px; display:flex; align-items:center; gap:8px; }
+  .panel .hint { color:var(--fw-text-sub); font-size:12px; margin:0 0 12px; line-height:1.6; }
+  .panel .hint ol { margin:6px 0; padding-left:18px; }
+  .panel .hint code { background:color-mix(in srgb, var(--fw-text-sub) 16%, transparent);
+    padding:1px 5px; border-radius:4px; font-size:11px; }
+  label { font-size:12px; color:var(--fw-text-sub); display:block; margin:10px 0 4px; }
+  input[type=text], input[type=password], input[type=number], input[type=date], select {
+    width:100%; padding:8px 10px; border:1px solid var(--fw-border); border-radius:8px;
+    background:var(--fw-input-bg); color:var(--fw-text); font-size:13px; font-family:inherit; }
+  input:focus, select:focus { outline:none; border-color:var(--fw-accent); }
+  .row { display:flex; gap:12px; flex-wrap:wrap; }
+  .row > .col { flex:1 1 180px; min-width:140px; }
+  button { font-family:inherit; font-size:13px; padding:8px 14px; border-radius:8px;
+    border:1px solid var(--fw-border); background:transparent; color:var(--fw-text); cursor:pointer;
+    transition:background .12s ease, opacity .12s ease; }
+  button:hover { background:color-mix(in srgb, var(--fw-text-sub) 10%, transparent); }
+  button.primary { background:var(--fw-accent); border-color:var(--fw-accent); color:#fff; }
+  button.primary:hover { opacity:.9; background:var(--fw-accent); }
+  button.danger { color:var(--fw-bad); border-color:color-mix(in srgb, var(--fw-bad) 40%, var(--fw-border)); }
+  button.danger:hover { background:color-mix(in srgb, var(--fw-bad) 12%, transparent); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .status { font-size:12px; margin-top:10px; min-height:16px; }
+  .status.ok { color:var(--fw-good); }
+  .status.err { color:var(--fw-bad); }
+  .status.warn { color:var(--fw-warn); }
+  /* route cards */
+  .route-card { border:1px solid var(--fw-border); border-radius:10px; padding:12px 14px; margin:10px 0;
+    background:color-mix(in srgb, var(--fw-text-sub) 4%, transparent); }
+  .route-card .rc-head { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .route-card .rc-title { font-size:15px; font-weight:600; }
+  .route-card .rc-id { color:var(--fw-text-sub); font-size:11px; }
+  .route-card .rc-meta { color:var(--fw-text-sub); font-size:12px; margin-top:6px; line-height:1.6; }
+  .route-card .rc-actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+  .route-card .rc-actions button { padding:5px 10px; font-size:12px; }
+  .tag-disabled { font-size:10px; color:var(--fw-text-sub); border:1px solid var(--fw-border);
+    border-radius:4px; padding:0 5px; }
+  .tag-enabled { font-size:10px; color:var(--fw-good); border:1px solid color-mix(in srgb,var(--fw-good) 40%,var(--fw-border));
+    border-radius:4px; padding:0 5px; }
+  /* airport picker */
+  .apt-picker { position:relative; }
+  .apt-selected { font-size:12px; color:var(--fw-good); margin-top:4px; min-height:16px; }
+  .apt-drop { position:absolute; z-index:20; left:0; right:0; top:100%; margin-top:2px;
+    background:var(--fw-card-bg); border:1px solid var(--fw-border); border-radius:8px;
+    box-shadow:0 6px 18px rgba(0,0,0,.18); max-height:240px; overflow-y:auto; display:none; }
+  .apt-drop.open { display:block; }
+  .apt-item { padding:7px 10px; font-size:13px; cursor:pointer; display:flex; justify-content:space-between; gap:8px; }
+  .apt-item:hover, .apt-item.active { background:color-mix(in srgb, var(--fw-accent) 14%, transparent); }
+  .apt-item .apt-code { color:var(--fw-accent); font-weight:600; }
+  .apt-item .apt-country { color:var(--fw-text-sub); font-size:11px; }
+  /* tag input */
+  .taginput { display:flex; flex-wrap:wrap; gap:6px; padding:6px; border:1px solid var(--fw-border);
+    border-radius:8px; background:var(--fw-input-bg); }
+  .taginput input { border:none; background:transparent; flex:1; min-width:120px; padding:4px; }
+  .taginput input:focus { outline:none; }
+  .tag { display:inline-flex; align-items:center; gap:4px; background:color-mix(in srgb,var(--fw-accent) 16%,transparent);
+    color:var(--fw-accent); border-radius:999px; padding:2px 8px; font-size:12px; }
+  .tag b { cursor:pointer; font-weight:700; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; }
+  .chk { display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--fw-text);
+    border:1px solid var(--fw-border); border-radius:999px; padding:5px 10px; cursor:pointer; }
+  .chk input { width:auto; }
+  .date-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .radio-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:4px; }
+  .radio-row label { display:inline-flex; align-items:center; gap:5px; color:var(--fw-text); margin:0; cursor:pointer; }
+  .radio-row input { width:auto; }
+  .mode-block { margin-top:10px; }
+  .divider { height:1px; background:var(--fw-border); margin:16px 0; }
+  footer { text-align:center; color:var(--fw-text-sub); font-size:11px; padding:24px; }
+  .modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap; }
+  .hidden { display:none !important; }
+  .form-err { color:var(--fw-bad); font-size:12px; margin-top:10px; min-height:16px; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="index.html">← 返回仪表盘</a>
+  <h1>⚙️ 配置面板</h1>
+  <div class="sub">在网页上直接管理监控航线，保存后写回仓库配置并可一键触发抓取。</div>
+</header>
+<main>
+
+  <!-- ========== Token 区 ========== -->
+  <div class="panel">
+    <h2>1. GitHub 访问令牌（Token）</h2>
+    <div class="hint">
+      本面板通过 GitHub API 读写你的仓库配置。需要一个 <b>fine-grained personal access token</b>：
+      <ol>
+        <li>打开 GitHub → 右上角头像 → <code>Settings</code> → 左下 <code>Developer settings</code> → <code>Personal access tokens</code> → <code>Fine-grained tokens</code> → <code>Generate new token</code>。</li>
+        <li><b>Repository access</b> 选 <code>Only select repositories</code>，只勾选 <code>cheapest-flights</code>（不要授权全部仓库）。</li>
+        <li><b>Permissions → Repository permissions</b>：<code>Contents</code> 设为 <code>Read and write</code>；<code>Actions</code> 设为 <code>Read and write</code>（用于「立即抓取」触发工作流）。</li>
+        <li>生成后复制 token（形如 <code>github_pat_...</code>），粘贴到下面。Token 仅保存在本浏览器 localStorage，不会上传任何服务器。</li>
+      </ol>
+    </div>
+    <label for="tokenInput">Fine-grained PAT</label>
+    <input type="password" id="tokenInput" placeholder="github_pat_..." autocomplete="off">
+    <div class="btn-row">
+      <button class="primary" id="saveTokenBtn">保存并测试连接</button>
+      <button id="clearTokenBtn">清除本地 Token</button>
+    </div>
+    <div class="status" id="tokenStatus"></div>
+  </div>
+
+  <!-- ========== 航线列表 ========== -->
+  <div class="panel">
+    <h2>2. 监控航线</h2>
+    <div class="hint">从仓库的 <code>config.json</code> 读取当前航线。编辑 / 删除 / 启停后需点「保存全部更改」写回仓库。</div>
+    <div class="btn-row">
+      <button id="reloadBtn">从仓库重新载入</button>
+      <button class="primary" id="addRouteBtn">+ 新增航线</button>
+    </div>
+    <div class="status" id="listStatus"></div>
+    <div id="routeList"></div>
+  </div>
+
+  <!-- ========== 新增/编辑表单 ========== -->
+  <div class="panel hidden" id="formPanel">
+    <h2 id="formTitle">新增航线</h2>
+
+    <div class="row">
+      <div class="col">
+        <label>出发地（输入中文城市 / 机场名 / 三字码）</label>
+        <div class="apt-picker" id="fromPicker"></div>
+      </div>
+      <div class="col">
+        <label>目的地</label>
+        <div class="apt-picker" id="toPicker"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <label>日期模式</label>
+    <div class="radio-row" id="modeRadios">
+      <label><input type="radio" name="dateMode" value="rolling"> 滚动（未来 N 天）</label>
+      <label><input type="radio" name="dateMode" value="fixed" checked> 固定日期</label>
+      <label><input type="radio" name="dateMode" value="both"> 两者都要</label>
+    </div>
+
+    <div class="mode-block hidden" id="rollingBlock">
+      <label>滚动天数（depart_in_days）— 监控未来这么多天每天的最低价</label>
+      <input type="number" id="departDays" min="1" max="365" value="30" style="max-width:200px">
+    </div>
+
+    <div class="mode-block hidden" id="fixedBlock">
+      <label>固定出发日期（逐个添加，需为未来日期）</label>
+      <div class="row" style="align-items:flex-end">
+        <div style="flex:0 0 200px"><input type="date" id="fixedDateInput"></div>
+        <div><button id="addDateBtn">+ 添加日期</button></div>
+      </div>
+      <div class="date-list" id="fixedDateList"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <label>航司白名单（只看这些航司；留空 = 不限）</label>
+    <div class="hint" style="margin:0 0 6px">填英文全名，如 <code>China Eastern</code>。抓取源返回的是航司全名而非二字码，回车或逗号确认添加。</div>
+    <div class="taginput" id="whitelistTags"><input type="text" placeholder="输入航司全名后回车…"></div>
+
+    <label>航司黑名单（排除这些航司）</label>
+    <div class="taginput" id="blacklistTags"><input type="text" placeholder="如 Peach，回车确认…"></div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="col">
+        <label>目标价（低于此价触发 urgent）</label>
+        <input type="number" id="targetPrice" min="1" step="1" placeholder="如 1500">
+      </div>
+      <div class="col">
+        <label>降幅阈值 %（单日跌幅超过触发 urgent）</label>
+        <input type="number" id="dropPct" min="1" max="100" step="1" placeholder="如 15">
+      </div>
+    </div>
+
+    <label>数据源</label>
+    <div class="chips" id="sourceChips">
+      <label class="chk"><input type="checkbox" value="fast_flights" checked> fast_flights</label>
+      <label class="chk"><input type="checkbox" value="serpapi"> serpapi</label>
+      <label class="chk"><input type="checkbox" value="ctrip_local"> ctrip_local</label>
+    </div>
+
+    <label style="margin-top:14px"><input type="checkbox" id="enabledChk" checked style="width:auto"> 启用该航线</label>
+
+    <div class="form-err" id="formErr"></div>
+    <div class="modal-actions">
+      <button id="cancelFormBtn">取消</button>
+      <button class="primary" id="applyFormBtn">确定</button>
+    </div>
+  </div>
+
+  <!-- ========== 保存区 ========== -->
+  <div class="panel">
+    <h2>3. 保存并抓取</h2>
+    <div class="hint">「保存全部更改」会同时写回 <code>config.json</code> 与 <code>config.yaml</code>（保持两者同步，供 <code>src/config.py</code> 解析）。保存成功后可点「立即抓取」触发 GitHub Actions。</div>
+    <div class="btn-row">
+      <button class="primary" id="saveAllBtn">保存全部更改</button>
+      <button id="dispatchBtn" disabled>⚡ 立即抓取</button>
+    </div>
+    <div class="status" id="saveStatus"></div>
+  </div>
+
+</main>
+<footer>Flight Watch · 配置面板 · 纯前端 + GitHub API · Token 仅存于本浏览器</footer>
+
+<script>
+"use strict";
+
+/* ========================= 常量 ========================= */
+var OWNER = "alexli-77";
+var REPO = "cheapest-flights";
+var BRANCH = "main";
+var WORKFLOW_FILE = "daily.yml";
+var API = "https://api.github.com";
+var TOKEN_KEY = "fw_gh_token";
+var KNOWN_SOURCES = ["fast_flights", "serpapi", "ctrip_local"];
+
+/* ========================= 全局状态 ========================= */
+var STATE = {
+  token: localStorage.getItem(TOKEN_KEY) || "",
+  config: null,        // 完整 config 对象（保留所有顶层键）
+  jsonSha: null,       // config.json 的 blob sha
+  yamlSha: null,       // config.yaml 的 blob sha
+  editingIndex: -1,    // -1 = 新增
+  dirty: false
+};
+
+/* ========================= 基础工具 ========================= */
+function $(id) { return document.getElementById(id); }
+function el(tag, cls) { var e = document.createElement(tag); if (cls) e.className = cls; return e; }
+function todayStr() {
+  var d = new Date();
+  var m = String(d.getMonth() + 1).padStart(2, "0");
+  var day = String(d.getDate()).padStart(2, "0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+function setStatus(node, msg, kind) {
+  node.textContent = msg || "";
+  node.className = "status" + (kind ? " " + kind : "");
+}
+
+/* UTF-8 安全的 base64 编解码（GitHub contents API 用 base64 传内容） */
+function b64EncodeUnicode(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64DecodeUnicode(b64) {
+  return decodeURIComponent(escape(atob(b64.replace(/\s/g, ""))));
+}
+
+/* ========================= GitHub API ========================= */
+function ghFetch(path, opts) {
+  opts = opts || {};
+  var headers = opts.headers || {};
+  headers["Accept"] = "application/vnd.github+json";
+  headers["X-GitHub-Api-Version"] = "2022-11-28";
+  if (STATE.token) headers["Authorization"] = "Bearer " + STATE.token;
+  return fetch(API + path, {
+    method: opts.method || "GET",
+    headers: headers,
+    body: opts.body || undefined
+  }).then(function (r) {
+    return r.text().then(function (t) {
+      var data = null;
+      try { data = t ? JSON.parse(t) : null; } catch (e) { data = t; }
+      if (!r.ok) {
+        var m = (data && data.message) ? data.message : ("HTTP " + r.status);
+        var err = new Error(m);
+        err.status = r.status;
+        throw err;
+      }
+      return data;
+    });
+  });
+}
+
+/* GET 单个文件内容（返回 {content, sha}） */
+function ghGetFile(filename) {
+  return ghFetch("/repos/" + OWNER + "/" + REPO + "/contents/" + filename + "?ref=" + BRANCH)
+    .then(function (data) {
+      return { text: b64DecodeUnicode(data.content), sha: data.sha };
+    });
+}
+
+/* PUT 文件（带 sha） */
+function ghPutFile(filename, text, sha, message) {
+  var body = {
+    message: message,
+    content: b64EncodeUnicode(text),
+    branch: BRANCH
+  };
+  if (sha) body.sha = sha;
+  return ghFetch("/repos/" + OWNER + "/" + REPO + "/contents/" + filename, {
+    method: "PUT",
+    body: JSON.stringify(body)
+  });
+}
+
+/* ========================= YAML 生成器 =========================
+ * 产出与现有 config.yaml 风格一致、且能被 src/config.py 的 yaml.safe_load
+ * 等价解析（等价于 config.json）的 YAML 文本。
+ *  - 2 空格缩进
+ *  - 标量数组用 flow 形式 [a, b]
+ *  - 对象数组（如 routes）用 block "- " 形式
+ *  - 日期 / 含空格 / 非标识符字符串加双引号；纯标识符（含 . / -）不加引号
+ *  这段函数被 tests 的 node 脚本原样提取校验，请保持自包含。
+ */
+function fwConfigToYaml(cfg) {
+  function sp(n) { return new Array(n + 1).join(" "); }
+  function isScalar(v) { return v === null || typeof v !== "object"; }
+  function scalar(v) {
+    if (v === null || v === undefined) return "null";
+    if (typeof v === "boolean") return v ? "true" : "false";
+    if (typeof v === "number") return String(v);
+    var s = String(v);
+    var plain = /^[A-Za-z_][A-Za-z0-9_.\/-]*$/.test(s) &&
+      !/^(true|false|null|yes|no|on|off|y|n)$/i.test(s);
+    if (plain) return s;
+    return '"' + s.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
+  }
+  function flowArray(a) { return "[" + a.map(scalar).join(", ") + "]"; }
+  function emitMap(obj, ind) {
+    var pad = sp(ind), lines = [];
+    Object.keys(obj).forEach(function (k) {
+      var v = obj[k];
+      if (Array.isArray(v)) {
+        if (v.length === 0) { lines.push(pad + k + ": []"); }
+        else if (v.every(isScalar)) { lines.push(pad + k + ": " + flowArray(v)); }
+        else {
+          lines.push(pad + k + ":");
+          v.forEach(function (item) {
+            var body = emitMap(item, ind + 4).split("\n");
+            body[0] = sp(ind + 2) + "- " + body[0].slice(ind + 4);
+            lines.push(body.join("\n"));
+          });
+        }
+      } else if (v !== null && typeof v === "object") {
+        lines.push(pad + k + ":");
+        lines.push(emitMap(v, ind + 2));
+      } else {
+        lines.push(pad + k + ": " + scalar(v));
+      }
+    });
+    return lines.join("\n");
+  }
+  var header =
+    "# flight-watch 配置（由网页配置面板生成，与 config.json 保持同步）\n" +
+    "# 若环境无 PyYAML 会自动回退读取同目录 config.json。\n";
+  return header + emitMap(cfg, 0) + "\n";
+}
+// 便于 node 校验脚本引用
+if (typeof module !== "undefined" && module.exports) { module.exports = { fwConfigToYaml: fwConfigToYaml }; }
+
+/* ========================= route_id 生成 ========================= */
+function genRouteId(from, to, excludeIndex) {
+  var base = (from + "-" + to).toLowerCase();
+  var routes = (STATE.config && STATE.config.routes) || [];
+  function taken(id) {
+    for (var i = 0; i < routes.length; i++) {
+      if (i === excludeIndex) continue;
+      if (routes[i].id === id) return true;
+    }
+    return false;
+  }
+  if (!taken(base)) return base;
+  var n = 2;
+  while (taken(base + "-" + n)) n++;
+  return base + "-" + n;
+}
+
+/* ========================= 机场搜索组件 ========================= */
+function searchAirports(q) {
+  q = (q || "").trim().toLowerCase();
+  if (!q) return [];
+  var list = window.AIRPORTS || [];
+  var res = [];
+  for (var i = 0; i < list.length && res.length < 40; i++) {
+    var a = list[i];
+    if (a.iata.toLowerCase().indexOf(q) >= 0 ||
+        a.name_cn.toLowerCase().indexOf(q) >= 0 ||
+        a.city_cn.toLowerCase().indexOf(q) >= 0 ||
+        (a.city_en && a.city_en.toLowerCase().indexOf(q) >= 0) ||
+        (a.country_cn && a.country_cn.toLowerCase().indexOf(q) >= 0)) {
+      res.push(a);
+    }
+  }
+  // 三字码精确匹配优先
+  res.sort(function (x, y) {
+    var xe = x.iata.toLowerCase() === q ? 0 : 1;
+    var ye = y.iata.toLowerCase() === q ? 0 : 1;
+    return xe - ye;
+  });
+  return res;
+}
+function airportByIata(code) {
+  var list = window.AIRPORTS || [];
+  for (var i = 0; i < list.length; i++) if (list[i].iata === code) return list[i];
+  return null;
+}
+function makeAirportPicker(container) {
+  container.innerHTML = "";
+  var input = el("input"); input.type = "text"; input.placeholder = "搜索城市/机场/三字码…";
+  var selDiv = el("div", "apt-selected");
+  var drop = el("div", "apt-drop");
+  container.appendChild(input);
+  container.appendChild(drop);
+  container.appendChild(selDiv);
+  var picker = { value: "", input: input };
+
+  function showSelected() {
+    if (picker.value) {
+      var a = airportByIata(picker.value);
+      selDiv.textContent = a ? ("已选：" + a.city_cn + a.name_cn.replace(a.city_cn, "").replace("国际机场", "").replace("机场", "") + " " + a.iata) : ("已选：" + picker.value);
+    } else selDiv.textContent = "";
+  }
+  function renderDrop(items) {
+    drop.innerHTML = "";
+    if (!items.length) { drop.classList.remove("open"); return; }
+    items.forEach(function (a) {
+      var it = el("div", "apt-item");
+      it.innerHTML = '<span>' + a.city_cn + ' · ' + a.name_cn + ' <span class="apt-code">' + a.iata + '</span></span>' +
+        '<span class="apt-country">' + a.country_cn + '</span>';
+      it.onclick = function () {
+        picker.value = a.iata;
+        input.value = a.city_cn + " " + a.iata;
+        drop.classList.remove("open");
+        showSelected();
+      };
+      drop.appendChild(it);
+    });
+    drop.classList.add("open");
+  }
+  input.addEventListener("input", function () {
+    picker.value = ""; showSelected();
+    renderDrop(searchAirports(input.value));
+  });
+  input.addEventListener("focus", function () {
+    if (input.value) renderDrop(searchAirports(input.value));
+  });
+  document.addEventListener("click", function (e) {
+    if (!container.contains(e.target)) drop.classList.remove("open");
+  });
+  picker.set = function (code) {
+    picker.value = code || "";
+    if (code) {
+      var a = airportByIata(code);
+      input.value = a ? (a.city_cn + " " + code) : code;
+    } else input.value = "";
+    showSelected();
+  };
+  return picker;
+}
+
+/* ========================= 航司 tag 输入 ========================= */
+function makeTagInput(container) {
+  var input = container.querySelector("input");
+  var tags = [];
+  function render() {
+    // 移除已有 tag 节点（保留 input）
+    Array.prototype.slice.call(container.querySelectorAll(".tag")).forEach(function (n) { n.remove(); });
+    tags.forEach(function (t, i) {
+      var span = el("span", "tag");
+      span.appendChild(document.createTextNode(t));
+      var x = el("b"); x.textContent = "×";
+      x.onclick = function () { tags.splice(i, 1); render(); };
+      span.appendChild(x);
+      container.insertBefore(span, input);
+    });
+  }
+  function add(v) {
+    v = (v || "").trim();
+    if (v && tags.indexOf(v) < 0) { tags.push(v); }
+    input.value = ""; render();
+  }
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === ",") { e.preventDefault(); add(input.value); }
+    else if (e.key === "Backspace" && !input.value && tags.length) { tags.pop(); render(); }
+  });
+  input.addEventListener("blur", function () { if (input.value) add(input.value); });
+  return {
+    get: function () { return tags.slice(); },
+    set: function (arr) { tags = (arr || []).slice(); render(); }
+  };
+}
+
+/* ========================= 表单组件实例 ========================= */
+var fromPicker, toPicker, whitelistTI, blacklistTI;
+var fixedDates = [];
+
+function renderFixedDates() {
+  var list = $("fixedDateList"); list.innerHTML = "";
+  fixedDates.sort();
+  fixedDates.forEach(function (d, i) {
+    var span = el("span", "tag");
+    span.appendChild(document.createTextNode(d));
+    var x = el("b"); x.textContent = "×";
+    x.onclick = function () { fixedDates.splice(i, 1); renderFixedDates(); };
+    span.appendChild(x);
+    list.appendChild(span);
+  });
+}
+
+function currentMode() {
+  var r = document.querySelector('input[name="dateMode"]:checked');
+  return r ? r.value : "fixed";
+}
+function updateModeBlocks() {
+  var m = currentMode();
+  $("rollingBlock").classList.toggle("hidden", !(m === "rolling" || m === "both"));
+  $("fixedBlock").classList.toggle("hidden", !(m === "fixed" || m === "both"));
+}
+
+/* ========================= 航线列表渲染 ========================= */
+function describeDates(dates) {
+  var m = (dates && dates.mode) || "fixed";
+  if (m === "rolling") return "滚动未来 " + (dates.depart_in_days || 0) + " 天";
+  if (m === "fixed") return "固定日期 " + ((dates.fixed_dates || []).join(", ") || "（空）");
+  if (m === "both") return "滚动 " + (dates.depart_in_days || 0) + " 天 + 固定 " + ((dates.fixed_dates || []).join(", ") || "（无）");
+  return m;
+}
+function renderRouteList() {
+  var wrap = $("routeList"); wrap.innerHTML = "";
+  var routes = (STATE.config && STATE.config.routes) || [];
+  if (!routes.length) { wrap.innerHTML = '<div class="hint">当前没有航线，点「+ 新增航线」添加。</div>'; return; }
+  routes.forEach(function (r, idx) {
+    var card = el("div", "route-card");
+    var fromA = airportByIata(r.from) || {}, toA = airportByIata(r.to) || {};
+    var head = el("div", "rc-head");
+    head.innerHTML =
+      '<span class="rc-title">' + (r.from || "?") + ' → ' + (r.to || "?") + '</span>' +
+      '<span class="rc-id">' + (r.id || "") + '</span>' +
+      (r.enabled === false ? '<span class="tag-disabled">未启用</span>' : '<span class="tag-enabled">启用中</span>');
+    var meta = el("div", "rc-meta");
+    var wl = (r.airlines && r.airlines.whitelist) || [];
+    var bl = (r.airlines && r.airlines.blacklist) || [];
+    meta.innerHTML =
+      (fromA.city_cn ? (fromA.city_cn + fromA.name_cn.replace(fromA.city_cn, "")) : r.from) + " → " +
+      (toA.city_cn ? (toA.city_cn + toA.name_cn.replace(toA.city_cn, "")) : r.to) + "<br>" +
+      "日期：" + describeDates(r.dates) + "<br>" +
+      "目标价：" + (r.target_price != null ? "¥" + r.target_price : "—") +
+      " · 降幅阈值：" + (r.drop_alert_pct != null ? r.drop_alert_pct + "%" : "—") + "<br>" +
+      "白名单：" + (wl.length ? wl.join(", ") : "不限") + " · 黑名单：" + (bl.length ? bl.join(", ") : "无") + "<br>" +
+      "数据源：" + ((r.sources || []).join(", ") || "—");
+    var actions = el("div", "rc-actions");
+    var editBtn = el("button"); editBtn.textContent = "编辑";
+    editBtn.onclick = function () { openForm(idx); };
+    var toggleBtn = el("button"); toggleBtn.textContent = (r.enabled === false ? "启用" : "停用");
+    toggleBtn.onclick = function () { r.enabled = !(r.enabled !== false); markDirty(); renderRouteList(); };
+    var delBtn = el("button", "danger"); delBtn.textContent = "删除";
+    delBtn.onclick = function () {
+      if (confirm("确定删除航线 " + r.id + "？")) { STATE.config.routes.splice(idx, 1); markDirty(); renderRouteList(); }
+    };
+    actions.appendChild(editBtn); actions.appendChild(toggleBtn); actions.appendChild(delBtn);
+    card.appendChild(head); card.appendChild(meta); card.appendChild(actions);
+    wrap.appendChild(card);
+  });
+}
+function markDirty() { STATE.dirty = true; $("dispatchBtn").disabled = true; }
+
+/* ========================= 表单打开/收集 ========================= */
+function openForm(idx) {
+  STATE.editingIndex = (idx == null ? -1 : idx);
+  $("formPanel").classList.remove("hidden");
+  $("formTitle").textContent = (idx == null || idx < 0) ? "新增航线" : "编辑航线";
+  setStatus($("formErr"), "", "");
+  $("formErr").textContent = "";
+
+  fromPicker = makeAirportPicker($("fromPicker"));
+  toPicker = makeAirportPicker($("toPicker"));
+  whitelistTI = makeTagInput($("whitelistTags"));
+  blacklistTI = makeTagInput($("blacklistTags"));
+  fixedDates = [];
+
+  var r = (idx != null && idx >= 0) ? STATE.config.routes[idx] : null;
+  if (r) {
+    fromPicker.set(r.from); toPicker.set(r.to);
+    var m = (r.dates && r.dates.mode) || "fixed";
+    document.querySelector('input[name="dateMode"][value="' + m + '"]').checked = true;
+    $("departDays").value = (r.dates && r.dates.depart_in_days) || 30;
+    fixedDates = ((r.dates && r.dates.fixed_dates) || []).slice();
+    whitelistTI.set((r.airlines && r.airlines.whitelist) || []);
+    blacklistTI.set((r.airlines && r.airlines.blacklist) || []);
+    $("targetPrice").value = r.target_price != null ? r.target_price : "";
+    $("dropPct").value = r.drop_alert_pct != null ? r.drop_alert_pct : "";
+    Array.prototype.slice.call($("sourceChips").querySelectorAll("input")).forEach(function (c) {
+      c.checked = (r.sources || []).indexOf(c.value) >= 0;
+    });
+    $("enabledChk").checked = r.enabled !== false;
+  } else {
+    document.querySelector('input[name="dateMode"][value="fixed"]').checked = true;
+    $("departDays").value = 30;
+    whitelistTI.set([]); blacklistTI.set([]);
+    $("targetPrice").value = ""; $("dropPct").value = "";
+    Array.prototype.slice.call($("sourceChips").querySelectorAll("input")).forEach(function (c) {
+      c.checked = (c.value === "fast_flights");
+    });
+    $("enabledChk").checked = true;
+  }
+  renderFixedDates();
+  updateModeBlocks();
+  $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function collectForm() {
+  var errs = [];
+  var from = fromPicker.value, to = toPicker.value;
+  if (!/^[A-Z]{3}$/.test(from)) errs.push("请选择合法的出发地机场（三字码）。");
+  if (!/^[A-Z]{3}$/.test(to)) errs.push("请选择合法的目的地机场（三字码）。");
+  if (from && to && from === to) errs.push("出发地和目的地不能相同。");
+
+  var mode = currentMode();
+  var dates = { mode: mode };
+  if (mode === "rolling" || mode === "both") {
+    var n = parseInt($("departDays").value, 10);
+    if (!(n >= 1)) errs.push("滚动天数必须为正整数。");
+    dates.depart_in_days = n;
+  }
+  if (mode === "fixed" || mode === "both") {
+    var today = todayStr();
+    var future = fixedDates.filter(function (d) { return d >= today; });
+    if (mode === "fixed" && !future.length) errs.push("固定日期模式至少需要一个未来日期。");
+    if (fixedDates.some(function (d) { return d < today; })) errs.push("存在已过期的固定日期，请移除。");
+    dates.fixed_dates = fixedDates.slice().sort();
+  }
+
+  var tp = $("targetPrice").value.trim();
+  var dp = $("dropPct").value.trim();
+  var target_price = tp === "" ? null : Number(tp);
+  var drop_alert_pct = dp === "" ? null : Number(dp);
+  if (target_price != null && !(target_price > 0)) errs.push("目标价必须大于 0。");
+  if (drop_alert_pct != null && !(drop_alert_pct > 0)) errs.push("降幅阈值必须大于 0。");
+
+  var sources = Array.prototype.slice.call($("sourceChips").querySelectorAll("input"))
+    .filter(function (c) { return c.checked; }).map(function (c) { return c.value; });
+  if (!sources.length) sources = ["fast_flights"];
+
+  if (errs.length) return { errors: errs };
+
+  var route = {
+    id: genRouteId(from, to, STATE.editingIndex),
+    from: from,
+    to: to,
+    dates: dates,
+    airlines: { whitelist: whitelistTI.get(), blacklist: blacklistTI.get() },
+    target_price: target_price,
+    drop_alert_pct: drop_alert_pct,
+    sources: sources,
+    enabled: $("enabledChk").checked
+  };
+  // 编辑时若三字码没变，沿用原 id
+  if (STATE.editingIndex >= 0) {
+    var old = STATE.config.routes[STATE.editingIndex];
+    if (old && old.from === from && old.to === to) route.id = old.id;
+  }
+  return { route: route };
+}
+
+/* ========================= 加载配置 ========================= */
+function loadConfig() {
+  if (!STATE.token) { setStatus($("listStatus"), "请先在上方保存 Token。", "warn"); return; }
+  setStatus($("listStatus"), "从仓库载入 config.json…", "");
+  ghGetFile("config.json").then(function (res) {
+    STATE.config = JSON.parse(res.text);
+    STATE.jsonSha = res.sha;
+    if (!Array.isArray(STATE.config.routes)) STATE.config.routes = [];
+    STATE.dirty = false;
+    // 顺带取 config.yaml 的 sha（可能不存在）
+    ghGetFile("config.yaml").then(function (y) { STATE.yamlSha = y.sha; })
+      .catch(function () { STATE.yamlSha = null; });
+    setStatus($("listStatus"), "已载入 " + STATE.config.routes.length + " 条航线。", "ok");
+    renderRouteList();
+    $("dispatchBtn").disabled = true;
+  }).catch(function (e) {
+    setStatus($("listStatus"), "载入失败：" + e.message, "err");
+  });
+}
+
+/* ========================= 保存全部 ========================= */
+function saveAll() {
+  if (!STATE.token) { setStatus($("saveStatus"), "请先保存 Token。", "warn"); return; }
+  if (!STATE.config) { setStatus($("saveStatus"), "请先载入配置。", "warn"); return; }
+  var btn = $("saveAllBtn"); btn.disabled = true;
+  setStatus($("saveStatus"), "生成并写入 config.json…", "");
+
+  var jsonText = JSON.stringify(STATE.config, null, 2) + "\n";
+  var yamlText = fwConfigToYaml(STATE.config);
+  var msg = "chore(config): update via web panel " + new Date().toISOString();
+
+  ghPutFile("config.json", jsonText, STATE.jsonSha, msg).then(function (r1) {
+    STATE.jsonSha = r1.content.sha;
+    setStatus($("saveStatus"), "写入 config.yaml…", "");
+    return ghPutFile("config.yaml", yamlText, STATE.yamlSha, msg);
+  }).then(function (r2) {
+    STATE.yamlSha = r2.content.sha;
+    STATE.dirty = false;
+    setStatus($("saveStatus"), "✓ 已保存 config.json 与 config.yaml。可点「立即抓取」触发工作流。", "ok");
+    $("dispatchBtn").disabled = false;
+    btn.disabled = false;
+  }).catch(function (e) {
+    setStatus($("saveStatus"), "保存失败：" + e.message + "（若为 409 冲突请重新载入后再试）", "err");
+    btn.disabled = false;
+  });
+}
+
+/* ========================= 触发抓取 ========================= */
+function dispatchWorkflow() {
+  if (!STATE.token) { setStatus($("saveStatus"), "请先保存 Token。", "warn"); return; }
+  var btn = $("dispatchBtn"); btn.disabled = true;
+  setStatus($("saveStatus"), "触发抓取工作流…", "");
+  ghFetch("/repos/" + OWNER + "/" + REPO + "/actions/workflows/" + WORKFLOW_FILE + "/dispatches", {
+    method: "POST",
+    body: JSON.stringify({ ref: BRANCH })
+  }).then(function () {
+    setStatus($("saveStatus"), "✓ 已触发抓取。前往仓库 Actions 页查看运行进度，完成后仪表盘会自动更新。", "ok");
+  }).catch(function (e) {
+    setStatus($("saveStatus"), "触发失败：" + e.message + "（需 Token 具备 Actions: Read and write 权限）", "err");
+    btn.disabled = false;
+  });
+}
+
+/* ========================= Token 操作 ========================= */
+function saveTokenAndTest() {
+  var t = $("tokenInput").value.trim();
+  if (!t) { setStatus($("tokenStatus"), "请输入 Token。", "warn"); return; }
+  STATE.token = t;
+  localStorage.setItem(TOKEN_KEY, t);
+  setStatus($("tokenStatus"), "测试连接中…", "");
+  ghFetch("/repos/" + OWNER + "/" + REPO).then(function (repo) {
+    setStatus($("tokenStatus"), "✓ 连接成功：" + repo.full_name + "（默认分支 " + repo.default_branch + "）。正在载入配置…", "ok");
+    loadConfig();
+  }).catch(function (e) {
+    setStatus($("tokenStatus"), "连接失败：" + e.message + "（请检查 Token 权限与仓库授权）", "err");
+  });
+}
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  STATE.token = ""; $("tokenInput").value = "";
+  setStatus($("tokenStatus"), "已清除本地 Token。", "warn");
+}
+
+/* ========================= 事件绑定 ========================= */
+$("saveTokenBtn").onclick = saveTokenAndTest;
+$("clearTokenBtn").onclick = clearToken;
+$("reloadBtn").onclick = loadConfig;
+$("addRouteBtn").onclick = function () { openForm(-1); };
+$("saveAllBtn").onclick = saveAll;
+$("dispatchBtn").onclick = dispatchWorkflow;
+$("cancelFormBtn").onclick = function () { $("formPanel").classList.add("hidden"); };
+$("addDateBtn").onclick = function () {
+  var v = $("fixedDateInput").value;
+  if (!v) return;
+  if (v < todayStr()) { alert("不能添加已过期的日期。"); return; }
+  if (fixedDates.indexOf(v) < 0) fixedDates.push(v);
+  $("fixedDateInput").value = "";
+  renderFixedDates();
+};
+Array.prototype.slice.call(document.querySelectorAll('input[name="dateMode"]')).forEach(function (r) {
+  r.addEventListener("change", updateModeBlocks);
+});
+$("applyFormBtn").onclick = function () {
+  var res = collectForm();
+  if (res.errors) { $("formErr").innerHTML = res.errors.join("<br>"); return; }
+  if (STATE.editingIndex >= 0) STATE.config.routes[STATE.editingIndex] = res.route;
+  else STATE.config.routes.push(res.route);
+  markDirty();
+  $("formPanel").classList.add("hidden");
+  renderRouteList();
+  setStatus($("listStatus"), "已更新（未保存）。记得点「保存全部更改」写回仓库。", "warn");
+};
+
+/* ========================= 初始化 ========================= */
+(function init() {
+  if (STATE.token) {
+    $("tokenInput").value = STATE.token;
+    setStatus($("tokenStatus"), "已从本地读取 Token，可点「保存并测试连接」验证。", "");
+    loadConfig();
+  } else {
+    setStatus($("tokenStatus"), "尚未设置 Token。", "warn");
+  }
+})();
+</script>
+</body>
+</html>

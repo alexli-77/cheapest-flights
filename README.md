@@ -138,6 +138,33 @@ commit & push。之后 cron 每天 UTC 00:23（北京 08:23）自动运行。
 
 ---
 
+## 网页配置面板（无需改代码/命令行）
+
+除了手动编辑 `config.yaml` / `config.json`，还可以直接在浏览器里增删航线：打开 dashboard（`docs/index.html` 或 Pages 站点）右上角的 **⚙️ 配置**，进入 `docs/settings.html`。它是**纯前端**页面，通过 GitHub REST API 读写仓库根目录的两个配置文件，并可一键触发抓取工作流——零后端、零第三方 CDN 依赖。
+
+### 功能
+- **航线管理**：从仓库读取 `config.json` 渲染成卡片，可**新增 / 编辑 / 删除 / 启停**每条航线。
+- **机场搜索**：出发地/目的地输入框支持中文城市名、机场名或三字码的模糊搜索（内置机场库 `docs/airports.js`，覆盖中国大陆主要机场 + 港澳台 + 国际主要城市，约 190 个），选中后自动填入三字码并显示「上海虹桥 SHA」。
+- **日期模式**：`rolling`（未来 N 天）/ `fixed`（逐个添加固定日期）/ `both` 三选，带日期未过期校验。
+- **航司白/黑名单**：tag 式自由输入。**填英文全名**（如 `China Eastern`），因为抓取源返回的是航司全名而非二字码。
+- **目标价 / 降幅阈值 / 数据源**：数字输入 + 校验（价格必须 > 0），数据源默认 `[fast_flights]`。
+- **保存**：同时 `PUT` 写回 `config.json` 与等价的 `config.yaml`（两文件保持同步，风格与手写版一致，能被 `src/config.py` 解析）。
+- **一键抓取**：保存成功后可点「⚡ 立即抓取」，对 `daily.yml` 工作流发起 `workflow_dispatch`，稍后 dashboard 自动刷新。
+
+### 创建 fine-grained Token
+面板需要一个 GitHub **fine-grained personal access token**：
+1. GitHub → 头像 → `Settings` → `Developer settings` → `Personal access tokens` → `Fine-grained tokens` → `Generate new token`。
+2. **Repository access** 选 `Only select repositories`，只勾选本仓库 `cheapest-flights`。
+3. **Permissions → Repository permissions**：`Contents` = **Read and write**；`Actions` = **Read and write**（用于触发抓取）。
+4. 生成后复制 token（`github_pat_...`），粘贴进面板的 Token 输入框，点「保存并测试连接」。
+
+### 安全说明
+- Token **只保存在你当前浏览器的 `localStorage`（键名 `fw_gh_token`）**，不会上传到任何服务器，也不写入仓库。换设备/浏览器需重新粘贴；面板提供「清除本地 Token」按钮。
+- 强烈建议使用 **fine-grained token 且只授权本仓库**，把权限收窄到 `Contents` + `Actions` 两项。这样即使 token 泄露，影响范围也仅限这一个仓库。
+- 面板是静态页，托管在公开的 GitHub Pages 上；**页面本身不含任何密钥**，任何人打开都需要自备 token 才能读写。
+
+---
+
 ## 首日必须亲手验证的 7 项清单
 
 > 来自调研报告 6.2 节。**勾完才开工/上线。第 3 项是 Go/No-Go 开关。**

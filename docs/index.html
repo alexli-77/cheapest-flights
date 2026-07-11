@@ -49,8 +49,14 @@
   header {
     padding: 20px 16px 8px; max-width: 1080px; margin: 0 auto;
   }
+  header .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
   header h1 { font-size: 20px; margin: 0 0 4px; }
   header .meta { color: var(--fw-text-sub); font-size: 12px; }
+  header a.nav-config {
+    flex: 0 0 auto; font-size: 13px; text-decoration: none; color: var(--fw-accent);
+    border: 1px solid var(--fw-border); border-radius: 8px; padding: 6px 12px; white-space: nowrap;
+  }
+  header a.nav-config:hover { background: color-mix(in srgb, var(--fw-accent) 12%, transparent); }
   main { max-width: 1080px; margin: 0 auto; padding: 12px 16px 48px; }
   .grid {
     display: grid; gap: 14px;
@@ -87,8 +93,13 @@
 </head>
 <body>
 <header>
-  <h1>机票价格监控</h1>
-  <div class="meta" id="meta">加载中…</div>
+  <div class="topbar">
+    <div>
+      <h1>机票价格监控</h1>
+      <div class="meta" id="meta">加载中…</div>
+    </div>
+    <a class="nav-config" href="settings.html">⚙️ 配置</a>
+  </div>
 </header>
 <main>
   <div class="grid" id="grid"></div>

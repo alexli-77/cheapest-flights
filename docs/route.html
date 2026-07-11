@@ -34,7 +34,11 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     -webkit-font-smoothing:antialiased; }
   header { max-width:1080px; margin:0 auto; padding:18px 16px 6px; }
+  header .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; }
   header a.back { color:var(--fw-accent); text-decoration:none; font-size:13px; }
+  header a.nav-config { flex:0 0 auto; font-size:13px; text-decoration:none; color:var(--fw-accent);
+    border:1px solid var(--fw-border); border-radius:8px; padding:6px 12px; white-space:nowrap; }
+  header a.nav-config:hover { background:color-mix(in srgb, var(--fw-accent) 12%, transparent); }
   header h1 { font-size:20px; margin:8px 0 2px; }
   header .sub { color:var(--fw-text-sub); font-size:12px; }
   main { max-width:1080px; margin:0 auto; padding:8px 16px 48px; }
@@ -61,7 +65,10 @@
 </head>
 <body>
 <header>
-  <a class="back" href="index.html">← 返回全部航线</a>
+  <div class="topbar">
+    <a class="back" href="index.html">← 返回全部航线</a>
+    <a class="nav-config" href="settings.html">⚙️ 配置</a>
+  </div>
   <h1 id="title">航线详情</h1>
   <div class="sub" id="subtitle"></div>
 </header>
