@@ -11,6 +11,14 @@
       }
     },
     "2026-10-02": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-12",
+        "flight_no": "",
+        "price": 2729,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Hainan": {
         "currency": "CNY",
         "fetch_date": "2026-07-11",
@@ -31,8 +39,8 @@
       }
     }
   },
-  "generated_at": "2026-07-11T11:52:48+08:00",
-  "latest_fetch_date": "2026-07-11",
+  "generated_at": "2026-07-12T12:08:48+08:00",
+  "latest_fetch_date": "2026-07-12",
   "route": "sha-nrt",
   "sources": [
     "fast_flights"
