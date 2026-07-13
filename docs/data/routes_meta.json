@@ -1,42 +1,47 @@
 {
-  "generated_at": "2026-07-13T12:10:54+08:00",
+  "generated_at": "2026-07-14T06:34:17+08:00",
   "routes": [
     {
       "currency": "CNY",
-      "drop_alert_pct": 15,
+      "drop_alert_pct": null,
       "enabled": true,
-      "from": "SHA",
-      "route_id": "sha-nrt",
-      "sources": [
-        "fast_flights"
-      ],
-      "target_price": 1500,
-      "to": "NRT"
-    },
-    {
-      "currency": "CNY",
-      "drop_alert_pct": 15,
-      "enabled": true,
-      "from": "PEK",
-      "route_id": "pek-cdg",
+      "from": "YUL",
+      "route_id": "yul-pek",
       "sources": [
         "fast_flights",
-        "serpapi"
+        "serpapi",
+        "ctrip_local"
       ],
-      "target_price": 3500,
-      "to": "CDG"
+      "target_price": null,
+      "to": "PEK"
     },
     {
       "currency": "CNY",
-      "drop_alert_pct": 20,
-      "enabled": false,
-      "from": "SHA",
-      "route_id": "sha-can",
+      "drop_alert_pct": null,
+      "enabled": true,
+      "from": "YUL",
+      "route_id": "yul-yvr",
       "sources": [
-        "fast_flights"
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
       ],
-      "target_price": 400,
-      "to": "CAN"
+      "target_price": null,
+      "to": "YVR"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": null,
+      "enabled": true,
+      "from": "YUL",
+      "route_id": "yul-hkg",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": null,
+      "to": "HKG"
     }
   ],
   "timezone": "Asia/Shanghai"
