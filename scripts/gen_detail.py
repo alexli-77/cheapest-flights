@@ -69,6 +69,25 @@ def _iter_rows(route_dir: str):
                     continue  # tolerate a partial/corrupt trailing line
 
 
+def _config_route_ids():
+    """Route ids present in config.json (single source of truth), or None.
+
+    None means "config unreadable" -> fall back to emitting every data/ folder
+    (safe default). A readable config restricts output to its routes so deleted
+    routes' historical folders don't produce stale detail json.
+    """
+    path = os.path.join(ROOT, "config.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+        ids = [r.get("id") for r in (cfg.get("routes") or []) if r.get("id")]
+        return set(ids) if ids else None
+    except Exception:
+        return None
+
+
 def build_route_detail(route_id: str, route_dir: str) -> dict:
     airlines_by_depart: dict[str, dict[str, dict]] = {}
     latest_fetch_date = ""
@@ -107,12 +126,15 @@ def build_route_detail(route_id: str, route_dir: str) -> dict:
 
 def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
+    allowed = _config_route_ids()
     count = 0
     if os.path.isdir(DATA_DIR):
         for route_id in sorted(os.listdir(DATA_DIR)):
             route_dir = os.path.join(DATA_DIR, route_id)
             if not os.path.isdir(route_dir):
                 continue
+            if allowed is not None and route_id not in allowed:
+                continue  # deleted route: keep data/ but don't emit detail json
             detail = build_route_detail(route_id, route_dir)
             out_path = os.path.join(OUT_DIR, f"{route_id}.json")
             with open(out_path, "w", encoding="utf-8") as f:

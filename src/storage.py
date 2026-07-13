@@ -90,20 +90,24 @@ class Storage:
         return [r for r in self.read_route(route_id) if r.get("depart_date") == depart_date]
 
     def latest_low(self, route_id: str, depart_date: str) -> Optional[dict]:
-        """Lowest price on the most recent fetch_date for a route+depart_date."""
+        """Lowest price on the most recent fetch_date for a route+depart_date.
+
+        Ties on price prefer the row carrying flight detail (航司/航班号/起飞时间)
+        so the digest/dashboard never show a bare price when a richer row exists.
+        """
         rows = self._rows_for(route_id, depart_date)
         if not rows:
             return None
         latest_fd = max(r["fetch_date"] for r in rows)
         same = [r for r in rows if r["fetch_date"] == latest_fd]
-        return min(same, key=lambda r: r["price"])
+        return min(same, key=_low_sort_key)
 
     def historical_low(self, route_id: str, depart_date: str) -> Optional[dict]:
-        """All-time lowest price row for a route+depart_date."""
+        """All-time lowest price row for a route+depart_date (detail-preferred on tie)."""
         rows = self._rows_for(route_id, depart_date)
         if not rows:
             return None
-        return min(rows, key=lambda r: r["price"])
+        return min(rows, key=_low_sort_key)
 
     def series(self, route_id: str, depart_date: str) -> list[dict]:
         """Per fetch_date lowest price, ascending by fetch_date."""
@@ -178,6 +182,17 @@ class Storage:
         with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as f:
             json.dump(summary, f, ensure_ascii=False, indent=2, sort_keys=True)
         return summary
+
+
+def _detail_score(r: dict) -> int:
+    """Count of non-empty flight-detail fields (airline/flight_no/depart_time)."""
+    return sum(1 for k in ("airline", "flight_no", "depart_time")
+               if str(r.get(k) or "").strip())
+
+
+def _low_sort_key(r: dict) -> tuple:
+    """Cheapest first; among equal prices, the row with the most detail first."""
+    return (r["price"], -_detail_score(r))
 
 
 def _key_of(r: dict) -> tuple:

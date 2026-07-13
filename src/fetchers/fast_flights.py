@@ -94,6 +94,40 @@ def parse_price(raw: str, default_currency: str = PINNED_CURRENCY) -> tuple[int,
     return amount, (currency or default_currency)
 
 
+# fast-flights 2.2 exposes departure as an English string like
+# "8:30 AM on Thu, Aug 13" (or sometimes an empty string / a bare "20:55").
+# Normalize to 24-hour "HH:MM"; unparsable -> "".
+_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})\s*([AaPp][Mm])?")
+
+
+def parse_depart_time(raw) -> str:
+    """Normalize a departure-time string to 24-hour ``"HH:MM"``.
+
+    Handles the fast-flights English form and 12/24-hour edge cases::
+
+        "8:30 AM on Thu, Aug 13" -> "08:30"
+        "12:00 AM"               -> "00:00"   (midnight)
+        "12:30 PM"               -> "12:30"   (noon)
+        "1:05 PM"                -> "13:05"
+        "20:55"                  -> "20:55"   (already 24-hour, no AM/PM)
+        ""/None/"n/a"            -> ""        (unparsable)
+    """
+    if not raw:
+        return ""
+    m = _TIME_RE.search(str(raw))
+    if not m:
+        return ""
+    hh, mm = int(m.group(1)), int(m.group(2))
+    ap = (m.group(3) or "").upper()
+    if ap == "PM" and hh != 12:
+        hh += 12
+    elif ap == "AM" and hh == 12:
+        hh = 0
+    if not (0 <= hh <= 23 and 0 <= mm <= 59):
+        return ""
+    return f"{hh:02d}:{mm:02d}"
+
+
 def load_fx_rates(state_dir: str) -> dict:
     """Load FX rates from state/fx_rates.json, creating defaults if absent."""
     path = os.path.join(state_dir, "fx_rates.json")
@@ -229,7 +263,8 @@ class FastFlightsFetcher(FetcherAdapter):
             flight_no = str(_attr(fobj, "flight_no") or _attr(fobj, "flight_number") or "").strip()
             # fast-flights 2.2 exposes departure as ``f.departure`` (may be an
             # empty string / None when the parser can't read it — tolerate it).
-            depart_time = str(_attr(fobj, "departure") or _attr(fobj, "depart_time") or "").strip()
+            depart_time = parse_depart_time(
+                _attr(fobj, "departure") or _attr(fobj, "depart_time") or "")
             stops = _attr(fobj, "stops")
             quotes.append(FlightQuote(
                 fetched_at=fetched_at,

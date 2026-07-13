@@ -66,5 +66,27 @@ class TestStorage(unittest.TestCase):
         self.assertEqual([s["price"] for s in series], [1000, 800])
 
 
+    def test_latest_low_tie_prefers_detail(self):
+        # Same fetch_date, same lowest price, different flight_no (both stored).
+        # The row carrying airline/flight_no/depart_time must win the tie so the
+        # dashboard/digest never show a bare price (YUL->PEK 缺时刻 bug).
+        bare = FlightQuote(
+            fetched_at="2026-07-10T08:00:00+08:00", route_id="sha-nrt", origin="SHA",
+            dest="NRT", depart_date="2026-10-01", airline="", flight_no="",
+            depart_time="", stops=0, price=900, source="fast_flights",
+        )
+        rich = FlightQuote(
+            fetched_at="2026-07-10T08:00:00+08:00", route_id="sha-nrt", origin="SHA",
+            dest="NRT", depart_date="2026-10-01", airline="Air China",
+            flight_no="CA981", depart_time="08:30", stops=0, price=900,
+            source="fast_flights",
+        )
+        self.st.append_quotes([bare, rich])
+        low = self.st.latest_low("sha-nrt", "2026-10-01")
+        self.assertEqual(low["price"], 900)
+        self.assertEqual(low["flight_no"], "CA981")
+        self.assertEqual(low["depart_time"], "08:30")
+
+
 if __name__ == "__main__":
     unittest.main()

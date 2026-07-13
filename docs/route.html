@@ -385,10 +385,13 @@ if (!ROUTE) {
       document.getElementById("body").innerHTML = '<div class="error">未找到航线「' + ROUTE + '」的数据。</div>';
       return;
     }
+    var fromCN = STATE.meta.from_city_cn || "", toCN = STATE.meta.to_city_cn || "";
+    // 顶部标题优先展示中文城市名，查不到回退三字码。
     document.getElementById("title").textContent =
-      (STATE.meta.from || "?") + " → " + (STATE.meta.to || "?") + "  ·  " + ROUTE;
+      (fromCN || STATE.meta.from || "?") + " → " + (toCN || STATE.meta.to || "?");
     document.getElementById("subtitle").textContent =
-      "目标价 " + (STATE.target != null ? fmtMoney(STATE.target, STATE.currency) : "—") +
+      (STATE.meta.from || "?") + " → " + (STATE.meta.to || "?") + "  ·  " + ROUTE +
+      " · 目标价 " + (STATE.target != null ? fmtMoney(STATE.target, STATE.currency) : "—") +
       " · 更新于 " + (STATE.summary.generated_at || "?");
 
     scaffold();

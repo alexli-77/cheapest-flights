@@ -143,15 +143,30 @@ def _record_route_result(failures: dict, route_id: str, success: bool, day: str)
 
 
 # ---------------------------------------------------------------- pipeline
+def _detail_score(q) -> int:
+    """How much flight detail a quote carries (airline/flight_no/depart_time).
+
+    Used to break price ties: when several quotes share the day's lowest price,
+    keep the one that actually has airline/航班号/起飞时间 filled in. Otherwise a
+    record with an empty flight_no could win the tie and the Feishu digest /
+    dashboard would show a price with no flight info (the YUL→PEK 缺时刻 bug).
+    """
+    return sum(1 for v in (getattr(q, "airline", ""), getattr(q, "flight_no", ""),
+                           getattr(q, "depart_time", "")) if str(v or "").strip())
+
+
 def mark_lowest_of_day(quotes: list) -> None:
-    """Set is_lowest_of_day on the cheapest quote per (route_id, depart_date)."""
+    """Set is_lowest_of_day on the cheapest quote per (route_id, depart_date).
+
+    Ties on price are broken toward the record with the most flight detail.
+    """
     groups: dict = {}
     for q in quotes:
         groups.setdefault((q.route_id, q.depart_date), []).append(q)
     for items in groups.values():
         for q in items:
             q.is_lowest_of_day = False
-        cheapest = min(items, key=lambda q: q.price)
+        cheapest = min(items, key=lambda q: (q.price, -_detail_score(q)))
         cheapest.is_lowest_of_day = True
 
 
@@ -250,7 +265,10 @@ def run(
         "run_date": today.isoformat(),
     }
 
-    summary = storage.build_summary(route_ids=None, extra=meta)
+    # Only surface routes that still exist in the config: deleted routes keep
+    # their historical data/ folder (never pruned) but must NOT reappear in the
+    # dashboard summary or Feishu cards.
+    summary = storage.build_summary(route_ids=[r.id for r in cfg.routes], extra=meta)
     log.info("summary.json built: %d routes", len(summary.get("routes", {})))
 
     # --- Hooks for later agents (M2). Modules may not exist yet. ---

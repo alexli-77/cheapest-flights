@@ -13,6 +13,7 @@ from src.notifiers import dispatch, build_stats, REGISTRY  # noqa: E402
 from src.notifiers import feishu  # noqa: E402
 from src.notifiers.feishu import (  # noqa: E402
     build_digest_card, build_urgent_card, sign, FeishuNotifier, _mask_url,
+    gflights_url, _airport_label,
 )
 
 
@@ -75,6 +76,48 @@ class TestFeishuCards(unittest.TestCase):
         self.assertEqual(btn["tag"], "button")
         self.assertEqual(btn["url"], "https://d/?route=sha-nrt")
 
+    def test_gflights_url(self):
+        url = gflights_url("YUL", "PEK", "2026-07-15")
+        self.assertTrue(url.startswith("https://www.google.com/travel/flights?q="))
+        # one-way marker + endpoints present (url-encoded)
+        self.assertIn("one%20way", url)
+        self.assertIn("YUL", url)
+        self.assertIn("PEK", url)
+        self.assertIn("2026-07-15", url)
+        # missing endpoints -> empty string, never a broken link
+        self.assertEqual(gflights_url("", "PEK", "2026-07-15"), "")
+
+    def test_airport_label_cn(self):
+        self.assertEqual(_airport_label("YUL"), "蒙特利尔(YUL)")
+        self.assertEqual(_airport_label("PEK"), "北京(PEK)")
+        self.assertEqual(_airport_label("ZZZ"), "ZZZ")  # unknown -> bare code
+
+    def test_digest_route_block_has_cn_name_and_buy_link(self):
+        card = build_digest_card([], {"routes_failed": 0}, summary=_rolling_summary(),
+                                 routes=[_rolling_route()], dashboard_url="https://d/",
+                                 run_date="2026-07-10")
+        blob = str(card["card"]["elements"])
+        # 航线行显示中文城市名（SHA=上海, NRT=东京）
+        self.assertIn("上海(SHA)", blob)
+        self.assertIn("东京(NRT)", blob)
+        # 最低价下方的购票渠道深链
+        self.assertIn("查看购票渠道", blob)
+        self.assertIn("google.com/travel/flights", blob)
+
+    def test_urgent_card_cn_name_and_buy_button(self):
+        card = build_urgent_card(_alert(), dashboard_url="https://d/")
+        blob = str(card["card"]["elements"])
+        # route_id sha-nrt -> 中文城市名航线
+        self.assertIn("上海(SHA)", blob)
+        self.assertIn("东京(NRT)", blob)
+        # 按钮区有第二个「购票渠道」按钮
+        action = card["card"]["elements"][-1]
+        texts = [b["text"]["content"] for b in action["actions"]]
+        self.assertIn("立即查看", texts)
+        self.assertIn("购票渠道", texts)
+        buy = [b for b in action["actions"] if b["text"]["content"] == "购票渠道"][0]
+        self.assertIn("google.com/travel/flights", buy["url"])
+
     def test_urgent_card_flight_line(self):
         # When a flight record is supplied, a 航班 line is appended.
         card = build_urgent_card(_alert(), dashboard_url="https://d/",
@@ -96,7 +139,7 @@ class TestFeishuCards(unittest.TestCase):
         self.assertIn("2026-07-10", card["card"]["header"]["title"]["content"])
         blob = str(card["card"]["elements"])
         # compact route block: cheapest across depart_dates (3110 < 3600)
-        self.assertIn("✈️ SHA→NRT（未来90天）", blob)
+        self.assertIn("✈️ 上海(SHA) → 东京(NRT)（未来90天）", blob)
         self.assertIn("最低 ¥3110", blob)
         self.assertIn("07-19", blob)
         self.assertIn("Air China CA880", blob)

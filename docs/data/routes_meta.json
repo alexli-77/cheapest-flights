@@ -1,11 +1,13 @@
 {
-  "generated_at": "2026-07-14T06:34:17+08:00",
+  "generated_at": "2026-07-14T07:23:02+08:00",
   "routes": [
     {
       "currency": "CNY",
       "drop_alert_pct": null,
       "enabled": true,
       "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
       "route_id": "yul-pek",
       "sources": [
         "fast_flights",
@@ -13,13 +15,17 @@
         "ctrip_local"
       ],
       "target_price": null,
-      "to": "PEK"
+      "to": "PEK",
+      "to_city_cn": "北京",
+      "to_name_cn": "北京首都国际机场"
     },
     {
       "currency": "CNY",
       "drop_alert_pct": null,
       "enabled": true,
       "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
       "route_id": "yul-yvr",
       "sources": [
         "fast_flights",
@@ -27,13 +33,17 @@
         "ctrip_local"
       ],
       "target_price": null,
-      "to": "YVR"
+      "to": "YVR",
+      "to_city_cn": "温哥华",
+      "to_name_cn": "温哥华国际机场"
     },
     {
       "currency": "CNY",
       "drop_alert_pct": null,
       "enabled": true,
       "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
       "route_id": "yul-hkg",
       "sources": [
         "fast_flights",
@@ -41,7 +51,9 @@
         "ctrip_local"
       ],
       "target_price": null,
-      "to": "HKG"
+      "to": "HKG",
+      "to_city_cn": "香港",
+      "to_name_cn": "香港国际机场"
     }
   ],
   "timezone": "Asia/Shanghai"

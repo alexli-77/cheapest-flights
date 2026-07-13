@@ -25,9 +25,15 @@ import json
 import logging
 import os
 import time
+import urllib.parse
 from typing import Callable, Optional
 
 from .base import Notifier, register_notifier
+
+try:  # airport 中文名表；解析失败/缺失时退回三字码，绝不影响发送。
+    from ..airports import lookup as _airport_lookup
+except Exception:  # pragma: no cover - defensive
+    _airport_lookup = None
 
 log = logging.getLogger("flight_watch.notifiers.feishu")
 
@@ -68,6 +74,47 @@ def _gap_to_target(price, target_price) -> str:
         return "-"
     sign = "+" if gap >= 0 else ""
     return f"{sign}{_fmt(gap)}"
+
+
+def _airport_label(iata: str) -> str:
+    """"YUL" -> "蒙特利尔(YUL)"; falls back to the bare code when unknown."""
+    code = str(iata or "").upper().strip()
+    if not code:
+        return code
+    city = ""
+    if _airport_lookup is not None:
+        try:
+            city = (_airport_lookup(code) or {}).get("city_cn") or ""
+        except Exception:
+            city = ""
+    return f"{city}({code})" if city else code
+
+
+def _od_from_route_id(route_id: str) -> tuple:
+    """"yul-pek" -> ("YUL", "PEK"). Non-``a-b`` ids yield ("", "")."""
+    parts = str(route_id or "").split("-")
+    if len(parts) == 2 and parts[0] and parts[1]:
+        return parts[0].upper(), parts[1].upper()
+    return "", ""
+
+
+def gflights_url(origin: str, dest: str, depart_date: str = "", one_way: bool = True) -> str:
+    """Google Flights deep link for a one-way search (购票渠道).
+
+    ``https://www.google.com/travel/flights?q=<url-encoded query>`` where the
+    query is e.g. ``"Flights from YUL to PEK on 2026-07-15 one way"``. Returns ""
+    when origin/dest are missing.
+    """
+    o = str(origin or "").upper().strip()
+    d = str(dest or "").upper().strip()
+    if not o or not d:
+        return ""
+    q = f"Flights from {o} to {d}"
+    if depart_date:
+        q += f" on {depart_date}"
+    if one_way:
+        q += " one way"
+    return "https://www.google.com/travel/flights?q=" + urllib.parse.quote(q)
 
 
 def _mask_url(url: str) -> str:
@@ -202,7 +249,7 @@ def _route_block(route, node_map: dict) -> dict:
     """
     origin = str(getattr(route, "origin", "") or "").upper()
     dest = str(getattr(route, "dest", "") or "").upper()
-    header = f"✈️ {origin}→{dest}（{_route_window_label(route)}）"
+    header = f"✈️ {_airport_label(origin)} → {_airport_label(dest)}（{_route_window_label(route)}）"
 
     dates = getattr(route, "dates", {}) or {}
     mode = (dates.get("mode") or "fixed").lower()
@@ -211,6 +258,7 @@ def _route_block(route, node_map: dict) -> dict:
     usable = {dd: n for dd, n in (node_map or {}).items()
               if n and n.get("latest") and n["latest"].get("price") is not None}
 
+    link_dd = ""  # depart_date the 购票渠道 link should point at (最低价对应日期)
     if not usable:
         body = "暂无数据"
     elif mode == "fixed":
@@ -219,6 +267,7 @@ def _route_block(route, node_map: dict) -> dict:
         for dd in sorted(usable):
             segs.append(f"{_mmdd(dd)}: {_price_str(usable[dd]['latest'])}")
         body = " · ".join(segs)
+        link_dd = min(usable, key=lambda dd: usable[dd]["latest"]["price"])
     else:
         # Rolling / both: single cheapest across all depart_dates.
         best_dd = min(usable, key=lambda dd: usable[dd]["latest"]["price"])
@@ -234,8 +283,15 @@ def _route_block(route, node_map: dict) -> dict:
         if pct:
             parts.append(pct)
         body = " · ".join(parts)
+        link_dd = best_dd
 
-    return {"tag": "div", "text": {"tag": "lark_md", "content": f"**{header}**\n{body}"}}
+    content = f"**{header}**\n{body}"
+    if link_dd:
+        url = gflights_url(origin, dest, link_dd)
+        if url:
+            content += f"\n[→ 查看购票渠道]({url})"
+
+    return {"tag": "div", "text": {"tag": "lark_md", "content": content}}
 
 
 def build_digest_card(alerts: list, stats: dict, summary: dict = None,
@@ -313,15 +369,36 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
     prev = getattr(alert, "prev_price", None)
     target = getattr(alert, "target_price", None)
 
+    origin, dest = _od_from_route_id(getattr(alert, "route_id", ""))
+    route_label = (f"{_airport_label(origin)} → {_airport_label(dest)}"
+                   if origin and dest else alert.route_id)
+
     detail = (
         f"**{alert.message}**\n\n"
-        f"航线：{alert.route_id}　出发日：{alert.depart_date or '-'}\n"
+        f"航线：{route_label}　出发日：{alert.depart_date or '-'}\n"
         f"今日最低：{_fmt(price)}　环比：{_pct_change(price, prev)}"
         f"　距目标价：{_gap_to_target(price, target)}"
     )
     fi = _flight_info_str(flight or {})
     if fi:
         detail += f"\n航班：{fi}"
+
+    # Button area: 立即查看 (dashboard) + 购票渠道 (Google Flights deep link).
+    buttons = [{
+        "tag": "button",
+        "text": {"tag": "plain_text", "content": "立即查看"},
+        "type": "primary",
+        "url": _dashboard_url(dashboard_url, alert.route_id) or "",
+    }]
+    buy_url = gflights_url(origin, dest, getattr(alert, "depart_date", ""))
+    if buy_url:
+        buttons.append({
+            "tag": "button",
+            "text": {"tag": "plain_text", "content": "购票渠道"},
+            "type": "default",
+            "url": buy_url,
+        })
+
     return {
         "msg_type": "interactive",
         "card": {
@@ -332,7 +409,7 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
             },
             "elements": [
                 {"tag": "div", "text": {"tag": "lark_md", "content": detail}},
-                _button("立即查看", _dashboard_url(dashboard_url, alert.route_id)),
+                {"tag": "action", "actions": buttons},
             ],
         },
     }

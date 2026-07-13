@@ -34,6 +34,32 @@ class TestSummary(unittest.TestCase):
         self.assertEqual(len(lows), 1)
         self.assertEqual(lows[0].price, 900)
 
+    def test_mark_lowest_of_day_tie_prefers_detail(self):
+        # Two quotes tie at the day's lowest price; the one WITHOUT flight detail
+        # (empty flight_no + depart_time) must not win the tie.
+        bare = q(900, "", "2026-07-09T08:00:00+08:00", airline="", depart_time="")
+        rich = q(900, "MU1", "2026-07-09T08:00:00+08:00",
+                 airline="Air China", depart_time="08:30")
+        mark_lowest_of_day([bare, rich])
+        self.assertFalse(bare.is_lowest_of_day)
+        self.assertTrue(rich.is_lowest_of_day)
+
+    def test_build_summary_filters_to_given_route_ids(self):
+        # A deleted route keeps its data/ folder but must be excluded from summary
+        # when build_summary is called with the config's route id list.
+        self.st.append_quotes([
+            q(1000, "MU1", "2026-07-09T08:00:00+08:00", depart_date="2026-10-01"),
+        ])
+        old = FlightQuote(
+            fetched_at="2026-07-09T08:00:00+08:00", route_id="pek-cdg", origin="PEK",
+            dest="CDG", depart_date="2026-10-01", airline="AF", flight_no="AF1",
+            depart_time="10:00", stops=0, price=2000, source="fast_flights",
+        )
+        self.st.append_quotes([old])
+        summary = self.st.build_summary(route_ids=["sha-nrt"])
+        self.assertIn("sha-nrt", summary["routes"])
+        self.assertNotIn("pek-cdg", summary["routes"])
+
     def test_build_summary_structure(self):
         self.st.append_quotes([
             q(1000, "MU1", "2026-07-09T08:00:00+08:00"),

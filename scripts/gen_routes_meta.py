@@ -13,12 +13,41 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from datetime import datetime, timezone, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "data", "routes_meta.json")
+AIRPORTS_JS = os.path.join(ROOT, "docs", "airports.js")
 
 SHANGHAI = timezone(timedelta(hours=8))
+
+# Tolerant per-object scan of docs/airports.js (a JS IIFE, not JSON). Mirrors
+# src/airports.py but kept dependency-free/standalone so this script never
+# imports the src package (same policy as gen_detail.py).
+_AIRPORT_OBJ_RE = re.compile(r"\{[^{}]*?iata\s*:\s*[\"']([A-Za-z]{3})[\"'][^{}]*?\}")
+
+
+def _airport_field(block: str, name: str) -> str:
+    m = re.search(name + r"\s*:\s*[\"']([^\"']*)[\"']", block)
+    return m.group(1).strip() if m else ""
+
+
+def _load_airports() -> dict:
+    table: dict = {}
+    try:
+        with open(AIRPORTS_JS, "r", encoding="utf-8") as f:
+            text = f.read()
+    except Exception:
+        return table
+    for m in _AIRPORT_OBJ_RE.finditer(text):
+        block = m.group(0)
+        code = m.group(1).upper()
+        table[code] = {
+            "city_cn": _airport_field(block, "city_cn"),
+            "name_cn": _airport_field(block, "name_cn"),
+        }
+    return table
 
 
 def _load_config() -> dict:
@@ -40,13 +69,23 @@ def _load_config() -> dict:
 def build_meta(cfg: dict) -> dict:
     defaults = cfg.get("defaults", {}) or {}
     default_currency = defaults.get("currency", "CNY")
+    airports = _load_airports()
     routes_out = []
     for r in cfg.get("routes", []) or []:
+        frm = str(r.get("from") or "").upper()
+        to = str(r.get("to") or "").upper()
+        fa = airports.get(frm, {})
+        ta = airports.get(to, {})
         routes_out.append(
             {
                 "route_id": r.get("id"),
                 "from": r.get("from"),
                 "to": r.get("to"),
+                # 中文名（供 dashboard 展示；查不到留空字符串，前端回退三字码）。
+                "from_city_cn": fa.get("city_cn", ""),
+                "from_name_cn": fa.get("name_cn", ""),
+                "to_city_cn": ta.get("city_cn", ""),
+                "to_name_cn": ta.get("name_cn", ""),
                 "target_price": r.get("target_price"),
                 "currency": r.get("currency", default_currency),
                 "drop_alert_pct": r.get("drop_alert_pct"),

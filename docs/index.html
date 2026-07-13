@@ -70,7 +70,16 @@
   }
   .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
   .card .route-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card .route-cn { font-size: 13px; color: var(--fw-text); margin-top: 3px; }
   .card .route-sub { color: var(--fw-text-sub); font-size: 12px; margin-top: 2px; }
+  .card .flight-info { color: var(--fw-text-sub); font-size: 12px; margin: 2px 0 0; }
+  .card .buy-row { margin-top: 10px; }
+  .card .buy-link {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600;
+    color: var(--fw-accent); text-decoration: none; border: 1px solid var(--fw-border);
+    border-radius: 8px; padding: 5px 10px;
+  }
+  .card .buy-link:hover { background: color-mix(in srgb, var(--fw-accent) 12%, transparent); }
   .card .price-row { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 6px; }
   .card .price { font-size: 28px; font-weight: 700; }
   .card .cur { color: var(--fw-text-sub); font-size: 13px; }
@@ -115,6 +124,27 @@ function fmtMoney(v, cur) {
   return (cur === "CNY" || !cur ? "¥" : "") + Number(v).toLocaleString() + (cur && cur !== "CNY" ? " " + cur : "");
 }
 
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+// Google Flights 深链（购票渠道）：单程搜索。
+function gflightsUrl(from, to, dd) {
+  from = String(from || "").toUpperCase(); to = String(to || "").toUpperCase();
+  if (!from || !to) return "";
+  var q = "Flights from " + from + " to " + to + (dd ? " on " + dd : "") + " one way";
+  return "https://www.google.com/travel/flights?q=" + encodeURIComponent(q);
+}
+
+// "Air China CA880 · 08:30" from a summary latest-low record (fields optional).
+function flightInfoStr(low) {
+  if (!low) return "";
+  var carrier = [low.airline, low.flight_no].filter(Boolean).join(" ");
+  return [carrier, low.depart_time || ""].filter(Boolean).join(" · ");
+}
+
 // 每个 route 的「每日最低价」序列：跨 depart_dates，对每个 fetch_date 取最小 latest?
 // series 里每个 depart_date 已是「该 fetch_date 的最低价」。跨 depart_date 再取 min。
 function dailyMinSeries(routeObj) {
@@ -129,15 +159,17 @@ function dailyMinSeries(routeObj) {
   return Object.keys(byDate).sort().map(function (d) { return { fetch_date: d, price: byDate[d] }; });
 }
 
-// 最近抓取日的跨-depart_date 最低 latest.price
+// 最近抓取日的跨-depart_date 最低 latest.price（并带出对应出发日与航班明细）。
 function latestLowest(routeObj) {
-  var best = null, cur = "CNY";
+  var best = null, cur = "CNY", bestDD = "", bestLow = null;
   var dds = routeObj.depart_dates || {};
   Object.keys(dds).forEach(function (dd) {
     var l = dds[dd].latest;
-    if (l && l.price != null && (best == null || l.price < best)) { best = l.price; cur = l.currency || cur; }
+    if (l && l.price != null && (best == null || l.price < best)) {
+      best = l.price; cur = l.currency || cur; bestDD = dd; bestLow = l;
+    }
   });
-  return { price: best, currency: cur };
+  return { price: best, currency: cur, dd: bestDD, low: bestLow };
 }
 
 function sparkline(series, w, h) {
@@ -179,13 +211,16 @@ function render(summary, meta) {
       ? " · SerpAPI 剩余额度 " + summary.meta.serpapi_remaining_quota : "");
 
   var routes = summary.routes || {};
-  var ids = Object.keys(routes);
   var grid = document.getElementById("grid");
+
+  // 以 routes_meta.json 的航线为准（双保险：summary 也已按 config 过滤旧航线）。
+  // meta 缺失时退回 summary 里的航线键。
+  var ids = (meta.routes || []).map(function (r) { return r.route_id; });
+  if (!ids.length) { ids = Object.keys(routes).sort(); }
   if (!ids.length) { document.getElementById("empty").style.display = "block"; return; }
 
-  ids.sort();
   ids.forEach(function (rid) {
-    var robj = routes[rid];
+    var robj = routes[rid] || { depart_dates: {} };
     var m = metaMap[rid] || {};
     var ll = latestLowest(robj);
     var series = dailyMinSeries(robj);
@@ -193,19 +228,32 @@ function render(summary, meta) {
     var hit = target != null && ll.price != null && ll.price <= target;
     var diff = (target != null && ll.price != null) ? (ll.price - target) : null;
 
-    var a = document.createElement("a");
-    a.className = "card";
-    a.href = "route.html?route=" + encodeURIComponent(rid);
-    a.innerHTML =
+    var fromCN = m.from_city_cn || "", toCN = m.to_city_cn || "";
+    var cnLine = (fromCN || toCN)
+      ? '<div class="route-cn">' + esc(fromCN || m.from || "?") + ' → ' + esc(toCN || m.to || "?") + '</div>'
+      : '';
+    var flight = flightInfoStr(ll.low);
+    var buyUrl = gflightsUrl(m.from, m.to, ll.dd);
+
+    var card = document.createElement("div");
+    card.className = "card";
+    card.setAttribute("role", "link");
+    card.tabIndex = 0;
+    var go = function () { location.href = "route.html?route=" + encodeURIComponent(rid); };
+    card.onclick = go;
+    card.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+    card.innerHTML =
       '<div class="route-title">' +
-        (m.from || "?") + ' <span style="color:var(--fw-text-sub)">→</span> ' + (m.to || "?") +
+        esc(m.from || "?") + ' <span style="color:var(--fw-text-sub)">→</span> ' + esc(m.to || "?") +
         (m.enabled === false ? ' <span class="badge-disabled">未启用</span>' : '') +
       '</div>' +
-      '<div class="route-sub">' + rid + '</div>' +
+      cnLine +
+      '<div class="route-sub">' + esc(rid) + '</div>' +
       '<div class="price-row">' +
         '<span class="price">' + fmtMoney(ll.price, ll.currency) + '</span>' +
         arrowChip(series) +
       '</div>' +
+      (flight ? '<div class="flight-info">' + esc(flight) + '</div>' : '') +
       '<div class="target">' +
         '<span>目标价 ' + (target != null ? fmtMoney(target, ll.currency) : "—") + '</span>' +
         (diff != null
@@ -214,8 +262,12 @@ function render(summary, meta) {
               : '<b class="miss">还差 ' + fmtMoney(diff, ll.currency) + '</b>') + '</span>'
           : '<span></span>') +
       '</div>' +
-      '<div class="spark">' + sparkline(series, 260, 44) + '</div>';
-    grid.appendChild(a);
+      '<div class="spark">' + sparkline(series, 260, 44) + '</div>' +
+      (buyUrl
+        ? '<div class="buy-row"><a class="buy-link" href="' + esc(buyUrl) + '" target="_blank" ' +
+          'rel="noopener" onclick="event.stopPropagation()">🛒 查看购票渠道</a></div>'
+        : '');
+    grid.appendChild(card);
   });
 }
 
