@@ -142,8 +142,10 @@ class Storage:
                 "<route_id>": {
                   "depart_dates": {
                     "<YYYY-MM-DD>": {
-                      "latest":         {"fetch_date","price","currency"} | null,
-                      "historical_low": {"fetch_date","price","currency"} | null,
+                      "latest":         {"fetch_date","price","currency",
+                                         "airline","flight_no","depart_time"} | null,
+                      "historical_low": {"fetch_date","price","currency",
+                                         "airline","flight_no","depart_time"} | null,
                       "series": [ {"fetch_date","price","currency"}, ... ]
                     }, ...
                   }
@@ -186,4 +188,13 @@ def _key_of(r: dict) -> tuple:
 def _slim(r: Optional[dict]) -> Optional[dict]:
     if not r:
         return None
-    return {"fetch_date": r["fetch_date"], "price": r["price"], "currency": r.get("currency", "CNY")}
+    # Carry the flight identity of the cheapest record (used by the Feishu
+    # digest: 航司/航班号/起飞时间). Old JSONL rows may lack these -> "".
+    return {
+        "fetch_date": r["fetch_date"],
+        "price": r["price"],
+        "currency": r.get("currency", "CNY"),
+        "airline": r.get("airline", "") or "",
+        "flight_no": r.get("flight_no", "") or "",
+        "depart_time": r.get("depart_time", "") or "",
+    }

@@ -5,10 +5,11 @@ The webhook URL is read from the environment variable named by the config
 the repo. Optional request signing uses ``FEISHU_SECRET`` (HmacSHA256 over the
 key ``"<timestamp>\\n<secret>"`` with an empty message body, Base64 encoded).
 
-Messages are Feishu *interactive* cards:
-  * digest card  -> title (date + run status) + table-style fields
-    (航线/出发日/今日最低/环比/距目标价) + a button to the dashboard.
-  * urgent card  -> red header + single-route detail + button.
+Messages are Feishu *interactive* cards (redesigned 2026-07 to be compact):
+  * digest card  -> title (date + run status) + one compact block per route
+    (航线 + 最低价摘要：价格/出发日/航司航班/起飞时间/环比) + a single 异动统计
+    line + a button to the dashboard. No more per-alert long table.
+  * urgent card  -> red header + single-route detail + 航班信息行 + button.
 
 Network transport degrades gracefully: ``requests`` if present else ``urllib``.
 Setting ``NOTIFY_DRY_RUN=1`` prints the card JSON instead of sending. Webhook
@@ -113,25 +114,142 @@ def _dashboard_url(base_url: str, route_id: str = "") -> str:
     return base_url
 
 
-def _alert_fields(alert) -> list:
-    """Table-style fields for one alert: 航线/出发日/今日最低/环比/距目标价."""
-    price = getattr(alert, "price", None)
-    prev = getattr(alert, "prev_price", None)
-    target = getattr(alert, "target_price", None)
-    return [
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**航线**\n{alert.route_id}"}},
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**出发日**\n{alert.depart_date or '-'}"}},
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**今日最低**\n{_fmt(price)}"}},
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**环比**\n{_pct_change(price, prev)}"}},
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**距目标价**\n{_gap_to_target(price, target)}"}},
-        {"is_short": True, "text": {"tag": "lark_md", "content": f"**规则**\n{alert.rule_id}"}},
-    ]
+_WEEKDAY_CN = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 
 
-def build_digest_card(alerts: list, stats: dict, dashboard_url: str = "",
+def _mmdd(date_str: str) -> str:
+    """"2026-07-19" -> "07-19" (leave non-standard strings untouched)."""
+    parts = str(date_str or "").split("-")
+    return "-".join(parts[1:]) if len(parts) == 3 else str(date_str or "")
+
+
+def _weekday_cn(date_str: str) -> str:
+    try:
+        from datetime import date as _date
+        y, m, d = (int(x) for x in str(date_str).split("-"))
+        return _WEEKDAY_CN[_date(y, m, d).weekday()]
+    except Exception:
+        return ""
+
+
+def _price_str(low: dict) -> str:
+    """"¥3110" for CNY, else "<code> 3110"."""
+    if not low:
+        return "-"
+    price = low.get("price")
+    cur = (low.get("currency") or "CNY")
+    return f"¥{_fmt(price)}" if cur == "CNY" else f"{cur} {_fmt(price)}"
+
+
+def _flight_info_str(low: dict) -> str:
+    """"Air China CA880 · 20:55" from a summary low record (fields optional)."""
+    if not low:
+        return ""
+    airline = str(low.get("airline") or "").strip()
+    flight_no = str(low.get("flight_no") or "").strip()
+    dt = str(low.get("depart_time") or "").strip()
+    parts = []
+    carrier = " ".join(x for x in (airline, flight_no) if x)
+    if carrier:
+        parts.append(carrier)
+    if dt:
+        parts.append(dt)
+    return " · ".join(parts)
+
+
+def _digest_pct(node: dict) -> str:
+    """"环比 -8%" comparing the latest fetch low to the previous fetch low for a
+    depart_date, or "" when there is no prior point or no meaningful change."""
+    series = (node or {}).get("series") or []
+    if len(series) < 2:
+        return ""
+    prev = series[-2].get("price")
+    cur = series[-1].get("price")
+    if not prev or cur is None or prev == 0:
+        return ""
+    chg = (float(cur) - float(prev)) / float(prev) * 100.0
+    if round(chg) == 0:
+        return ""
+    sign = "+" if chg > 0 else "-"
+    return f"环比 {sign}{abs(round(chg))}%"
+
+
+def _route_window_label(route) -> str:
+    """"未来90天" / "固定日期" / "滚动+固定" from a route's dates block."""
+    dates = getattr(route, "dates", {}) or {}
+    mode = (dates.get("mode") or "fixed").lower()
+    did = dates.get("depart_in_days")
+    if isinstance(did, (list, tuple)):
+        n = max((int(x) for x in did if str(x).lstrip("-").isdigit()), default=0)
+    else:
+        try:
+            n = int(did or 0)
+        except (TypeError, ValueError):
+            n = 0
+    if mode == "rolling":
+        return f"未来{n}天"
+    if mode == "fixed":
+        return "固定日期"
+    if mode == "both":
+        return f"未来{n}天+固定"
+    return mode
+
+
+def _route_block(route, node_map: dict) -> dict:
+    """Build one compact digest block (a lark_md div) for a single route.
+
+    ``node_map`` = summary["routes"][id]["depart_dates"] (may be empty).
+    """
+    origin = str(getattr(route, "origin", "") or "").upper()
+    dest = str(getattr(route, "dest", "") or "").upper()
+    header = f"✈️ {origin}→{dest}（{_route_window_label(route)}）"
+
+    dates = getattr(route, "dates", {}) or {}
+    mode = (dates.get("mode") or "fixed").lower()
+
+    # depart_dates that actually have a latest low.
+    usable = {dd: n for dd, n in (node_map or {}).items()
+              if n and n.get("latest") and n["latest"].get("price") is not None}
+
+    if not usable:
+        body = "暂无数据"
+    elif mode == "fixed":
+        # One entry per depart_date: "07-19: ¥3110 · 08-01: ¥2980".
+        segs = []
+        for dd in sorted(usable):
+            segs.append(f"{_mmdd(dd)}: {_price_str(usable[dd]['latest'])}")
+        body = " · ".join(segs)
+    else:
+        # Rolling / both: single cheapest across all depart_dates.
+        best_dd = min(usable, key=lambda dd: usable[dd]["latest"]["price"])
+        node = usable[best_dd]
+        low = node["latest"]
+        parts = [f"最低 {_price_str(low)}"]
+        wd = _weekday_cn(best_dd)
+        parts.append(f"{_mmdd(best_dd)} {wd}".strip())
+        fi = _flight_info_str(low)
+        if fi:
+            parts.append(fi)
+        pct = _digest_pct(node)
+        if pct:
+            parts.append(pct)
+        body = " · ".join(parts)
+
+    return {"tag": "div", "text": {"tag": "lark_md", "content": f"**{header}**\n{body}"}}
+
+
+def build_digest_card(alerts: list, stats: dict, summary: dict = None,
+                      routes: list = None, dashboard_url: str = "",
                       run_date: str = "", run_status: str = "运行正常") -> dict:
-    """Build the daily digest interactive card (heartbeat-safe)."""
+    """Build the compact daily digest interactive card (heartbeat-safe).
+
+    One block per route showing that route's cheapest摘要 (from the enhanced
+    summary), then a single 异动统计 line and a dashboard button. The old
+    per-alert long table is gone.
+    """
     stats = stats or {}
+    summary = summary or {}
+    routes = routes or []
     title = f"✈️ 机票监控日报 {run_date} · {run_status}".strip()
 
     elements: list = []
@@ -146,19 +264,28 @@ def build_digest_card(alerts: list, stats: dict, dashboard_url: str = "",
     elements.append({"tag": "div", "text": {"tag": "lark_md", "content": stat_line}})
     elements.append({"tag": "hr"})
 
-    if alerts:
-        elements.append({
-            "tag": "div",
-            "text": {"tag": "lark_md", "content": f"**今日价格异动（{len(alerts)} 条）**"},
-        })
-        for a in alerts:
-            elements.append({"tag": "div", "fields": _alert_fields(a)})
-            elements.append({"tag": "hr"})
+    # One compact block per route (only enabled routes).
+    routes_summary = (summary.get("routes") or {})
+    shown = 0
+    for route in routes:
+        if getattr(route, "enabled", True) is False:
+            continue
+        node_map = (routes_summary.get(getattr(route, "id", "")) or {}).get("depart_dates", {})
+        elements.append(_route_block(route, node_map))
+        shown += 1
+    if shown == 0:
+        elements.append({"tag": "div", "text": {"tag": "lark_md", "content": "暂无航线数据。"}})
+
+    elements.append({"tag": "hr"})
+
+    # 异动统计一行（取代旧的逐条异动长表格）。
+    n_total = len(alerts or [])
+    n_urgent = sum(1 for a in (alerts or []) if getattr(a, "level", "normal") == "urgent")
+    if n_total:
+        change_line = f"今日 {n_total} 条价格异动，紧急 {n_urgent} 条"
     else:
-        elements.append({
-            "tag": "div",
-            "text": {"tag": "lark_md", "content": "今日无价格异动，一切正常。"},
-        })
+        change_line = "今日无价格异动。"
+    elements.append({"tag": "div", "text": {"tag": "lark_md", "content": change_line}})
 
     elements.append(_button("查看趋势图 Dashboard", _dashboard_url(dashboard_url)))
 
@@ -176,8 +303,12 @@ def build_digest_card(alerts: list, stats: dict, dashboard_url: str = "",
     }
 
 
-def build_urgent_card(alert, dashboard_url: str = "") -> dict:
-    """Build a red-header urgent card for a single alert."""
+def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> dict:
+    """Build a red-header urgent card for a single alert.
+
+    ``flight`` (optional) is the summary low record for this route×depart_date;
+    when present a compact 航班信息 line (航司/航班号/起飞时间) is appended.
+    """
     price = getattr(alert, "price", None)
     prev = getattr(alert, "prev_price", None)
     target = getattr(alert, "target_price", None)
@@ -188,6 +319,9 @@ def build_urgent_card(alert, dashboard_url: str = "") -> dict:
         f"今日最低：{_fmt(price)}　环比：{_pct_change(price, prev)}"
         f"　距目标价：{_gap_to_target(price, target)}"
     )
+    fi = _flight_info_str(flight or {})
+    if fi:
+        detail += f"\n航班：{fi}"
     return {
         "msg_type": "interactive",
         "card": {
@@ -283,16 +417,28 @@ class FeishuNotifier(Notifier):
             return False
 
     # --------------------------------------------------------- interface
-    def send_digest(self, alerts: list, stats: dict) -> bool:
+    def send_digest(self, alerts: list, stats: dict,
+                    summary: dict = None, routes: list = None) -> bool:
         stats = stats or {}
         card = build_digest_card(
-            alerts or [], stats,
+            alerts or [], stats, summary=summary, routes=routes,
             dashboard_url=self._dashboard_url(),
             run_date=stats.get("run_date", ""),
             run_status=stats.get("run_status", "运行正常"),
         )
         return self._send(card)
 
-    def send_urgent(self, alert) -> bool:
-        card = build_urgent_card(alert, dashboard_url=self._dashboard_url())
+    def send_urgent(self, alert, summary: dict = None) -> bool:
+        flight = _lookup_low(summary, getattr(alert, "route_id", ""),
+                             getattr(alert, "depart_date", ""))
+        card = build_urgent_card(alert, dashboard_url=self._dashboard_url(), flight=flight)
         return self._send(card)
+
+
+def _lookup_low(summary: dict, route_id: str, depart_date: str) -> dict:
+    """Fetch the summary latest-low record for a route×depart_date (or {})."""
+    try:
+        node = summary["routes"][route_id]["depart_dates"][depart_date]
+        return node.get("latest") or {}
+    except (KeyError, TypeError):
+        return {}

@@ -61,6 +61,7 @@ def dispatch(cfg, summary: dict, alerts: Optional[list] = None,
     digest_enabled = bool(alerts_cfg.get("daily_digest", True))
     notifiers_cfg = getattr(cfg, "notifiers", {}) or {}
     dashboard_cfg = getattr(cfg, "dashboard", {}) or {}
+    routes = getattr(cfg, "routes", []) or []
 
     report: dict = {}
     for name, ncfg in notifiers_cfg.items():
@@ -84,7 +85,7 @@ def dispatch(cfg, summary: dict, alerts: Optional[list] = None,
         sent = {"urgent": 0, "digest": False}
         for a in urgent:
             try:
-                if notifier.send_urgent(a):
+                if notifier.send_urgent(a, summary=summary):
                     sent["urgent"] += 1
             except Exception as e:
                 log.warning("%s send_urgent failed: %s", name, e)
@@ -92,7 +93,9 @@ def dispatch(cfg, summary: dict, alerts: Optional[list] = None,
 
         if digest_enabled:
             try:
-                sent["digest"] = bool(notifier.send_digest(alerts, stats))
+                sent["digest"] = bool(
+                    notifier.send_digest(alerts, stats, summary=summary, routes=routes)
+                )
             except Exception as e:
                 log.warning("%s send_digest failed: %s", name, e)
             sleep_fn(interval)

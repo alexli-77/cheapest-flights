@@ -227,6 +227,9 @@ class FastFlightsFetcher(FetcherAdapter):
             if not _airline_allowed(airline, route.airlines):
                 continue
             flight_no = str(_attr(fobj, "flight_no") or _attr(fobj, "flight_number") or "").strip()
+            # fast-flights 2.2 exposes departure as ``f.departure`` (may be an
+            # empty string / None when the parser can't read it — tolerate it).
+            depart_time = str(_attr(fobj, "departure") or _attr(fobj, "depart_time") or "").strip()
             stops = _attr(fobj, "stops")
             quotes.append(FlightQuote(
                 fetched_at=fetched_at,
@@ -236,6 +239,7 @@ class FastFlightsFetcher(FetcherAdapter):
                 depart_date=depart_date,
                 airline=airline,
                 flight_no=flight_no,
+                depart_time=depart_time,
                 stops=int(stops) if isinstance(stops, (int, float)) else 0,
                 price=price_cny,
                 currency=PINNED_CURRENCY,

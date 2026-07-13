@@ -103,8 +103,12 @@ class TelegramNotifier(Notifier):
             log.warning("telegram transport raised: %s", e)
             return False
 
-    def send_digest(self, alerts: list, stats: dict) -> bool:
+    def send_digest(self, alerts: list, stats: dict,
+                    summary: Optional[dict] = None,
+                    routes: Optional[list] = None) -> bool:
+        # Telegram digest stays plain text; summary/routes accepted for
+        # interface parity but not rendered here.
         return self._send(build_digest_text(alerts or [], stats or {}))
 
-    def send_urgent(self, alert) -> bool:
+    def send_urgent(self, alert, summary: Optional[dict] = None) -> bool:
         return self._send(build_urgent_text(alert))

@@ -22,6 +22,32 @@ def _alert(level="urgent", rule="below_target", price=1400, prev=1600, target=15
                  target_price=target, message="SHA->NRT 2026-10-01 今日最低 1400")
 
 
+def _low(price, airline="Air China", flight_no="CA880", depart_time="20:55",
+         fetch_date="2026-07-18", currency="CNY"):
+    return {"fetch_date": fetch_date, "price": price, "currency": currency,
+            "airline": airline, "flight_no": flight_no, "depart_time": depart_time}
+
+
+def _rolling_route():
+    return Route(id="sha-nrt", origin="SHA", dest="NRT",
+                 dates={"mode": "rolling", "depart_in_days": 90})
+
+
+def _rolling_summary():
+    return {"routes": {"sha-nrt": {"depart_dates": {
+        "2026-07-19": {
+            "latest": _low(3110),
+            "historical_low": _low(3110),
+            "series": [{"price": 3380}, {"price": 3110}],
+        },
+        "2026-08-05": {
+            "latest": _low(3600, flight_no="CA982", depart_time="11:20"),
+            "historical_low": _low(3600),
+            "series": [{"price": 3600}],
+        },
+    }}}}
+
+
 def _cfg(notifiers):
     return Config(
         timezone="Asia/Shanghai", defaults={}, routes=[], cross_check={},
@@ -49,36 +75,68 @@ class TestFeishuCards(unittest.TestCase):
         self.assertEqual(btn["tag"], "button")
         self.assertEqual(btn["url"], "https://d/?route=sha-nrt")
 
-    def test_digest_card_structure_and_fields(self):
-        stats = {"routes_ok": 2, "routes_failed": 0, "fetched_count": 42,
-                 "serpapi_remaining_quota": 87, "run_date": "2026-07-10",
-                 "run_status": "运行正常"}
-        card = build_digest_card([_alert(level="normal")], stats,
-                                 dashboard_url="https://d/",
-                                 run_date="2026-07-10", run_status="运行正常")
+    def test_urgent_card_flight_line(self):
+        # When a flight record is supplied, a 航班 line is appended.
+        card = build_urgent_card(_alert(), dashboard_url="https://d/",
+                                 flight=_low(1400, airline="Air China",
+                                             flight_no="CA880", depart_time="20:55"))
+        blob = str(card["card"]["elements"])
+        self.assertIn("航班", blob)
+        self.assertIn("Air China CA880", blob)
+        self.assertIn("20:55", blob)
+
+    def test_digest_rolling_route_block(self):
+        stats = {"routes_ok": 1, "routes_failed": 0, "fetched_count": 42,
+                 "serpapi_remaining_quota": 87, "run_date": "2026-07-10"}
+        card = build_digest_card([_alert(level="urgent")], stats,
+                                 summary=_rolling_summary(), routes=[_rolling_route()],
+                                 dashboard_url="https://d/", run_date="2026-07-10")
         self.assertEqual(card["msg_type"], "interactive")
         self.assertEqual(card["card"]["header"]["template"], "blue")
         self.assertIn("2026-07-10", card["card"]["header"]["title"]["content"])
-        # a div with the 5+ table-style fields must be present
-        field_divs = [e for e in card["card"]["elements"] if e.get("fields")]
-        self.assertTrue(field_divs)
-        labels = [f["text"]["content"].split("\n")[0] for f in field_divs[0]["fields"]]
-        for expected in ("**航线**", "**出发日**", "**今日最低**", "**环比**", "**距目标价**"):
-            self.assertIn(expected, labels)
+        blob = str(card["card"]["elements"])
+        # compact route block: cheapest across depart_dates (3110 < 3600)
+        self.assertIn("✈️ SHA→NRT（未来90天）", blob)
+        self.assertIn("最低 ¥3110", blob)
+        self.assertIn("07-19", blob)
+        self.assertIn("Air China CA880", blob)
+        self.assertIn("20:55", blob)
+        self.assertIn("环比 -8%", blob)  # 3110 vs 3380
+        # single 异动统计 line, NOT a per-alert table
+        self.assertIn("今日 1 条价格异动，紧急 1 条", blob)
+        self.assertFalse(any(e.get("fields") for e in card["card"]["elements"]))
         # dashboard button present
         self.assertTrue(any(e.get("tag") == "action" for e in card["card"]["elements"]))
 
+    def test_digest_fixed_route_block(self):
+        route = Route(id="sha-nrt", origin="SHA", dest="NRT",
+                      dates={"mode": "fixed", "fixed_dates": ["2026-07-19", "2026-08-01"]})
+        summary = {"routes": {"sha-nrt": {"depart_dates": {
+            "2026-07-19": {"latest": _low(3110), "historical_low": _low(3110),
+                           "series": [{"price": 3110}]},
+            "2026-08-01": {"latest": _low(2980), "historical_low": _low(2980),
+                           "series": [{"price": 2980}]},
+        }}}}
+        card = build_digest_card([], {"routes_failed": 0}, summary=summary,
+                                 routes=[route], run_date="2026-07-10")
+        blob = str(card["card"]["elements"])
+        self.assertIn("固定日期", blob)
+        self.assertIn("07-19: ¥3110", blob)
+        self.assertIn("08-01: ¥2980", blob)
+
     def test_digest_heartbeat_no_alerts(self):
-        # heartbeat: digest still built with run stats when no alerts
+        # heartbeat: digest still built with run stats when no alerts / no data
         stats = {"routes_ok": 3, "routes_failed": 1, "fetched_count": 10,
                  "run_status": "1 条航线异常"}
-        card = build_digest_card([], stats, run_date="2026-07-10",
+        card = build_digest_card([], stats, summary={"routes": {}},
+                                 routes=[_rolling_route()], run_date="2026-07-10",
                                  run_status="1 条航线异常")
         # failed routes -> orange header
         self.assertEqual(card["card"]["header"]["template"], "orange")
         text_blob = str(card["card"]["elements"])
         self.assertIn("今日无价格异动", text_blob)
         self.assertIn("失败 1", text_blob)
+        self.assertIn("暂无数据", text_blob)  # route present but no summary data
 
     def test_sign_matches_reference(self):
         ts = "1700000000"

@@ -36,7 +36,13 @@ log = logging.getLogger("flight_watch")
 
 # Project layout (repo root = parent of this src/ package).
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_CONFIG = os.path.join(ROOT, "config.yaml")
+# config.json is the single source of truth (the web panel writes it reliably;
+# config.yaml is only a human-readable mirror and may carry panel formatting
+# bugs). Prefer config.json when present; config.py also enforces this at load
+# time, so a stale/broken config.yaml can never drive a scheduled run.
+_CONFIG_JSON = os.path.join(ROOT, "config.json")
+_CONFIG_YAML = os.path.join(ROOT, "config.yaml")
+DEFAULT_CONFIG = _CONFIG_JSON if os.path.exists(_CONFIG_JSON) else _CONFIG_YAML
 DATA_DIR = os.path.join(ROOT, "data")
 DOCS_DIR = os.path.join(ROOT, "docs")
 STATE_DIR = os.path.join(ROOT, "state")
@@ -55,7 +61,11 @@ class MockFetcher(FetcherAdapter):
         base = 800 + (abs(hash((route.id, depart_date))) % 1200)
         fetched_at = iso_now()
         out = []
-        for i, (airline, fno) in enumerate([("MU", "MU523"), ("CA", "CA929"), ("HO", "HO1339")]):
+        for i, (airline, fno, dtime) in enumerate([
+            ("Air China", "CA880", "20:55"),
+            ("China Eastern", "MU523", "09:10"),
+            ("Juneyao Air", "HO1339", "14:30"),
+        ]):
             out.append(FlightQuote(
                 fetched_at=fetched_at,
                 route_id=route.id,
@@ -64,6 +74,7 @@ class MockFetcher(FetcherAdapter):
                 depart_date=depart_date,
                 airline=airline,
                 flight_no=fno,
+                depart_time=dtime,
                 stops=i % 2,
                 price=base + i * 60,
                 currency="CNY",

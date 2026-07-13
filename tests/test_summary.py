@@ -11,10 +11,12 @@ from src.storage import Storage  # noqa: E402
 from src.main import mark_lowest_of_day  # noqa: E402
 
 
-def q(price, flight_no, fetched_at, depart_date="2026-10-01"):
+def q(price, flight_no, fetched_at, depart_date="2026-10-01",
+      airline="Air China", depart_time="20:55"):
     return FlightQuote(
         fetched_at=fetched_at, route_id="sha-nrt", origin="SHA", dest="NRT",
-        depart_date=depart_date, airline="MU", flight_no=flight_no, stops=0,
+        depart_date=depart_date, airline=airline, flight_no=flight_no,
+        depart_time=depart_time, stops=0,
         price=price, source="fast_flights", raw_price=float(price),
     )
 
@@ -47,12 +49,32 @@ class TestSummary(unittest.TestCase):
         self.assertEqual(node["latest"]["fetch_date"], "2026-07-10")
         self.assertEqual(node["historical_low"]["price"], 850)
         self.assertEqual([s["price"] for s in node["series"]], [1000, 850])
+        # enriched flight identity carried on latest / historical_low
+        self.assertEqual(node["latest"]["airline"], "Air China")
+        self.assertEqual(node["latest"]["flight_no"], "MU1")
+        self.assertEqual(node["latest"]["depart_time"], "20:55")
+        self.assertIn("airline", node["historical_low"])
 
         # summary.json is actually written under docs/data/
         path = os.path.join(self.tmp, "docs", "data", "summary.json")
         self.assertTrue(os.path.exists(path))
         with open(path, encoding="utf-8") as f:
             self.assertEqual(json.load(f)["meta"]["serpapi_remaining_quota"], 87)
+
+    def test_summary_tolerates_legacy_rows_without_depart_time(self):
+        # Old JSONL rows may omit depart_time; from_dict + summary must cope.
+        legacy = FlightQuote.from_dict({
+            "fetched_at": "2026-07-09T08:00:00+08:00", "route_id": "sha-nrt",
+            "origin": "SHA", "dest": "NRT", "depart_date": "2026-10-01",
+            "airline": "EVA Air", "flight_no": "", "stops": 1, "price": 999,
+            "source": "fast_flights",
+        })
+        self.assertEqual(legacy.depart_time, "")
+        self.st.append_quotes([legacy])
+        summary = self.st.build_summary()
+        node = summary["routes"]["sha-nrt"]["depart_dates"]["2026-10-01"]
+        self.assertEqual(node["latest"]["depart_time"], "")
+        self.assertEqual(node["latest"]["airline"], "EVA Air")
 
 
 if __name__ == "__main__":

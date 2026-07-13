@@ -21,16 +21,23 @@ class Notifier(ABC):
         self.cfg = cfg or {}
 
     @abstractmethod
-    def send_digest(self, alerts: list, stats: dict) -> bool:
+    def send_digest(self, alerts: list, stats: dict,
+                    summary: Optional[dict] = None,
+                    routes: Optional[list] = None) -> bool:
         """Send the daily digest (heartbeat). Sent even when ``alerts`` empty.
 
-        Returns True on (attempted) success, False on failure. Must never raise.
+        ``summary`` (enhanced dashboard summary) and ``routes`` (config Route
+        list) let rich channels render per-route price摘要; plain channels may
+        ignore them. Returns True on (attempted) success. Must never raise.
         """
         raise NotImplementedError
 
     @abstractmethod
-    def send_urgent(self, alert) -> bool:
-        """Send a single urgent alert immediately. Must never raise."""
+    def send_urgent(self, alert, summary: Optional[dict] = None) -> bool:
+        """Send a single urgent alert immediately. Must never raise.
+
+        ``summary`` (optional) lets channels attach flight details.
+        """
         raise NotImplementedError
 
 

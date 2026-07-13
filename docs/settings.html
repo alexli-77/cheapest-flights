@@ -178,7 +178,8 @@
     </div>
 
     <div class="mode-block hidden" id="rollingBlock">
-      <label>滚动天数（depart_in_days）— 监控未来这么多天每天的最低价</label>
+      <label>滚动天数（depart_in_days）— 监控未来 N 天</label>
+      <div class="hint" style="margin:0 0 6px">前 30 天逐日采样，超过 30 天后自动隔 3 天采样一次（如 90 天 = 30 + 20 = 50 个日期）；每条航线最多 60 个日期。</div>
       <input type="number" id="departDays" min="1" max="365" value="30" style="max-width:200px">
     </div>
 
@@ -232,7 +233,7 @@
   <!-- ========== 保存区 ========== -->
   <div class="panel">
     <h2>3. 保存并抓取</h2>
-    <div class="hint">「保存全部更改」会同时写回 <code>config.json</code> 与 <code>config.yaml</code>（保持两者同步，供 <code>src/config.py</code> 解析）。保存成功后可点「立即抓取」触发 GitHub Actions。</div>
+    <div class="hint"><code>config.json</code> 是唯一真源（Python 端优先读取它）；<code>config.yaml</code> 仅作人类可读镜像。「保存全部更改」会先刷新 sha 再写回两个文件。保存成功后可点「立即抓取」触发 GitHub Actions。</div>
     <div class="btn-row">
       <button class="primary" id="saveAllBtn">保存全部更改</button>
       <button id="dispatchBtn" disabled>⚡ 立即抓取</button>
@@ -319,6 +320,14 @@ function ghGetFile(filename) {
     .then(function (data) {
       return { text: b64DecodeUnicode(data.content), sha: data.sha };
     });
+}
+
+/* 仅取文件最新 blob sha；文件不存在（404）返回 null。
+ * 用于每次 PUT 前刷新 sha，避免用陈旧 sha 触发 409 冲突 / 脏写。 */
+function ghGetSha(filename) {
+  return ghFetch("/repos/" + OWNER + "/" + REPO + "/contents/" + filename + "?ref=" + BRANCH)
+    .then(function (data) { return data.sha; })
+    .catch(function (e) { if (e && e.status === 404) return null; throw e; });
 }
 
 /* PUT 文件（带 sha） */
@@ -552,7 +561,7 @@ function updateModeBlocks() {
 /* ========================= 航线列表渲染 ========================= */
 function describeDates(dates) {
   var m = (dates && dates.mode) || "fixed";
-  if (m === "rolling") return "滚动未来 " + (dates.depart_in_days || 0) + " 天";
+  if (m === "rolling") return "滚动未来 " + (dates.depart_in_days || 0) + " 天（>30 天隔 3 天采样）";
   if (m === "fixed") return "固定日期 " + ((dates.fixed_dates || []).join(", ") || "（空）");
   if (m === "both") return "滚动 " + (dates.depart_in_days || 0) + " 天 + 固定 " + ((dates.fixed_dates || []).join(", ") || "（无）");
   return m;
@@ -725,18 +734,25 @@ function saveAll() {
   var yamlText = fwConfigToYaml(STATE.config);
   var msg = "chore(config): update via web panel " + new Date().toISOString();
 
-  ghPutFile("config.json", jsonText, STATE.jsonSha, msg).then(function (r1) {
+  // 每次 PUT 前先 GET 最新 sha（config.json 是唯一真源，config.yaml 仅镜像）。
+  ghGetSha("config.json").then(function (sha) {
+    STATE.jsonSha = sha;
+    return ghPutFile("config.json", jsonText, STATE.jsonSha, msg);
+  }).then(function (r1) {
     STATE.jsonSha = r1.content.sha;
-    setStatus($("saveStatus"), "写入 config.yaml…", "");
+    setStatus($("saveStatus"), "写入 config.yaml（人类可读镜像）…", "");
+    return ghGetSha("config.yaml");
+  }).then(function (ysha) {
+    STATE.yamlSha = ysha;
     return ghPutFile("config.yaml", yamlText, STATE.yamlSha, msg);
   }).then(function (r2) {
     STATE.yamlSha = r2.content.sha;
     STATE.dirty = false;
-    setStatus($("saveStatus"), "✓ 已保存 config.json 与 config.yaml。可点「立即抓取」触发工作流。", "ok");
+    setStatus($("saveStatus"), "✓ 已保存 config.json（真源）与 config.yaml（镜像）。可点「立即抓取」触发工作流。", "ok");
     $("dispatchBtn").disabled = false;
     btn.disabled = false;
   }).catch(function (e) {
-    setStatus($("saveStatus"), "保存失败：" + e.message + "（若为 409 冲突请重新载入后再试）", "err");
+    setStatus($("saveStatus"), "保存失败：" + e.message + "（已自动刷新 sha；若仍冲突请重新载入后再试）", "err");
     btn.disabled = false;
   });
 }

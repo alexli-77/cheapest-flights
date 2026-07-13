@@ -13,7 +13,8 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 3 条航线滚动窗口 ≈130 个日期查询 × ~17s ≈ 40 分钟，留足余量到 120。
+    timeout-minutes: 120
     env:
       FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
       FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}

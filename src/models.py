@@ -60,6 +60,8 @@ class FlightQuote:
       depart_date     departure calendar date "YYYY-MM-DD"
       airline         airline IATA code, e.g. "MU"
       flight_no       flight number, e.g. "MU523"
+      depart_time     local departure time "HH:MM" (optional; "" when unknown —
+                      fast-flights 2.2 may not parse it)
       stops           number of stops (0 = direct)
       price           normalized price as int in ``currency`` (default CNY)
       currency        normalized currency code, e.g. "CNY"
@@ -80,6 +82,7 @@ class FlightQuote:
     flight_no: str
     stops: int
     price: int
+    depart_time: str = ""  # optional "HH:MM"; old JSONL rows lack it -> "" default
     currency: str = "CNY"
     raw_price: float = 0.0
     raw_currency: str = "CNY"
