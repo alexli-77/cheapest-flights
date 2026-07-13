@@ -47,6 +47,14 @@
       }
     },
     "2026-07-15": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-13",
+        "flight_no": "",
+        "price": 3118,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Hainan": {
         "currency": "CNY",
         "fetch_date": "2026-07-11",
@@ -195,6 +203,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-13",
+        "flight_no": "",
+        "price": 4421,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "EgyptAir": {
         "currency": "CNY",
         "fetch_date": "2026-07-11",
@@ -205,6 +221,14 @@
       }
     },
     "2026-07-26": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-13",
+        "flight_no": "",
+        "price": 3118,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Hainan": {
         "currency": "CNY",
         "fetch_date": "2026-07-11",
@@ -447,9 +471,19 @@
     "2026-08-11": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-12",
+        "fetch_date": "2026-07-13",
         "flight_no": "",
-        "price": 4896,
+        "price": 4421,
+        "source": "fast_flights",
+        "stops": 0
+      }
+    },
+    "2026-08-12": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-13",
+        "flight_no": "",
+        "price": 3190,
         "source": "fast_flights",
         "stops": 0
       }
@@ -483,8 +517,8 @@
       }
     }
   },
-  "generated_at": "2026-07-12T12:08:48+08:00",
-  "latest_fetch_date": "2026-07-12",
+  "generated_at": "2026-07-13T12:10:54+08:00",
+  "latest_fetch_date": "2026-07-13",
   "route": "pek-cdg",
   "sources": [
     "fast_flights"
