@@ -71,6 +71,25 @@ class Route:
 #: onward_routes × dates can explode; each fast-flights query ≈ 17s).
 HIDDEN_CITY_MAX_DATES = 15
 
+#: 默认「中国承运人」名单（航司全名/常见写法；子串匹配、大小写不敏感）。用于把有限的
+#: SerpAPI 确认额度优先花在「疑似经中国大陆中转」的候选上。注意：国泰(Cathay)经香港
+#: HKG 中转，而 HKG 不在 chinese_hubs 内，纳入只会浪费额度确认永不命中的候选，故默认
+#: 不含 Cathay——与 chinese_hubs 口径保持一致。用户可在 config 里覆盖 cn_carriers。
+DEFAULT_CN_CARRIERS = [
+    "Air China",
+    "China Eastern",
+    "China Southern",
+    "Xiamen Air",
+    "XiamenAir",
+    "Hainan Airlines",
+    "Shenzhen Airlines",
+    "Sichuan Airlines",
+    "Shanghai Airlines",
+    "Juneyao",
+    "Spring Airlines",
+    "Beijing Capital",
+]
+
 
 @dataclass
 class HiddenCityConfig:
@@ -92,10 +111,16 @@ class HiddenCityConfig:
     max_dates_per_onward: int = HIDDEN_CITY_MAX_DATES
     #: fast-flights 直飞基线最多查几次（成本护栏；0 = 不查直飞基线）。
     max_direct_lookups: int = 6
+    #: True=只把 SerpAPI 确认额度花在「疑似中国承运人」候选上（没有则本次不花额度，
+    #: 把额度留给日报增强/其他运行）；False=疑似优先、有余额再确认最便宜的其它候选。
+    confirm_only_suspected: bool = True
+    #: 中国承运人名单（子串匹配、大小写不敏感），用于候选优先级排序。
+    cn_carriers: list = field(default_factory=lambda: list(DEFAULT_CN_CARRIERS))
 
     @classmethod
     def from_dict(cls, d: Optional[dict]) -> "HiddenCityConfig":
         d = d or {}
+        cn = d.get("cn_carriers")
         return cls(
             enabled=bool(d.get("enabled", False)),
             origin=str(d.get("origin", "") or "").upper(),
@@ -107,6 +132,8 @@ class HiddenCityConfig:
             max_dates_per_onward=int(d.get("max_dates_per_onward", HIDDEN_CITY_MAX_DATES)
                                      or HIDDEN_CITY_MAX_DATES),
             max_direct_lookups=int(d.get("max_direct_lookups", 6) or 0),
+            confirm_only_suspected=bool(d.get("confirm_only_suspected", True)),
+            cn_carriers=[str(x) for x in cn] if cn else list(DEFAULT_CN_CARRIERS),
         )
 
 

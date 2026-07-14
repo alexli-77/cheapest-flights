@@ -47,11 +47,13 @@ except Exception:  # pragma: no cover - defensive
 
 # 航司名 -> 疑似中转中国枢纽（无 SerpAPI 确认时的启发式降级）。子串匹配，
 # 大小写不敏感。只在命中的枢纽同时属于 config 的 chinese_hubs 时才算疑似命中。
+# 这些 needle 与 config.DEFAULT_CN_CARRIERS 一致复用（都是「中国承运人」的常见写法）。
 AIRLINE_HUB_HEURISTICS = [
     ("air china", "PEK"),
     ("china eastern", "PVG"),
     ("shanghai airlines", "PVG"),
     ("juneyao", "PVG"),
+    ("spring airlines", "PVG"),
     ("china southern", "CAN"),
     ("xiamen", "XMN"),
     ("sichuan", "CTU"),
@@ -59,6 +61,24 @@ AIRLINE_HUB_HEURISTICS = [
     ("hainan", "PEK"),
     ("beijing capital", "PEK"),
 ]
+
+
+def is_cn_carrier(airline: str, cn_carriers: list) -> bool:
+    """航司名是否包含任一「中国承运人」（子串匹配、大小写不敏感）。
+
+    fast-flights 的 ``name`` 可能是「WestJet, China Southern」这种多航司串，只要
+    **包含**任一中国承运人写法即视为「疑似经中国大陆中转」，据此优先消耗 SerpAPI
+    确认额度。注意：Cathay(国泰)经 HKG 中转，HKG 不在 chinese_hubs 内，默认名单不含
+    Cathay，以免把额度浪费在永不命中的候选上（与 chinese_hubs 口径一致）。
+    """
+    a = str(airline or "").lower()
+    if not a:
+        return False
+    for c in (cn_carriers or []):
+        c = str(c or "").strip().lower()
+        if c and c in a:
+            return True
+    return False
 
 
 def heuristic_hub(airline: str, chinese_hubs: list) -> Optional[str]:
@@ -210,11 +230,13 @@ def _gather_candidates(hc, today: date, fast_fetcher, sleep_fn, request_interval
                     "flight_no": cheapest.flight_no,
                     "depart_time": getattr(cheapest, "depart_time", ""),
                     "stops": int(cheapest.stops),
+                    "is_cn_carrier": is_cn_carrier(cheapest.airline, getattr(hc, "cn_carriers", None)),
                 })
             if request_interval:
                 sleep_fn(request_interval)
-    # 优先确认价格最低的候选（省得最多 / 最值得抓）。
-    candidates.sort(key=lambda c: c["price_cny"])
+    # 候选优先级：第一优先「航司含中国承运人」的候选（只有它们才可能经中国大陆中转，
+    # 值得优先花 SerpAPI 确认额度），第二优先其余候选；两组各按价格升序。
+    candidates.sort(key=lambda c: (0 if c.get("is_cn_carrier") else 1, c["price_cny"]))
     return candidates
 
 
@@ -310,7 +332,9 @@ def run_hidden_city(
         return result
 
     candidates = _gather_candidates(hc, today, fast_fetcher, sleep_fn, request_interval)
-    log.info("hidden_city: %d candidates (stops>=1) gathered", len(candidates))
+    n_cn = sum(1 for c in candidates if c.get("is_cn_carrier"))
+    log.info("hidden_city: %d candidates (stops>=1) gathered, %d with CN carrier "
+             "(prioritized for SerpAPI confirm)", len(candidates), n_cn)
 
     # SerpAPI 确认预算：受 max_serpapi_per_run 与月剩余额度双限制。
     serp_ok = False
@@ -336,12 +360,29 @@ def run_hidden_city(
         dd = cand["depart_date"]
         key = (dest, dd)
 
-        # 1) 尝试 SerpAPI 确认（一次调用覆盖整条 route×date）。
-        if serp_ok and key not in confirmed_cache and serp_used < serp_budget:
+        # 1) 尝试 SerpAPI 确认（一次调用覆盖整条 route×date）。候选已按「中国承运人优先、
+        #    价格升序」排好序，所以额度天然先给疑似经中国大陆中转的候选。当
+        #    confirm_only_suspected=True 时，进一步只对中国承运人候选花额度（没有疑似
+        #    候选则本次一次都不花，把 SerpAPI 留给日报增强/其他运行，避免浪费）。
+        want_confirm = serp_ok and key not in confirmed_cache and serp_used < serp_budget
+        if want_confirm and getattr(hc, "confirm_only_suspected", True) \
+                and not cand.get("is_cn_carrier"):
+            want_confirm = False
+        if want_confirm:
             try:
                 parsed = serp_fetcher.fetch_layovers(hc.origin, dest, dd)
                 serp_used += 1
                 confirmed_cache[key] = parsed
+                # 诊断日志：打印被确认候选的航司 + onward + date + 确认结果。
+                seen_hubs = sorted({str(lo.get("id") or "") for fl in (parsed or [])
+                                    for lo in (fl.get("layovers") or []) if lo.get("id")})
+                _m = _match_confirmed_hub(parsed, hc.chinese_hubs)
+                if _m:
+                    log.info("  hidden_city confirm: %s %s→%s %s -> layovers=%s HIT %s",
+                             cand["airline"], hc.origin, dest, dd, seen_hubs, _m["layover_cn"])
+                else:
+                    log.info("  hidden_city confirm: %s %s→%s %s -> layovers=%s miss",
+                             cand["airline"], hc.origin, dest, dd, seen_hubs)
             except FetchError as e:
                 log.info("  hidden_city SerpAPI %s %s failed: %s", dest, dd, e)
                 confirmed_cache[key] = None
@@ -410,6 +451,7 @@ def run_hidden_city(
     stats = {
         "enabled": True,
         "candidates": len(candidates),
+        "cn_carrier_candidates": sum(1 for c in candidates if c.get("is_cn_carrier")),
         "hits": len(hits),
         "confirmed": sum(1 for h in hits if not h.get("suspected")),
         "suspected": sum(1 for h in hits if h.get("suspected")),

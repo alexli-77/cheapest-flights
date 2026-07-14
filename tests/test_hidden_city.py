@@ -119,6 +119,20 @@ class TestConfigHiddenCity(unittest.TestCase):
         c = HiddenCityConfig.from_dict(None)
         self.assertFalse(c.enabled)
         self.assertEqual(c.max_dates_per_onward, 15)
+        # 新增：默认只确认疑似中国承运人候选，且带默认中国承运人名单。
+        self.assertTrue(c.confirm_only_suspected)
+        self.assertIn("Air China", c.cn_carriers)
+
+    def test_repo_config_parses_cn_carrier_fields(self):
+        cfg = load_config(os.path.join(ROOT, "config.json"))
+        self.assertTrue(cfg.hidden_city.confirm_only_suspected)
+        self.assertIn("China Southern", cfg.hidden_city.cn_carriers)
+
+    def test_from_dict_confirm_flag_override(self):
+        c = HiddenCityConfig.from_dict({"confirm_only_suspected": False,
+                                        "cn_carriers": ["Air China"]})
+        self.assertFalse(c.confirm_only_suspected)
+        self.assertEqual(c.cn_carriers, ["Air China"])
 
     def test_from_dict_uppercases_codes(self):
         c = HiddenCityConfig.from_dict({"origin": "yul", "onward_routes": ["bkk"],
@@ -167,6 +181,29 @@ class TestHeuristic(unittest.TestCase):
         self.assertIsNone(hc.heuristic_hub("United", ["PEK"]))
 
 
+class TestCnCarrier(unittest.TestCase):
+    CN = HiddenCityConfig.from_dict(None).cn_carriers  # 默认中国承运人名单
+
+    def test_multi_carrier_substring_match(self):
+        # fast-flights 多航司串，只要包含任一中国承运人即视为疑似中国中转。
+        self.assertTrue(hc.is_cn_carrier("WestJet, China Southern", self.CN))
+
+    def test_case_insensitive(self):
+        self.assertTrue(hc.is_cn_carrier("air china", self.CN))
+        self.assertTrue(hc.is_cn_carrier("XIAMEN AIRLINES", self.CN))
+
+    def test_cathay_hkg_not_counted(self):
+        # 国泰经 HKG 中转，HKG 不在 chinese_hubs，默认名单不含 Cathay -> 不算疑似。
+        self.assertFalse(hc.is_cn_carrier("Cathay Pacific", self.CN))
+
+    def test_non_cn_carrier(self):
+        self.assertFalse(hc.is_cn_carrier("Asiana", self.CN))
+        self.assertFalse(hc.is_cn_carrier("", self.CN))
+
+    def test_custom_list_override(self):
+        self.assertTrue(hc.is_cn_carrier("Cathay Pacific", ["Cathay"]))
+
+
 class TestRunHiddenCity(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
@@ -202,6 +239,66 @@ class TestRunHiddenCity(unittest.TestCase):
             self.assertIn(h["layover_cn"], ["PEK", "PVG"])
         # dashboard json written
         self.assertTrue(os.path.exists(os.path.join(self.docs, "data", "hidden_city.json")))
+
+    def test_candidates_cn_carrier_sorted_first(self):
+        # BKK 更便宜但非中国承运人；SGN 更贵但中国承运人 -> 排序后 CN 候选在最前。
+        fast = FakeFast({
+            "BKK": [_quote("BKK", "", 3000, "Asiana", 1)],
+            "SGN": [_quote("SGN", "", 5000, "WestJet, China Southern", 1)],
+        })
+        cfg = self._cfg()
+        cands = hc._gather_candidates(cfg.hidden_city, self.today, fast,
+                                      lambda *_: None, 0)
+        self.assertTrue(cands)
+        self.assertTrue(cands[0]["is_cn_carrier"])
+        self.assertEqual(cands[0]["onward_dest"], "SGN")
+        # 非 CN 候选排在所有 CN 候选之后
+        first_non_cn = next(i for i, c in enumerate(cands) if not c["is_cn_carrier"])
+        self.assertTrue(all(cands[i]["is_cn_carrier"] for i in range(first_non_cn)))
+
+    def test_confirm_prioritizes_cn_carrier_over_cheaper(self):
+        # 预算只够 1 次确认：应花在中国承运人候选(SGN)上，而非更便宜的非 CN(BKK)。
+        fast = FakeFast({
+            "BKK": [_quote("BKK", "", 3000, "Asiana", 1)],          # 更便宜、非 CN
+            "SGN": [_quote("SGN", "", 5000, "China Southern", 1)],  # 更贵、CN
+        })
+        serp = FakeSerp(remaining=90)
+        cfg = self._cfg(max_serpapi_per_run=1)
+        res = hc.run_hidden_city(cfg, self.data, self.docs, today=self.today,
+                                 fast_fetcher=fast, serp_fetcher=serp,
+                                 sleep_fn=lambda *_: None, request_interval=0)
+        self.assertEqual(serp.calls, 1)
+        self.assertTrue(res["hits"])
+        self.assertTrue(all(h["onward_dest"] == "SGN" for h in res["hits"]))
+        self.assertTrue(all(not h["suspected"] for h in res["hits"]))
+
+    def test_confirm_only_suspected_no_cn_zero_serpapi(self):
+        # confirm_only_suspected=True 且无中国承运人候选 -> 一次 SerpAPI 都不花。
+        fast = FakeFast({
+            "BKK": [_quote("BKK", "", 3000, "Asiana", 1)],
+            "SGN": [_quote("SGN", "", 5000, "Air Canada", 1)],
+        })
+        serp = FakeSerp(remaining=90)
+        cfg = self._cfg(max_serpapi_per_run=10, confirm_only_suspected=True)
+        res = hc.run_hidden_city(cfg, self.data, self.docs, today=self.today,
+                                 fast_fetcher=fast, serp_fetcher=serp,
+                                 sleep_fn=lambda *_: None, request_interval=0)
+        self.assertEqual(serp.calls, 0)
+        self.assertEqual(res["hits"], [])
+        self.assertEqual(res["stats"]["cn_carrier_candidates"], 0)
+
+    def test_confirm_only_suspected_false_falls_back_to_cheapest(self):
+        # confirm_only_suspected=False：无 CN 候选时仍确认最便宜的其它候选。
+        fast = FakeFast({
+            "BKK": [_quote("BKK", "", 3000, "Asiana", 1)],
+            "SGN": [_quote("SGN", "", 5000, "Air Canada", 1)],
+        })
+        serp = FakeSerp(remaining=90)
+        cfg = self._cfg(max_serpapi_per_run=10, confirm_only_suspected=False)
+        res = hc.run_hidden_city(cfg, self.data, self.docs, today=self.today,
+                                 fast_fetcher=fast, serp_fetcher=serp,
+                                 sleep_fn=lambda *_: None, request_interval=0)
+        self.assertGreater(serp.calls, 0)
 
     def test_heuristic_degrade_when_no_serpapi(self):
         fast = FakeFast({
