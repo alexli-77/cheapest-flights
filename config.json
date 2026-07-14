@@ -80,6 +80,11 @@
     "daily_quota": 3,
     "deviation_warn_pct": 20
   },
+  "enrich": {
+    "enabled": true,
+    "max_per_run": 3,
+    "which": "cheapest_per_route"
+  },
   "alerts": {
     "daily_digest": true,
     "urgent_single_push": true,

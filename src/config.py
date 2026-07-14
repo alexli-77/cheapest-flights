@@ -121,6 +121,10 @@ class Config:
     dashboard: dict
     raw: dict
     hidden_city: Optional[HiddenCityConfig] = None
+    #: 日报航班详情增强段（config.json 顶层 ``enrich``）：
+    #: {"enabled": bool, "max_per_run": int, "which": str}
+    enrich: dict = field(default_factory=lambda: {
+        "enabled": False, "max_per_run": 3, "which": "cheapest_per_route"})
 
     def route_by_id(self, route_id: str) -> Optional[Route]:
         for r in self.routes:
@@ -170,6 +174,11 @@ def load_config(path: str) -> Config:
         dashboard=raw.get("dashboard", {}) or {},
         raw=raw,
         hidden_city=HiddenCityConfig.from_dict(raw.get("hidden_city")),
+        enrich={
+            "enabled": bool((raw.get("enrich") or {}).get("enabled", False)),
+            "max_per_run": int((raw.get("enrich") or {}).get("max_per_run", 3) or 0),
+            "which": str((raw.get("enrich") or {}).get("which", "cheapest_per_route")),
+        },
     )
 
 

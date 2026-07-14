@@ -1,21 +1,31 @@
 """SerpAPI google_flights adapter — limited cross-check source (report 4.2).
 
-Not a primary source: the free tier is only ~100-250 queries/month, so this is
-used a few times a day to validate fast-flights prices. A quota guard enforces a
-hard monthly ceiling (default 90) persisted in state/serpapi_usage.json.
+Not a primary source: the free tier is only ~250 queries/month, so this is used
+a few times a day to (a) validate fast-flights prices, (b) enrich the daily
+digest with real flight numbers / times / baggage markers, and (c) confirm
+hidden-city中转机场. A quota guard enforces a hard monthly ceiling (default 240)
+persisted in state/serpapi_usage.json, shared across all three consumers.
 """
 
 from __future__ import annotations
 
 import json
+import logging
 import os
+import re
 from datetime import datetime
 
 from ..models import FlightQuote, iso_now, SHANGHAI
 from .fast_flights import parse_price, load_fx_rates, convert_to_cny, PINNED_CURRENCY, PINNED_HL
 from .base import FetcherAdapter, FetchError, register_fetcher
 
-MONTHLY_CAP = 90  # <= free-tier low estimate (100/month) with headroom
+log = logging.getLogger("flight_watch.fetchers.serpapi")
+
+# Free tier is 250 calls/month; keep headroom for both consumers of the shared
+# monthly counter (state/serpapi_usage.json): daily-digest enrichment (~90/mo,
+# ≤3/run × ~30 runs) + hidden-city confirmation (~90/mo) + buffer. Both draw
+# down the SAME budget, so this ceiling caps the two combined.
+MONTHLY_CAP = 240  # <= free-tier 250/month with headroom (enrich ~90 + hidden ~90 + buffer)
 
 
 @register_fetcher("serpapi")
@@ -131,6 +141,54 @@ class SerpApiFetcher(FetcherAdapter):
             raise FetchError("SerpAPI: no usable quotes parsed", retryable=True)
         return quotes
 
+    # ---------------------------------------------- daily-digest enrichment
+    def fetch_flight_detail(self, origin: str, dest: str, depart_date: str):
+        """Query one origin→dest×date and return structured candidate flights.
+
+        Used by the daily-digest 增强 (src.enrich) to attach real 航班号/精确时刻/
+        机型/中转机场/行李标记 to the cheapest quote of each route. One call covers
+        the whole route×date and counts as ONE unit of the shared monthly SerpAPI
+        budget (``state/serpapi_usage.json``).
+
+        Returns the list produced by :func:`parse_flight_details` (possibly empty)
+        on success. Returns ``None`` — never raises — when the key is missing, the
+        monthly quota is exhausted, ``requests`` is absent, or the request/parse
+        fails, so the digest silently falls back to fast-flights display.
+        """
+        api_key = os.environ.get("SERPAPI_KEY")
+        if not api_key:
+            return None
+        if self._used_this_month() >= self.monthly_cap:
+            log.info("SerpAPI monthly quota exhausted (%d), skip enrichment", self.monthly_cap)
+            return None
+        try:
+            import requests  # type: ignore
+        except Exception:
+            return None
+
+        params = {
+            "engine": "google_flights",
+            "type": "2",  # one-way
+            "departure_id": origin,
+            "arrival_id": dest,
+            "outbound_date": depart_date,
+            "currency": PINNED_CURRENCY,
+            "hl": PINNED_HL,
+            "api_key": api_key,
+        }
+        try:
+            resp = requests.get("https://serpapi.com/search", params=params, timeout=30)
+            self._increment_usage()  # count the call regardless of parse outcome
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            log.warning("SerpAPI detail request failed for %s->%s %s: %s",
+                        origin, dest, depart_date, e)
+            return None
+
+        rates = load_fx_rates(self.state_dir)
+        return parse_flight_details(data, rates)
+
     # ------------------------------------------------- hidden-city layovers
     def fetch_layovers(self, origin: str, dest: str, depart_date: str) -> list:
         """Query one origin→dest×date and return every flight's中转信息.
@@ -227,6 +285,8 @@ def parse_layover_flights(raw_flights: list, rates: dict) -> list:
                 price_cny = convert_to_cny(amount, cur, rates)
             except (ValueError, TypeError):
                 price_cny = None
+        dep = first.get("departure_airport") if isinstance(first, dict) else None
+        depart_time = _hhmm_from_serp_time((dep or {}).get("time"))
         out.append({
             "price_cny": price_cny,
             "raw_price": raw_price,
@@ -235,5 +295,136 @@ def parse_layover_flights(raw_flights: list, rates: dict) -> list:
             "flight_no": flight_no,
             "stops": stops,
             "layovers": layovers,
+            "depart_time": depart_time,
+            "baggage_note": _baggage_note(item.get("extensions")),
+        })
+    return out
+
+
+# SerpAPI departure/arrival ``time`` looks like "2023-10-03 15:10" (space split)
+# — normalize to 24-hour "HH:MM"; unparsable -> "".
+_SERP_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})")
+
+
+def _hhmm_from_serp_time(raw) -> str:
+    """"2023-10-03 15:10" -> "15:10"; "" / None / unparsable -> ""."""
+    if not raw:
+        return ""
+    m = _SERP_TIME_RE.search(str(raw))
+    if not m:
+        return ""
+    hh, mm = int(m.group(1)), int(m.group(2))
+    if not (0 <= hh <= 23 and 0 <= mm <= 59):
+        return ""
+    return f"{hh:02d}:{mm:02d}"
+
+
+_BAG_NUM_RE = re.compile(r"(\d+)")
+
+
+def _baggage_note(extensions) -> str:
+    """Compress a flight's ``extensions`` list into a short 中文 baggage marker.
+
+    SerpAPI only exposes coarse flight-level ``extensions`` strings such as
+    ``"1 free carry-on"`` / ``"Checked baggage for a fee"`` / ``"1 free checked
+    bag"`` — there is NO precise allowance (kg/pieces beyond what the phrase
+    states). We extract only phrases mentioning bag/carry/checked and map the
+    common ones to compact tags joined by ``;`` (e.g. "含1件随身;托运需另购").
+    Unknown baggage phrases are kept verbatim. Returns "" when nothing matches.
+    """
+    tags: list = []
+    for ext in extensions or []:
+        s = str(ext or "").strip()
+        low = s.lower()
+        if not any(k in low for k in ("bag", "carry", "checked", "cabin")):
+            continue
+        num_m = _BAG_NUM_RE.search(s)
+        num = num_m.group(1) if num_m else ""
+        if "carry" in low or "cabin" in low:
+            tags.append(f"含{num}件随身" if (num and "free" in low)
+                        else ("含随身行李" if "free" in low else "随身行李"))
+        elif "fee" in low:  # "Checked baggage for a fee"
+            tags.append("托运需另购")
+        elif "free" in low:  # "1 free checked bag"
+            tags.append(f"含{num}件托运" if num else "含免费托运")
+        else:
+            tags.append(s)  # unknown -> keep the raw phrase, honest fallback
+    seen: set = set()
+    out: list = []
+    for t in tags:
+        if t and t not in seen:
+            seen.add(t)
+            out.append(t)
+    return ";".join(out)
+
+
+def parse_flight_details(payload: dict, rates: dict = None) -> list:
+    """Parse a full SerpAPI google_flights response into candidate flights.
+
+    Pure/side-effect-free so tests can feed it the documented sample JSON.
+    ``payload`` is the whole response (``best_flights`` + ``other_flights``).
+    Each output row (one per candidate itinerary) carries::
+
+        {"price_cny": int|None, "raw_price": float, "raw_currency": str,
+         "airline": str,          # first leg's marketing carrier
+         "flight_no": str,        # first leg's flight number, e.g. "NH 962"
+         "airplane": str,         # first leg's aircraft type (may be "")
+         "depart_time": "HH:MM",  # first leg departure (24h; "" if unknown)
+         "arrive_time": "HH:MM",  # last leg arrival (24h; "" if unknown)
+         "stops": int,            # len(flights) - 1
+         "layover_airports": [str, ...],   # IATA ids of中转机场
+         "baggage_note": str,     # coarse marker from flight-level extensions
+         "overnight": bool}
+    """
+    if rates is None:
+        from .fast_flights import DEFAULT_FX_RATES
+        rates = DEFAULT_FX_RATES
+    payload = payload or {}
+    raw_flights = (payload.get("best_flights") or []) + (payload.get("other_flights") or [])
+    out: list = []
+    for item in raw_flights:
+        if not isinstance(item, dict):
+            continue
+        legs = item.get("flights") or []
+        first = legs[0] if legs else {}
+        last = legs[-1] if legs else {}
+        dep = (first.get("departure_airport") if isinstance(first, dict) else None) or {}
+        arr = (last.get("arrival_airport") if isinstance(last, dict) else None) or {}
+        airline = str(first.get("airline") or "").strip()
+        flight_no = str(first.get("flight_number") or "").strip()
+        airplane = str(first.get("airplane") or "").strip()
+        depart_time = _hhmm_from_serp_time(dep.get("time"))
+        arrive_time = _hhmm_from_serp_time(arr.get("time"))
+        stops = max(0, len(legs) - 1)
+        layover_airports = [
+            str(lo.get("id") or "").upper().strip()
+            for lo in (item.get("layovers") or [])
+            if isinstance(lo, dict) and lo.get("id")
+        ]
+        price = item.get("price")
+        price_cny = None
+        raw_price = 0.0
+        raw_currency = PINNED_CURRENCY
+        if price not in (None, ""):
+            try:
+                amount, cur = parse_price(price)
+                raw_price = float(amount)
+                raw_currency = cur
+                price_cny = convert_to_cny(amount, cur, rates)
+            except (ValueError, TypeError):
+                price_cny = None
+        out.append({
+            "price_cny": price_cny,
+            "raw_price": raw_price,
+            "raw_currency": raw_currency,
+            "airline": airline,
+            "flight_no": flight_no,
+            "airplane": airplane,
+            "depart_time": depart_time,
+            "arrive_time": arrive_time,
+            "stops": stops,
+            "layover_airports": layover_airports,
+            "baggage_note": _baggage_note(item.get("extensions")),
+            "overnight": bool(item.get("overnight")),
         })
     return out

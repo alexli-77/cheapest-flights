@@ -152,11 +152,23 @@ class Storage:
                                          "airline","flight_no","depart_time"} | null,
                       "series": [ {"fetch_date","price","currency"}, ... ]
                     }, ...
+                  },
+                  "headline": {           # OPTIONAL, added by src.enrich (SerpAPI
+                                          # digest enrichment); absent when no key
+                                          # / no budget. Describes the route's
+                                          # cheapest depart_date in full detail.
+                     "depart_date","price","airline","flight_no","airplane",
+                     "depart_time","arrive_time","stops","layover_airports":[...],
+                     "baggage_note","overnight","source"
                   }
                 }, ...
               },
               "meta": { ...arbitrary extra (e.g. serpapi quota)... }
             }
+
+        ``build_summary`` itself never fills ``headline`` (it only reads JSONL).
+        The enrichment runs after this in the pipeline and re-persists via
+        :meth:`persist_summary`.
         """
         ids = route_ids if route_ids is not None else self.route_ids()
         routes_out: dict = {}
@@ -177,11 +189,22 @@ class Storage:
             "routes": routes_out,
             "meta": extra or {},
         }
+        self.persist_summary(summary)
+        return summary
+
+    def persist_summary(self, summary: dict) -> str:
+        """(Re)write docs/data/summary.json from an in-memory summary dict.
+
+        Used both by build_summary and by src.enrich (which mutates the summary
+        in place with per-route ``headline`` details and needs to re-persist so
+        the static dashboard sees the enriched fields).
+        """
         out_dir = os.path.join(self.docs_dir, "data")
         os.makedirs(out_dir, exist_ok=True)
-        with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as f:
+        path = os.path.join(out_dir, "summary.json")
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(summary, f, ensure_ascii=False, indent=2, sort_keys=True)
-        return summary
+        return path
 
 
 def _detail_score(r: dict) -> int:

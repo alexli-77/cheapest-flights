@@ -221,7 +221,7 @@ def _gather_candidates(hc, today: date, fast_fetcher, sleep_fn, request_interval
 def _match_confirmed_hub(parsed_flights: list, chinese_hubs: list) -> Optional[dict]:
     """在 SerpAPI 解析结果里找中转落在 chinese_hubs 的最便宜航班。
 
-    返回 {"layover_cn","price_cny","airline","flight_no"} 或 None。
+    返回 {"layover_cn","price_cny","airline","flight_no","depart_time"} 或 None。
     """
     hubs = {str(h).upper() for h in (chinese_hubs or [])}
     best = None
@@ -241,6 +241,7 @@ def _match_confirmed_hub(parsed_flights: list, chinese_hubs: list) -> Optional[d
                 "price_cny": price,
                 "airline": fl.get("airline", ""),
                 "flight_no": fl.get("flight_no", ""),
+                "depart_time": fl.get("depart_time", ""),  # SerpAPI 解析已带精确起飞时刻
             }
     return best
 
@@ -359,6 +360,7 @@ def run_hidden_city(
                     "price_cny": int(price),
                     "airline": match["airline"] or cand["airline"],
                     "flight_no": match["flight_no"] or cand["flight_no"],
+                    "depart_time": match.get("depart_time", ""),  # SerpAPI 精确时刻优先
                     "suspected": False,
                     "source": "serpapi",
                 }
@@ -394,7 +396,7 @@ def run_hidden_city(
             "origin": hc.origin,
             "onward_dest": dest,
             "depart_date": dd,
-            "depart_time": cand.get("depart_time", ""),
+            "depart_time": hit.get("depart_time") or cand.get("depart_time", ""),
             "layover_city_cn": _layover_city_cn(hit["layover_cn"]),
             "direct_price_cny": direct_price,
             "saving_pct": saving_pct,

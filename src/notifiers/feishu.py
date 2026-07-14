@@ -215,6 +215,41 @@ def _flight_info_str(low: dict) -> str:
     return " · ".join(parts)
 
 
+def _headline_lines(hl: dict) -> list:
+    """两行增强详情（来自 summary headline / SerpAPI）：航班行 + 行李/中转托运说明。
+
+    行1: ``国泰 CX889 · 直飞 · 20:55 起飞``（有中转时 ``· 中转 北京首都(PEK)``）。
+    行2: 直飞  -> ``🧳 行李：<baggage_note 或 见链接确认>``
+         有中转 -> ``🧳 行李：<...> · 单一订单行李直挂终点，中转无需重新托运``
+                  （固定政策文案，不依赖数据）。
+    无 headline 时返回 []（保持原样，回退 fast-flights 展示）。
+    """
+    if not hl:
+        return []
+    carrier = " ".join(x for x in (str(hl.get("airline") or "").strip(),
+                                   str(hl.get("flight_no") or "").strip()) if x).strip()
+    stops = int(hl.get("stops") or 0)
+    if stops <= 0:
+        stop_label = "直飞"
+    else:
+        los = [_airport_label(a) for a in (hl.get("layover_airports") or []) if a]
+        stop_label = ("中转 " + "、".join(los)) if los else f"中转{stops}次"
+    dt = str(hl.get("depart_time") or "").strip()
+    seg = [x for x in (carrier, stop_label) if x]
+    if dt:
+        seg.append(f"{dt} 起飞")
+    lines = []
+    line1 = " · ".join(seg)
+    if line1:
+        lines.append(line1)
+    bag = str(hl.get("baggage_note") or "").strip() or "见链接确认"
+    if stops > 0:
+        lines.append(f"🧳 行李：{bag} · 单一订单行李直挂终点，中转无需重新托运")
+    else:
+        lines.append(f"🧳 行李：{bag}")
+    return lines
+
+
 def _digest_pct(node: dict) -> str:
     """"环比 -8%" comparing the latest fetch low to the previous fetch low for a
     depart_date, or "" when there is no prior point or no meaningful change."""
@@ -253,10 +288,13 @@ def _route_window_label(route) -> str:
     return mode
 
 
-def _route_block(route, node_map: dict) -> dict:
+def _route_block(route, node_map: dict, headline: dict = None) -> dict:
     """Build one compact digest block (a lark_md div) for a single route.
 
     ``node_map`` = summary["routes"][id]["depart_dates"] (may be empty).
+    ``headline`` = summary["routes"][id]["headline"] (SerpAPI 增强详情, optional):
+    when it matches the depart_date shown as this route's最低价, two extra lines
+    (航班号/时刻/中转 + 行李/中转托运说明) are appended.
     """
     origin = str(getattr(route, "origin", "") or "").upper()
     dest = str(getattr(route, "dest", "") or "").upper()
@@ -297,6 +335,12 @@ def _route_block(route, node_map: dict) -> dict:
         link_dd = best_dd
 
     content = f"**{header}**\n{body}"
+
+    # 增强详情：仅当 headline 对应的 depart_date 正是本块展示的最低价日期时展示。
+    if headline and link_dd and headline.get("depart_date") == link_dd:
+        for extra in _headline_lines(headline):
+            content += f"\n{extra}"
+
     if link_dd:
         url = gflights_url(origin, dest, link_dd)
         if url:
@@ -337,8 +381,10 @@ def build_digest_card(alerts: list, stats: dict, summary: dict = None,
     for route in routes:
         if getattr(route, "enabled", True) is False:
             continue
-        node_map = (routes_summary.get(getattr(route, "id", "")) or {}).get("depart_dates", {})
-        elements.append(_route_block(route, node_map))
+        route_node = routes_summary.get(getattr(route, "id", "")) or {}
+        node_map = route_node.get("depart_dates", {})
+        headline = route_node.get("headline")
+        elements.append(_route_block(route, node_map, headline=headline))
         shown += 1
     if shown == 0:
         elements.append({"tag": "div", "text": {"tag": "lark_md", "content": "暂无航线数据。"}})
@@ -430,6 +476,11 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
 HIDDEN_CITY_RISK = (
     "隐藏城市票：仅飞第一段、勿托运行李、勿用于往返程、违反航司条款，风险自负"
 )
+# 行李政策说明（固定文案）：跳程票的行李会被直挂到票面终点，而非你实际下机的中转站，
+# 所以只能带手提行李随身下机。
+HIDDEN_CITY_BAGGAGE = (
+    "🧳 行李：隐藏城市票行李会直挂票面终点（非你下机的中转站），只能带手提行李随身下机"
+)
 
 
 def _city_code_label(code: str) -> str:
@@ -477,6 +528,8 @@ def _hidden_hit_block(hit: dict) -> dict:
         meta.append(fi)
     if meta:
         lines.append(" · ".join(meta))
+
+    lines.append(HIDDEN_CITY_BAGGAGE)
 
     url = gflights_url(origin, onward, dd)
     if url:

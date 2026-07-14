@@ -271,6 +271,26 @@ def run(
     summary = storage.build_summary(route_ids=[r.id for r in cfg.routes], extra=meta)
     log.info("summary.json built: %d routes", len(summary.get("routes", {})))
 
+    # --- SerpAPI 日报航班详情增强：为每条 enabled 航线最便宜的 route×date 回填
+    #     真航班号/精确时刻/机型/中转机场/行李标记（summary[...]["headline"]）。
+    #     受 config.enrich + 月额度守卫双限制；无 key / dry-run 时整段跳过（回退纯
+    #     fast-flights 展示，绝不报错）。 ---
+    enrich_cfg = getattr(cfg, "enrich", {}) or {}
+    if enrich_cfg.get("enabled") and not dry_run:
+        try:
+            from src.enrich import enrich_summary  # type: ignore
+            est = enrich_summary(
+                cfg, summary, serp_fetcher=get_fetcher("serpapi"),
+                max_per_run=int(enrich_cfg.get("max_per_run", 3)),
+                which=str(enrich_cfg.get("which", "cheapest_per_route")),
+                sleep_fn=sleep_fn, request_interval=request_interval,
+            )
+            log.info("digest enrichment: %s", est)
+            if est.get("enriched"):
+                storage.persist_summary(summary)  # re-write so dashboard sees headlines
+        except Exception as e:  # never let enrichment crash the pipeline
+            log.error("digest enrichment raised: %s", e)
+
     # --- Hooks for later agents (M2). Modules may not exist yet. ---
     alerts: list = []
     try:

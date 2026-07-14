@@ -187,6 +187,44 @@ function flightInfoStr(low) {
   return [carrier, low.depart_time || ""].filter(Boolean).join(" · ");
 }
 
+// 机场中文名 + 三字码，如 "北京(PEK)"；查不到时退回三字码。
+function airportLabelCN(code) {
+  code = String(code || "").toUpperCase();
+  var list = (window.AIRPORTS || []);
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].iata === code) {
+      var name = list[i].city_cn || "";
+      return name ? name + "(" + code + ")" : code;
+    }
+  }
+  return code;
+}
+
+// SerpAPI 增强详情（summary headline）-> 两行：航班号/时刻/中转 + 行李/中转托运说明。
+function headlineLines(hl) {
+  if (!hl) return [];
+  var carrier = [hl.airline, hl.flight_no].filter(Boolean).join(" ");
+  var stops = Number(hl.stops || 0);
+  var stopLabel;
+  if (stops <= 0) {
+    stopLabel = "直飞";
+  } else {
+    var los = (hl.layover_airports || []).filter(Boolean).map(airportLabelCN);
+    stopLabel = los.length ? ("中转 " + los.join("、")) : ("中转" + stops + "次");
+  }
+  var seg = [carrier, stopLabel].filter(Boolean);
+  if (hl.depart_time) seg.push(hl.depart_time + " 起飞");
+  var line1 = seg.join(" · ");
+  var bag = String(hl.baggage_note || "").trim() || "见链接确认";
+  var line2 = stops > 0
+    ? ("🧳 行李：" + bag + " · 单一订单行李直挂终点，中转无需重新托运")
+    : ("🧳 行李：" + bag);
+  var out = [];
+  if (line1) out.push(line1);
+  out.push(line2);
+  return out;
+}
+
 // 每个 route 的「每日最低价」序列：跨 depart_dates，对每个 fetch_date 取最小 latest?
 // series 里每个 depart_date 已是「该 fetch_date 的最低价」。跨 depart_date 再取 min。
 function dailyMinSeries(routeObj) {
@@ -275,6 +313,11 @@ function render(summary, meta) {
       ? '<div class="route-cn">' + esc(fromCN || m.from || "?") + ' → ' + esc(toCN || m.to || "?") + '</div>'
       : '';
     var flight = flightInfoStr(ll.low);
+    // 增强详情：仅当 headline 对应最低价出发日时展示（航班号/精确时刻/中转/行李）。
+    var hl = (robj.headline && robj.headline.depart_date === ll.dd) ? robj.headline : null;
+    var hlHtml = headlineLines(hl).map(function (t) {
+      return '<div class="flight-info">' + esc(t) + '</div>';
+    }).join("");
     var buyUrl = gflightsUrl(m.from, m.to, ll.dd);
 
     var card = document.createElement("div");
@@ -296,6 +339,7 @@ function render(summary, meta) {
         arrowChip(series) +
       '</div>' +
       (flight ? '<div class="flight-info">' + esc(flight) + '</div>' : '') +
+      hlHtml +
       '<div class="target">' +
         '<span>目标价 ' + (target != null ? fmtMoney(target, ll.currency) : "—") + '</span>' +
         (diff != null
