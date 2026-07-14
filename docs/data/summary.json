@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-14T10:00:56+08:00",
+  "generated_at": "2026-07-14T10:59:01+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 36836,
+      "fetched_count": 36686,
       "routes_failed": 0,
       "routes_ok": 3,
       "routes_total": 3,
       "run_date": "2026-07-14"
     },
-    "serpapi_remaining_quota": 90
+    "serpapi_remaining_quota": 240
   },
   "routes": {
     "yul-hkg": {
@@ -1263,6 +1263,23 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "西捷航空",
+        "airplane": "Boeing 737MAX 8 Passenger",
+        "arrive_time": "10:05",
+        "baggage_note": "",
+        "depart_date": "2026-07-15",
+        "depart_time": "17:45",
+        "flight_no": "WS 817",
+        "layover_airports": [
+          "YYZ",
+          "MNL"
+        ],
+        "overnight": false,
+        "price": 3139,
+        "source": "serpapi",
+        "stops": 2
       }
     },
     "yul-pek": {
@@ -2517,6 +2534,23 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "西捷航空",
+        "airplane": "Boeing 737MAX 8 Passenger",
+        "arrive_time": "11:55",
+        "baggage_note": "",
+        "depart_date": "2026-07-15",
+        "depart_time": "17:45",
+        "flight_no": "WS 817",
+        "layover_airports": [
+          "YYZ",
+          "MNL"
+        ],
+        "overnight": false,
+        "price": 3982,
+        "source": "serpapi",
+        "stops": 2
       }
     },
     "yul-yvr": {
@@ -3271,6 +3305,20 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "Flair Airlines",
+        "airplane": "Boeing 737MAX 8 Passenger",
+        "arrive_time": "11:00",
+        "baggage_note": "托运需另购",
+        "depart_date": "2026-08-13",
+        "depart_time": "08:30",
+        "flight_no": "F8 107",
+        "layover_airports": [],
+        "overnight": false,
+        "price": 1066,
+        "source": "serpapi",
+        "stops": 0
       }
     }
   }
