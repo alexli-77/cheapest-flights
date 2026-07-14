@@ -76,7 +76,7 @@ hidden_city:
   dates:
     mode: rolling
     depart_in_days: 45
-  max_serpapi_per_run: 10
+  max_serpapi_per_run: 3
   min_saving_pct: 0
   max_dates_per_onward: 15
   max_direct_lookups: 6
