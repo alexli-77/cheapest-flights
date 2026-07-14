@@ -3,10 +3,10 @@
   "defaults": {
     "currency": "CNY",
     "hl": "zh-CN",
-    "request_interval_seconds": 10,
+    "request_interval_seconds": 5,
     "retry_backoffs_seconds": [
-      30,
-      90
+      15,
+      40
     ],
     "max_retries": 2
   },
@@ -138,7 +138,7 @@
     },
     "max_serpapi_per_run": 3,
     "min_saving_pct": 0,
-    "max_dates_per_onward": 15,
+    "max_dates_per_onward": 8,
     "max_direct_lookups": 6
   }
 }

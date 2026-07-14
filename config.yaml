@@ -1,52 +1,61 @@
-# flight-watch 配置（由网页配置面板生成，与 config.json 保持同步）
-# 若环境无 PyYAML 会自动回退读取同目录 config.json。
 timezone: Asia/Shanghai
 defaults:
   currency: CNY
   hl: zh-CN
-  request_interval_seconds: 10
-  retry_backoffs_seconds: [30, 90]
+  request_interval_seconds: 5
+  retry_backoffs_seconds:
+  - 15
+  - 40
   max_retries: 2
 routes:
-  - id: yul-pek
-    from: YUL
-    to: PEK
-    dates:
-      mode: rolling
-      depart_in_days: 90
-    airlines:
-      whitelist: []
-      blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights, serpapi, ctrip_local]
-    enabled: true
-  - id: yul-yvr
-    from: YUL
-    to: YVR
-    dates:
-      mode: rolling
-      depart_in_days: 30
-    airlines:
-      whitelist: []
-      blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights, serpapi, ctrip_local]
-    enabled: true
-  - id: yul-hkg
-    from: YUL
-    to: HKG
-    dates:
-      mode: rolling
-      depart_in_days: 90
-    airlines:
-      whitelist: []
-      blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights, serpapi, ctrip_local]
-    enabled: true
+- id: yul-pek
+  from: YUL
+  to: PEK
+  dates:
+    mode: rolling
+    depart_in_days: 90
+  airlines:
+    whitelist: []
+    blacklist: []
+  target_price: null
+  drop_alert_pct: null
+  sources:
+  - fast_flights
+  - serpapi
+  - ctrip_local
+  enabled: true
+- id: yul-yvr
+  from: YUL
+  to: YVR
+  dates:
+    mode: rolling
+    depart_in_days: 30
+  airlines:
+    whitelist: []
+    blacklist: []
+  target_price: null
+  drop_alert_pct: null
+  sources:
+  - fast_flights
+  - serpapi
+  - ctrip_local
+  enabled: true
+- id: yul-hkg
+  from: YUL
+  to: HKG
+  dates:
+    mode: rolling
+    depart_in_days: 90
+  airlines:
+    whitelist: []
+    blacklist: []
+  target_price: null
+  drop_alert_pct: null
+  sources:
+  - fast_flights
+  - serpapi
+  - ctrip_local
+  enabled: true
 cross_check:
   source: serpapi
   daily_quota: 3
@@ -67,16 +76,38 @@ notifiers:
 dashboard:
   output: docs/data/summary.json
   provider: github_pages
-  url: "https://alexli-77.github.io/cheapest-flights/"
+  url: https://alexli-77.github.io/cheapest-flights/
 hidden_city:
   enabled: true
   origin: YUL
-  onward_routes: [BKK, SGN, MNL, DPS, KUL, HAN, SYD, MEL, TPE]
-  chinese_hubs: [PEK, PVG, SHA, CAN, SZX, CTU, XMN, HGH, NKG, WUH, CKG, XIY, KMG]
+  onward_routes:
+  - BKK
+  - SGN
+  - MNL
+  - DPS
+  - KUL
+  - HAN
+  - SYD
+  - MEL
+  - TPE
+  chinese_hubs:
+  - PEK
+  - PVG
+  - SHA
+  - CAN
+  - SZX
+  - CTU
+  - XMN
+  - HGH
+  - NKG
+  - WUH
+  - CKG
+  - XIY
+  - KMG
   dates:
     mode: rolling
     depart_in_days: 45
   max_serpapi_per_run: 3
   min_saving_pct: 0
-  max_dates_per_onward: 15
+  max_dates_per_onward: 8
   max_direct_lookups: 6
