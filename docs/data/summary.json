@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-14T11:53:47+08:00",
+  "generated_at": "2026-07-14T13:08:00+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 36744,
+      "fetched_count": 36546,
       "routes_failed": 0,
       "routes_ok": 3,
       "routes_total": 3,
       "run_date": "2026-07-14"
     },
-    "serpapi_remaining_quota": 234
+    "serpapi_remaining_quota": 228
   },
   "routes": {
     "yul-hkg": {
@@ -3307,18 +3307,20 @@
         }
       },
       "headline": {
-        "airline": "Flair Airlines",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "11:00",
+        "airline": "波特航空",
+        "airplane": "Embraer 195 E2",
+        "arrive_time": "00:04",
         "baggage_note": "托运需另购",
         "depart_date": "2026-08-13",
-        "depart_time": "08:30",
-        "flight_no": "F8 107",
-        "layover_airports": [],
+        "depart_time": "17:00",
+        "flight_no": "PD 130",
+        "layover_airports": [
+          "YYZ"
+        ],
         "overnight": false,
         "price": 1066,
         "source": "serpapi",
-        "stops": 0
+        "stops": 1
       }
     }
   }

@@ -1,16 +1,34 @@
 {
-  "generated_at": "2026-07-14T12:01:24+08:00",
-  "hits": [],
+  "generated_at": "2026-07-14T13:15:44+08:00",
+  "hits": [
+    {
+      "airline": "WestJet, Hainan",
+      "depart_date": "2026-07-19",
+      "depart_time": "06:45",
+      "direct_price_cny": 5602,
+      "fetched_at": "2026-07-14T13:15:38+08:00",
+      "flight_no": "",
+      "layover_city_cn": "北京",
+      "layover_cn": "PEK",
+      "onward_dest": "BKK",
+      "origin": "YUL",
+      "price_cny": 7150,
+      "saving_pct": null,
+      "source": "fast_flights_heuristic",
+      "suspected": true
+    }
+  ],
   "stats": {
     "candidates": 45,
+    "cn_carrier_candidates": 0,
     "confirmed": 0,
     "enabled": true,
-    "hits": 0,
+    "hits": 1,
     "run_date": "2026-07-14",
     "serpapi_budget": 3,
-    "serpapi_month_remaining": 228,
-    "serpapi_used": 3,
-    "suspected": 0,
-    "written": 0
+    "serpapi_month_remaining": 225,
+    "serpapi_used": 0,
+    "suspected": 1,
+    "written": 1
   }
 }
