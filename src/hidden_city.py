@@ -243,7 +243,9 @@ def _gather_candidates(hc, today: date, fast_fetcher, sleep_fn, request_interval
 def _match_confirmed_hub(parsed_flights: list, chinese_hubs: list) -> Optional[dict]:
     """在 SerpAPI 解析结果里找中转落在 chinese_hubs 的最便宜航班。
 
-    返回 {"layover_cn","price_cny","airline","flight_no","depart_time"} 或 None。
+    返回 {"layover_cn","price_cny","airline","flight_no","depart_time",
+          "segments","layovers"} 或 None。segments/layovers 为逐段行程展示用
+    （layovers 为 {"airport","wait_min"} 形式，从 SerpAPI itin_layovers 取）。
     """
     hubs = {str(h).upper() for h in (chinese_hubs or [])}
     best = None
@@ -264,6 +266,8 @@ def _match_confirmed_hub(parsed_flights: list, chinese_hubs: list) -> Optional[d
                 "airline": fl.get("airline", ""),
                 "flight_no": fl.get("flight_no", ""),
                 "depart_time": fl.get("depart_time", ""),  # SerpAPI 解析已带精确起飞时刻
+                "segments": list(fl.get("segments") or []),
+                "layovers": list(fl.get("itin_layovers") or []),
             }
     return best
 
@@ -402,6 +406,8 @@ def run_hidden_city(
                     "airline": match["airline"] or cand["airline"],
                     "flight_no": match["flight_no"] or cand["flight_no"],
                     "depart_time": match.get("depart_time", ""),  # SerpAPI 精确时刻优先
+                    "segments": list(match.get("segments") or []),   # 逐段行程（SerpAPI）
+                    "layovers": list(match.get("layovers") or []),   # 段间中转等待
                     "suspected": False,
                     "source": "serpapi",
                 }

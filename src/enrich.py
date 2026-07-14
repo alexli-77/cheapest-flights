@@ -24,6 +24,9 @@ headline 结构（summary["routes"][rid]["headline"]，可空）::
      "airline": str, "flight_no": str, "airplane": str,
      "depart_time": "HH:MM", "arrive_time": "HH:MM", "stops": int,
      "layover_airports": [str, ...], "baggage_note": str,
+     "segments": [ {leg,airline,flight_no,from,from_time,to,to_time,
+                    duration_min,airplane}, ... ],       # 逐段行程（展示用）
+     "layovers": [ {"airport": str, "wait_min": int}, ... ],  # 段间中转等待
      "overnight": bool, "source": "serpapi"}
 """
 
@@ -143,6 +146,8 @@ def enrich_summary(
                 "arrive_time": best.get("arrive_time", ""),
                 "stops": int(best.get("stops") or 0),
                 "layover_airports": list(best.get("layover_airports") or []),
+                "segments": list(best.get("segments") or []),
+                "layovers": list(best.get("layovers") or []),
                 "baggage_note": best.get("baggage_note", ""),
                 "overnight": bool(best.get("overnight")),
                 "source": "serpapi",

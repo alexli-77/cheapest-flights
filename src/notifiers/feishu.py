@@ -24,8 +24,10 @@ import hmac
 import json
 import logging
 import os
+import re
 import time
 import urllib.parse
+from datetime import date as _date
 from typing import Callable, Optional
 
 from .base import Notifier, register_notifier
@@ -250,6 +252,156 @@ def _headline_lines(hl: dict) -> list:
     return lines
 
 
+# --------------------------------------------------- 逐段行程 (multi-segment)
+#: 逐段行程一次最多展示的航段数（超长航程截断 + 「…」）。
+MAX_ITINERARY_SEGMENTS = 4
+
+_FULL_DT_RE = re.compile(r"(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{2})")
+
+
+def _fmt_dur(mins) -> str:
+    """分钟 -> 友好「Xh Ym」显示：165->'2h45m'、60->'1h'、45->'45m'。
+
+    None / 非数字 / <=0 -> ""（不显示）。
+    """
+    try:
+        m = int(mins)
+    except (TypeError, ValueError):
+        return ""
+    if m <= 0:
+        return ""
+    h, mm = divmod(m, 60)
+    if h and mm:
+        return f"{h}h{mm}m"
+    if h:
+        return f"{h}h"
+    return f"{mm}m"
+
+
+def _parse_full_dt(raw):
+    """"2026-08-06 20:55" -> (date(2026,8,6), "20:55")。
+
+    仅有 "HH:MM" 时 -> (None, "HH:MM")；无法解析 -> (None, "")。
+    """
+    s = str(raw or "").strip()
+    if not s:
+        return None, ""
+    m = _FULL_DT_RE.search(s)
+    if m:
+        y, mo, d, hh, mm = (int(x) for x in m.groups())
+        try:
+            dobj = _date(y, mo, d)
+        except ValueError:
+            dobj = None
+        if 0 <= hh <= 23 and 0 <= mm <= 59:
+            return dobj, f"{hh:02d}:{mm:02d}"
+        return dobj, ""
+    hm = re.search(r"(\d{1,2}):(\d{2})", s)
+    if hm:
+        hh, mm = int(hm.group(1)), int(hm.group(2))
+        if 0 <= hh <= 23 and 0 <= mm <= 59:
+            return None, f"{hh:02d}:{mm:02d}"
+    return None, ""
+
+
+def _flight_no_compact(no) -> str:
+    """"CA 880" -> "CA880"（去掉内部空格，卡片更紧凑）。"""
+    return "".join(str(no or "").split())
+
+
+def _layover_for(layovers: list, idx: int, airport: str):
+    """段 ``idx`` 之后的中转等待记录：优先按位置，退回按机场码匹配。"""
+    if 0 <= idx < len(layovers) and isinstance(layovers[idx], dict):
+        return layovers[idx]
+    code = str(airport or "").upper().strip()
+    if code:
+        for lo in layovers:
+            if isinstance(lo, dict) and str(lo.get("airport") or "").upper() == code:
+                return lo
+    return None
+
+
+def format_itinerary(segments, layovers=None, max_segs: int = MAX_ITINERARY_SEGMENTS) -> str:
+    """把逐段航段 + 段间中转等待渲染成 lark_md 多行文本（可空）。
+
+    单段（直飞）::
+
+        ✈️ CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK)
+
+    多段（同日到达省略日期，跨日 ``+N``；段间列出中转等待）::
+
+        ✈️ 第1段 CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK) · 飞行2h45m
+        ⏱ 中转 北京首都(PEK) 等待 3h20m
+        ✈️ 第2段 CA123 · 08-07 03:00 北京首都(PEK) → 07:10 曼谷(BKK) · 飞行4h10m
+
+    机场用中文全名（airports.py）；``flight_no`` 去空格；分钟转「Xh Ym」。超过
+    ``max_segs`` 段则截断并加「… 还有 N 段」。字段缺失容错，绝不抛错；无有效航段
+    返回 ""。
+    """
+    segs = [s for s in (segments or []) if isinstance(s, dict)]
+    if not segs:
+        return ""
+    layovers = [lo for lo in (layovers or []) if isinstance(lo, dict)]
+    n = len(segs)
+    shown = segs[:max_segs]
+    lines: list = []
+    for i, seg in enumerate(shown):
+        fno = _flight_no_compact(seg.get("flight_no"))
+        dep_dt, dep_hhmm = _parse_full_dt(seg.get("from_time"))
+        arr_dt, arr_hhmm = _parse_full_dt(seg.get("to_time"))
+        from_label = _airport_label(seg.get("from"))
+        to_label = _airport_label(seg.get("to"))
+
+        if dep_dt and dep_hhmm:
+            dep_disp = f"{dep_dt.month:02d}-{dep_dt.day:02d} {dep_hhmm}"
+        else:
+            dep_disp = dep_hhmm
+        arr_disp = arr_hhmm
+        if arr_dt and dep_dt and arr_hhmm:
+            day_gap = (arr_dt - dep_dt).days
+            if day_gap == 1:
+                arr_disp = f"{arr_hhmm}+1"
+            elif day_gap > 1:
+                arr_disp = f"{arr_hhmm}+{day_gap}"
+
+        head = "✈️" if n == 1 else f"✈️ 第{i + 1}段"
+        if fno:
+            head += f" {fno}"
+        dep_part = " ".join(x for x in (dep_disp, from_label) if x)
+        arr_part = " ".join(x for x in (arr_disp, to_label) if x)
+        line = head
+        if dep_part and arr_part:
+            line += f" · {dep_part} → {arr_part}"
+        elif dep_part or arr_part:
+            line += f" · {dep_part or arr_part}"
+        if n > 1:
+            dur = _fmt_dur(seg.get("duration_min"))
+            if dur:
+                line += f" · 飞行{dur}"
+        lines.append(line)
+
+        if i < len(shown) - 1:  # 段间中转等待
+            lo = _layover_for(layovers, i, seg.get("to"))
+            if lo:
+                lo_line = f"⏱ 中转 {_airport_label(lo.get('airport'))}"
+                wait = _fmt_dur(lo.get("wait_min"))
+                if wait:
+                    lo_line += f" 等待 {wait}"
+                lines.append(lo_line)
+
+    if n > max_segs:
+        lines.append(f"… 还有 {n - max_segs} 段")
+    return "\n".join(lines)
+
+
+def _baggage_line(hl: dict) -> str:
+    """行李说明单行（与 _headline_lines 第2行一致；逐段展示时附在行程后）。"""
+    bag = str((hl or {}).get("baggage_note") or "").strip() or "见链接确认"
+    if int((hl or {}).get("stops") or 0) > 0:
+        return f"🧳 行李：{bag} · 单一订单行李直挂终点，中转无需重新托运"
+    return f"🧳 行李：{bag}"
+
+
 def _digest_pct(node: dict) -> str:
     """"环比 -8%" comparing the latest fetch low to the previous fetch low for a
     depart_date, or "" when there is no prior point or no meaningful change."""
@@ -288,13 +440,17 @@ def _route_window_label(route) -> str:
     return mode
 
 
-def _route_block(route, node_map: dict, headline: dict = None) -> dict:
+def _route_block(route, node_map: dict, headline: dict = None,
+                 show_segments: bool = True) -> dict:
     """Build one compact digest block (a lark_md div) for a single route.
 
     ``node_map`` = summary["routes"][id]["depart_dates"] (may be empty).
     ``headline`` = summary["routes"][id]["headline"] (SerpAPI 增强详情, optional):
-    when it matches the depart_date shown as this route's最低价, two extra lines
-    (航班号/时刻/中转 + 行李/中转托运说明) are appended.
+    when it matches the depart_date shown as this route's最低价, the逐段行程 is
+    expanded (航班号/各段时刻/起降机场 + 段间中转等待, via :func:`format_itinerary`)
+    followed by a 行李/中转托运说明 line. When ``show_segments`` is False or the
+    headline carries no ``segments``, it falls back to the single-line
+    :func:`_headline_lines` summary.
     """
     origin = str(getattr(route, "origin", "") or "").upper()
     dest = str(getattr(route, "dest", "") or "").upper()
@@ -338,8 +494,15 @@ def _route_block(route, node_map: dict, headline: dict = None) -> dict:
 
     # 增强详情：仅当 headline 对应的 depart_date 正是本块展示的最低价日期时展示。
     if headline and link_dd and headline.get("depart_date") == link_dd:
-        for extra in _headline_lines(headline):
-            content += f"\n{extra}"
+        segs = headline.get("segments") or []
+        if show_segments and segs:
+            itin = format_itinerary(segs, headline.get("layovers") or [])
+            if itin:
+                content += f"\n{itin}"
+            content += f"\n{_baggage_line(headline)}"
+        else:
+            for extra in _headline_lines(headline):
+                content += f"\n{extra}"
 
     if link_dd:
         url = gflights_url(origin, dest, link_dd)
@@ -351,7 +514,8 @@ def _route_block(route, node_map: dict, headline: dict = None) -> dict:
 
 def build_digest_card(alerts: list, stats: dict, summary: dict = None,
                       routes: list = None, dashboard_url: str = "",
-                      run_date: str = "", run_status: str = "运行正常") -> dict:
+                      run_date: str = "", run_status: str = "运行正常",
+                      show_segments: bool = True) -> dict:
     """Build the compact daily digest interactive card (heartbeat-safe).
 
     One block per route showing that route's cheapest摘要 (from the enhanced
@@ -384,7 +548,8 @@ def build_digest_card(alerts: list, stats: dict, summary: dict = None,
         route_node = routes_summary.get(getattr(route, "id", "")) or {}
         node_map = route_node.get("depart_dates", {})
         headline = route_node.get("headline")
-        elements.append(_route_block(route, node_map, headline=headline))
+        elements.append(_route_block(route, node_map, headline=headline,
+                                     show_segments=show_segments))
         shown += 1
     if shown == 0:
         elements.append({"tag": "div", "text": {"tag": "lark_md", "content": "暂无航线数据。"}})
@@ -497,8 +662,13 @@ def _city_code_label(code: str) -> str:
     return f"{city}{code}" if city else code
 
 
-def _hidden_hit_block(hit: dict) -> dict:
-    """一条隐藏城市命中的卡片块。"""
+def _hidden_hit_block(hit: dict, show_segments: bool = True, expand: bool = True) -> dict:
+    """一条隐藏城市命中的卡片块。
+
+    ``expand`` 且 ``show_segments`` 且命中带 ``segments`` 时，展开逐段行程
+    （各段时刻/航班号/起降机场 + 段间中转等待，via :func:`format_itinerary`）；
+    否则退回单行 航班摘要（航司/航班号/起飞时间）。行李/风险提示始终保留。
+    """
     origin = str(hit.get("origin") or "").upper()
     onward = str(hit.get("onward_dest") or "").upper()
     layover = str(hit.get("layover_cn") or "").upper()
@@ -520,14 +690,21 @@ def _hidden_hit_block(hit: dict) -> dict:
         city_only = layover_city or layover
         lines.append(f"比直飞{city_only} ¥{_fmt(direct)} 省 {_fmt(saving)}%")
 
-    fi = _flight_info_str(hit)
-    meta = []
-    if dd:
-        meta.append(f"出发 {dd}")
-    if fi:
-        meta.append(fi)
-    if meta:
-        lines.append(" · ".join(meta))
+    segs = hit.get("segments") or []
+    itin = format_itinerary(segs, hit.get("layovers") or []) if (show_segments and expand) else ""
+    if itin:
+        if dd:
+            lines.append(f"出发 {dd}")
+        lines.append(itin)
+    else:
+        fi = _flight_info_str(hit)
+        meta = []
+        if dd:
+            meta.append(f"出发 {dd}")
+        if fi:
+            meta.append(fi)
+        if meta:
+            lines.append(" · ".join(meta))
 
     lines.append(HIDDEN_CITY_BAGGAGE)
 
@@ -539,8 +716,18 @@ def _hidden_hit_block(hit: dict) -> dict:
     return {"tag": "div", "text": {"tag": "lark_md", "content": "\n".join(lines)}}
 
 
-def build_hidden_city_card(hits: list, dashboard_url: str = "", limit: int = 8) -> dict:
-    """隐藏城市特价专属卡片：每条命中一块，最多 ``limit`` 条，其余折叠成一行。"""
+#: 隐藏城市卡片一次最多「详细展开逐段行程」的命中数，其余仅显示单行摘要。
+HIDDEN_CITY_DETAIL_LIMIT = 5
+
+
+def build_hidden_city_card(hits: list, dashboard_url: str = "", limit: int = 8,
+                           show_segments: bool = True) -> dict:
+    """隐藏城市特价专属卡片：每条命中一块，最多 ``limit`` 条，其余折叠成一行。
+
+    前 ``HIDDEN_CITY_DETAIL_LIMIT`` 条详细展开逐段行程（有 segments 时），其余
+    命中块仅显示单行航班摘要，避免卡片过长。``show_segments=False`` 时全部回退
+    单行摘要。
+    """
     hits = list(hits or [])
     elements: list = []
     if not hits:
@@ -552,8 +739,9 @@ def build_hidden_city_card(hits: list, dashboard_url: str = "", limit: int = 8) 
         summary = f"共 {len(hits)} 条（确认 {n_conf} · 疑似 {n_susp}）"
         elements.append({"tag": "div", "text": {"tag": "lark_md", "content": summary}})
         elements.append({"tag": "hr"})
-        for h in hits[:limit]:
-            elements.append(_hidden_hit_block(h))
+        for i, h in enumerate(hits[:limit]):
+            elements.append(_hidden_hit_block(
+                h, show_segments=show_segments, expand=(i < HIDDEN_CITY_DETAIL_LIMIT)))
         rest = len(hits) - limit
         if rest > 0:
             elements.append({"tag": "div", "text": {"tag": "lark_md",
@@ -630,6 +818,10 @@ class FeishuNotifier(Notifier):
         dash = (self.cfg.get("dashboard") or {})
         return dash.get("url", "") if isinstance(dash, dict) else ""
 
+    def _show_segments(self) -> bool:
+        """notifiers.feishu.show_segments 开关（默认 True = 展开逐段行程）。"""
+        return bool(self.cfg.get("show_segments", True))
+
     def _maybe_sign(self, payload: dict) -> dict:
         """Add timestamp + sign fields if FEISHU_SECRET is set."""
         secret = os.environ.get(SECRET_ENV)
@@ -660,6 +852,7 @@ class FeishuNotifier(Notifier):
             dashboard_url=self._dashboard_url(),
             run_date=stats.get("run_date", ""),
             run_status=stats.get("run_status", "运行正常"),
+            show_segments=self._show_segments(),
         )
         return self._send(card)
 
@@ -673,7 +866,8 @@ class FeishuNotifier(Notifier):
         """隐藏城市特价单独一张卡片。无命中时不发（返回 False）。"""
         if not hits:
             return False
-        card = build_hidden_city_card(hits, dashboard_url=self._dashboard_url())
+        card = build_hidden_city_card(hits, dashboard_url=self._dashboard_url(),
+                                      show_segments=self._show_segments())
         return self._send(card)
 
 

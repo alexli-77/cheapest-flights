@@ -225,6 +225,93 @@ function headlineLines(hl) {
   return out;
 }
 
+// ---- 逐段行程（multi-segment）：与 Python format_itinerary 一致的展示 ----
+function pad2(n) { return (n < 10 ? "0" : "") + n; }
+
+function fmtDur(mins) {
+  var m = parseInt(mins, 10);
+  if (isNaN(m) || m <= 0) return "";
+  var h = Math.floor(m / 60), mm = m % 60;
+  if (h && mm) return h + "h" + mm + "m";
+  if (h) return h + "h";
+  return mm + "m";
+}
+
+// "2026-08-06 20:55" -> {d:Date, hm:"20:55", mo:8, da:6}；仅 HH:MM -> {d:null, hm}。
+function parseFullDt(raw) {
+  var s = String(raw == null ? "" : raw).trim();
+  if (!s) return { d: null, hm: "" };
+  var m = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{2})/);
+  if (m) {
+    var mo = parseInt(m[2], 10), da = parseInt(m[3], 10),
+        hh = parseInt(m[4], 10), mi = parseInt(m[5], 10);
+    return { d: new Date(parseInt(m[1], 10), mo - 1, da), hm: pad2(hh) + ":" + pad2(mi),
+             mo: mo, da: da };
+  }
+  var hm2 = s.match(/(\d{1,2}):(\d{2})/);
+  if (hm2) return { d: null, hm: pad2(parseInt(hm2[1], 10)) + ":" + pad2(parseInt(hm2[2], 10)) };
+  return { d: null, hm: "" };
+}
+
+function flightNoCompact(no) { return String(no == null ? "" : no).replace(/\s+/g, ""); }
+
+function layoverFor(layovers, idx, airport) {
+  if (idx >= 0 && idx < layovers.length && layovers[idx]) return layovers[idx];
+  var code = String(airport || "").toUpperCase();
+  for (var i = 0; i < layovers.length; i++) {
+    if (layovers[i] && String(layovers[i].airport || "").toUpperCase() === code) return layovers[i];
+  }
+  return null;
+}
+
+// 逐段航段 + 段间中转等待 -> 展示行数组（机场中文名；flight_no 去空格；前 4 段）。
+function formatItinerary(segments, layovers, maxSegs) {
+  maxSegs = maxSegs || 4;
+  var segs = (segments || []).filter(function (s) { return s && typeof s === "object"; });
+  if (!segs.length) return [];
+  layovers = (layovers || []).filter(function (l) { return l && typeof l === "object"; });
+  var n = segs.length, shown = segs.slice(0, maxSegs), lines = [];
+  shown.forEach(function (seg, i) {
+    var fno = flightNoCompact(seg.flight_no);
+    var dep = parseFullDt(seg.from_time), arr = parseFullDt(seg.to_time);
+    var fromLabel = airportLabelCN(seg.from), toLabel = airportLabelCN(seg.to);
+    var depDisp = (dep.d && dep.hm) ? (pad2(dep.mo) + "-" + pad2(dep.da) + " " + dep.hm) : dep.hm;
+    var arrDisp = arr.hm;
+    if (arr.d && dep.d && arr.hm) {
+      var gap = Math.round((arr.d - dep.d) / 86400000);
+      if (gap === 1) arrDisp = arr.hm + "+1";
+      else if (gap > 1) arrDisp = arr.hm + "+" + gap;
+    }
+    var head = (n === 1 ? "✈️" : "✈️ 第" + (i + 1) + "段");
+    if (fno) head += " " + fno;
+    var depPart = [depDisp, fromLabel].filter(Boolean).join(" ");
+    var arrPart = [arrDisp, toLabel].filter(Boolean).join(" ");
+    var line = head;
+    if (depPart && arrPart) line += " · " + depPart + " → " + arrPart;
+    else if (depPart || arrPart) line += " · " + (depPart || arrPart);
+    if (n > 1) { var dur = fmtDur(seg.duration_min); if (dur) line += " · 飞行" + dur; }
+    lines.push(line);
+    if (i < shown.length - 1) {
+      var lo = layoverFor(layovers, i, seg.to);
+      if (lo) {
+        var loLine = "⏱ 中转 " + airportLabelCN(lo.airport);
+        var wait = fmtDur(lo.wait_min);
+        if (wait) loLine += " 等待 " + wait;
+        lines.push(loLine);
+      }
+    }
+  });
+  if (n > maxSegs) lines.push("… 还有 " + (n - maxSegs) + " 段");
+  return lines;
+}
+
+function baggageLine(hl) {
+  var bag = String((hl && hl.baggage_note) || "").trim() || "见链接确认";
+  return Number((hl && hl.stops) || 0) > 0
+    ? ("🧳 行李：" + bag + " · 单一订单行李直挂终点，中转无需重新托运")
+    : ("🧳 行李：" + bag);
+}
+
 // 每个 route 的「每日最低价」序列：跨 depart_dates，对每个 fetch_date 取最小 latest?
 // series 里每个 depart_date 已是「该 fetch_date 的最低价」。跨 depart_date 再取 min。
 function dailyMinSeries(routeObj) {
@@ -315,7 +402,14 @@ function render(summary, meta) {
     var flight = flightInfoStr(ll.low);
     // 增强详情：仅当 headline 对应最低价出发日时展示（航班号/精确时刻/中转/行李）。
     var hl = (robj.headline && robj.headline.depart_date === ll.dd) ? robj.headline : null;
-    var hlHtml = headlineLines(hl).map(function (t) {
+    var hlLines;
+    if (hl && (hl.segments || []).length) {
+      hlLines = formatItinerary(hl.segments, hl.layovers || []);
+      hlLines.push(baggageLine(hl));  // 逐段行程 + 行李/中转托运说明
+    } else {
+      hlLines = headlineLines(hl);  // 回退单行摘要
+    }
+    var hlHtml = hlLines.map(function (t) {
       return '<div class="flight-info">' + esc(t) + '</div>';
     }).join("");
     var buyUrl = gflightsUrl(m.from, m.to, ll.dd);
@@ -384,8 +478,17 @@ function renderHiddenCity(data) {
     var layoverCity = (h.layover_city_cn || "") || h.layover_cn;
     var buyUrl = gflightsUrl(h.origin, h.onward_dest, h.depart_date);
     var carrier = [h.airline, h.flight_no].filter(Boolean).join(" ");
-    var meta = [h.depart_date ? "出发 " + h.depart_date : "", carrier,
-                h.depart_time || ""].filter(Boolean).join(" · ");
+    var metaHtml;
+    if ((h.segments || []).length) {
+      // 逐段行程：出发日 + 各段时刻/航班/机场 + 段间中转等待。
+      var itLines = (h.depart_date ? ["出发 " + h.depart_date] : [])
+        .concat(formatItinerary(h.segments, h.layovers || []));
+      metaHtml = itLines.map(function (t) { return '<div class="hc-meta">' + esc(t) + '</div>'; }).join("");
+    } else {
+      var meta = [h.depart_date ? "出发 " + h.depart_date : "", carrier,
+                  h.depart_time || ""].filter(Boolean).join(" · ");
+      metaHtml = meta ? '<div class="hc-meta">' + esc(meta) + '</div>' : '';
+    }
     card.innerHTML =
       '<div class="hc-route">' + esc(cityLabel(h.origin)) + ' → ' + esc(cityLabel(h.onward_dest)) +
         (h.suspected ? '<span class="hc-flag">⚠️未确认中转站</span>' : '') + '</div>' +
@@ -394,7 +497,7 @@ function renderHiddenCity(data) {
       (h.saving_pct != null && h.direct_price_cny != null
         ? '<div class="hc-save">比直飞' + esc(layoverCity) + ' ' + fmtMoney(h.direct_price_cny, "CNY") +
           ' 省 ' + h.saving_pct + '%</div>' : '') +
-      (meta ? '<div class="hc-meta">' + esc(meta) + '</div>' : '') +
+      metaHtml +
       (buyUrl ? '<a class="hc-buy" href="' + esc(buyUrl) + '" target="_blank" rel="noopener">🛒 Google Flights 全程</a>' : '');
     grid.appendChild(card);
   });

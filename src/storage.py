@@ -159,6 +159,9 @@ class Storage:
                                           # cheapest depart_date in full detail.
                      "depart_date","price","airline","flight_no","airplane",
                      "depart_time","arrive_time","stops","layover_airports":[...],
+                     "segments":[{leg,airline,flight_no,from,from_time,to,to_time,
+                                  duration_min,airplane},...],   # 逐段行程
+                     "layovers":[{"airport","wait_min"},...],    # 段间中转等待
                      "baggage_note","overnight","source"
                   }
                 }, ...

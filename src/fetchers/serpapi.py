@@ -210,7 +210,10 @@ class SerpApiFetcher(FetcherAdapter):
 
             {"price_cny": int, "raw_price": float, "raw_currency": str,
              "airline": str, "flight_no": str, "stops": int,
-             "layovers": [{"id": "PVG", "name": "...", "duration": 135}, ...]}
+             "layovers": [{"id": "PVG", "name": "...", "duration": 135}, ...],
+             "segments": [ {leg,airline,flight_no,from,from_time,to,to_time,
+                            duration_min,airplane}, ... ],   # 逐段行程
+             "itin_layovers": [{"airport": "PVG", "wait_min": 135}, ...]}
         """
         api_key = os.environ.get("SERPAPI_KEY")
         if not api_key:
@@ -287,6 +290,7 @@ def parse_layover_flights(raw_flights: list, rates: dict) -> list:
                 price_cny = None
         dep = first.get("departure_airport") if isinstance(first, dict) else None
         depart_time = _hhmm_from_serp_time((dep or {}).get("time"))
+        segments, itin_layovers = parse_segments(item)
         out.append({
             "price_cny": price_cny,
             "raw_price": raw_price,
@@ -294,7 +298,9 @@ def parse_layover_flights(raw_flights: list, rates: dict) -> list:
             "airline": airline,
             "flight_no": flight_no,
             "stops": stops,
-            "layovers": layovers,
+            "layovers": layovers,          # {id,name,duration} — 隐藏城市中转匹配用
+            "segments": segments,          # 逐段结构化航段（展示逐段行程用）
+            "itin_layovers": itin_layovers,  # {airport,wait_min} — 逐段中转等待
             "depart_time": depart_time,
             "baggage_note": _baggage_note(item.get("extensions")),
         })
@@ -317,6 +323,66 @@ def _hhmm_from_serp_time(raw) -> str:
     if not (0 <= hh <= 23 and 0 <= mm <= 59):
         return ""
     return f"{hh:02d}:{mm:02d}"
+
+
+_SEG_INT_RE = re.compile(r"-?\d+")
+
+
+def _seg_int(v):
+    """Coerce a duration-ish value to int minutes; None/unparsable -> None."""
+    if v is None or isinstance(v, bool):
+        return None
+    if isinstance(v, (int, float)):
+        return int(v)
+    m = _SEG_INT_RE.search(str(v))
+    return int(m.group(0)) if m else None
+
+
+def parse_segments(item: dict):
+    """Extract the structured per-leg 航段 + 中转等待 from one itinerary item.
+
+    Returns ``(segments, layovers)`` where::
+
+        segments = [{"leg": 1, "airline": "Air China", "flight_no": "CA 880",
+                     "from": "PVG", "from_time": "2026-08-06 20:55",
+                     "to": "PEK", "to_time": "2026-08-06 23:40",
+                     "duration_min": 165, "airplane": "Boeing 777"}, ...]
+        layovers = [{"airport": "PEK", "wait_min": 200}, ...]
+
+    时刻保留完整 ``"YYYY-MM-DD HH:MM"``（跨天行程需要日期）；``duration_min`` /
+    ``wait_min`` 为整数分钟（缺失置 ``None``）。容错：``item`` 非法或某段字段缺失时
+    该段/该字段置空，绝不抛错。``layovers[i]`` 对应 ``segments[i]`` 与
+    ``segments[i+1]`` 之间的中转等待。
+    """
+    item = item if isinstance(item, dict) else {}
+    segments: list = []
+    for leg in item.get("flights") or []:
+        if not isinstance(leg, dict):
+            continue
+        dep = leg.get("departure_airport")
+        arr = leg.get("arrival_airport")
+        dep = dep if isinstance(dep, dict) else {}
+        arr = arr if isinstance(arr, dict) else {}
+        segments.append({
+            "leg": len(segments) + 1,
+            "airline": str(leg.get("airline") or "").strip(),
+            "flight_no": str(leg.get("flight_number") or "").strip(),
+            "from": str(dep.get("id") or "").upper().strip(),
+            "from_time": str(dep.get("time") or "").strip(),
+            "to": str(arr.get("id") or "").upper().strip(),
+            "to_time": str(arr.get("time") or "").strip(),
+            "duration_min": _seg_int(leg.get("duration")),
+            "airplane": str(leg.get("airplane") or "").strip(),
+        })
+    layovers: list = []
+    for lo in item.get("layovers") or []:
+        if not isinstance(lo, dict):
+            continue
+        layovers.append({
+            "airport": str(lo.get("id") or "").upper().strip(),
+            "wait_min": _seg_int(lo.get("duration")),
+        })
+    return segments, layovers
 
 
 _BAG_NUM_RE = re.compile(r"(\d+)")
@@ -373,6 +439,9 @@ def parse_flight_details(payload: dict, rates: dict = None) -> list:
          "arrive_time": "HH:MM",  # last leg arrival (24h; "" if unknown)
          "stops": int,            # len(flights) - 1
          "layover_airports": [str, ...],   # IATA ids of中转机场
+         "segments": [ {leg,airline,flight_no,from,from_time,to,to_time,
+                        duration_min,airplane}, ... ],  # 逐段结构化航段
+         "layovers": [ {"airport": str, "wait_min": int}, ... ],  # 段间中转等待
          "baggage_note": str,     # coarse marker from flight-level extensions
          "overnight": bool}
     """
@@ -401,6 +470,7 @@ def parse_flight_details(payload: dict, rates: dict = None) -> list:
             for lo in (item.get("layovers") or [])
             if isinstance(lo, dict) and lo.get("id")
         ]
+        segments, itin_layovers = parse_segments(item)
         price = item.get("price")
         price_cny = None
         raw_price = 0.0
@@ -424,6 +494,8 @@ def parse_flight_details(payload: dict, rates: dict = None) -> list:
             "arrive_time": arrive_time,
             "stops": stops,
             "layover_airports": layover_airports,
+            "segments": segments,
+            "layovers": itin_layovers,
             "baggage_note": _baggage_note(item.get("extensions")),
             "overnight": bool(item.get("overnight")),
         })

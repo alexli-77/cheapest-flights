@@ -69,6 +69,7 @@ notifiers:
   feishu:
     enabled: true
     secret_env: FEISHU_WEBHOOK
+    show_segments: true
   telegram:
     enabled: false
   email:
