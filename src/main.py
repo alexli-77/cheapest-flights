@@ -291,6 +291,25 @@ def run(
     except Exception as e:
         log.error("notifier dispatch raised: %s", e)
 
+    # --- Hidden-city (中转中国) monitor: runs AFTER the regular routes. ---
+    # Never allowed to crash the data pipeline; strictly budget-guarded.
+    try:
+        from src.hidden_city import run_hidden_city  # type: ignore
+        from src.notifiers import dispatch_hidden_city  # type: ignore
+        hc_fast = MockFetcher() if dry_run else None
+        hc_result = run_hidden_city(
+            cfg, DATA_DIR, DOCS_DIR, today=today,
+            fast_fetcher=hc_fast,
+            sleep_fn=sleep_fn, request_interval=request_interval, dry_run=dry_run,
+        )
+        hc_hits = hc_result.get("hits", [])
+        log.info("hidden_city ran: %d hits", len(hc_hits))
+        dispatch_hidden_city(cfg, hc_hits)
+    except ImportError:
+        log.info("hidden_city module not present, skipping hook")
+    except Exception as e:  # never let hidden-city crash the pipeline
+        log.error("hidden_city raised: %s", e)
+
     return {
         "routes": touched_routes,
         "fetched": len(all_quotes),

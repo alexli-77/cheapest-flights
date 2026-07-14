@@ -230,6 +230,57 @@
     </div>
   </div>
 
+  <!-- ========== 隐藏城市监控 ========== -->
+  <div class="panel" id="hcPanel">
+    <h2>🧳 隐藏城市监控（中转中国）</h2>
+    <div class="hint">
+      监控「从出发地飞往某个延伸目的地、但中途在<b>中国城市</b>中转」的跳程 / 隐藏城市特价票——
+      真实目的地其实是那个中转的中国城市，只飞第一段即可省钱。SerpAPI 会自动确认中转机场；
+      额度不足时按航司名启发式标记「疑似」。改动同样需点下方「保存全部更改」写回仓库。
+    </div>
+    <label class="chk" style="width:auto"><input type="checkbox" id="hcEnabled" style="width:auto"> 启用隐藏城市监控</label>
+
+    <label style="margin-top:12px">出发地（输入中文城市 / 机场名 / 三字码）</label>
+    <div class="apt-picker" id="hcOriginPicker"></div>
+
+    <label style="margin-top:12px">延伸目的地（这些地方的票常经中国中转）</label>
+    <div class="row" style="align-items:flex-end">
+      <div style="flex:1 1 220px"><div class="apt-picker" id="hcOnwardPicker"></div></div>
+      <div><button id="hcOnwardAdd">+ 添加</button></div>
+    </div>
+    <div class="date-list" id="hcOnwardList"></div>
+
+    <label style="margin-top:12px">中国中转枢纽（命中这些机场即算隐藏城市）</label>
+    <div class="row" style="align-items:flex-end">
+      <div style="flex:1 1 220px"><div class="apt-picker" id="hcHubPicker"></div></div>
+      <div><button id="hcHubAdd">+ 添加</button></div>
+    </div>
+    <div class="date-list" id="hcHubList"></div>
+
+    <div class="divider"></div>
+    <div class="row">
+      <div class="col">
+        <label>滚动天数（depart_in_days）</label>
+        <input type="number" id="hcDepartDays" min="1" max="365" value="45">
+      </div>
+      <div class="col">
+        <label>每次运行最多 SerpAPI 确认次数（护免费额度，月上限 90）</label>
+        <input type="number" id="hcMaxSerp" min="0" max="90" value="10">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>最小省幅 %（0 = 只要命中中国中转就报）</label>
+        <input type="number" id="hcMinSaving" min="0" max="100" value="0">
+      </div>
+      <div class="col">
+        <label>每条延伸航线最多采样日期（成本护栏）</label>
+        <input type="number" id="hcMaxDates" min="1" max="60" value="15">
+      </div>
+    </div>
+    <div class="status" id="hcStatus"></div>
+  </div>
+
   <!-- ========== 保存区 ========== -->
   <div class="panel">
     <h2>3. 保存并抓取</h2>
@@ -703,6 +754,102 @@ function collectForm() {
   return { route: route };
 }
 
+/* ========================= 隐藏城市监控面板 ========================= */
+var hcOriginPicker = null, hcOnwardPicker = null, hcHubPicker = null;
+
+function hcDefault() {
+  return {
+    enabled: false, origin: "", onward_routes: [], chinese_hubs: [],
+    dates: { mode: "rolling", depart_in_days: 45 },
+    max_serpapi_per_run: 10, min_saving_pct: 0, max_dates_per_onward: 15,
+    max_direct_lookups: 6
+  };
+}
+
+function renderCodeTags(listEl, arr, onRemove) {
+  listEl.innerHTML = "";
+  arr.forEach(function (code, i) {
+    var a = airportByIata(code) || {};
+    var label = (a.city_cn ? a.city_cn + " " : "") + code;
+    var span = el("span", "tag");
+    span.appendChild(document.createTextNode(label));
+    var x = el("b"); x.textContent = "×";
+    x.onclick = function () { onRemove(i); };
+    span.appendChild(x);
+    listEl.appendChild(span);
+  });
+}
+
+function renderHiddenCityPanel() {
+  if (!STATE.config) return;
+  if (!STATE.config.hidden_city || typeof STATE.config.hidden_city !== "object") {
+    STATE.config.hidden_city = hcDefault();
+  }
+  var hc = STATE.config.hidden_city;
+  hc.onward_routes = hc.onward_routes || [];
+  hc.chinese_hubs = hc.chinese_hubs || [];
+  hc.dates = hc.dates || { mode: "rolling", depart_in_days: 45 };
+
+  $("hcEnabled").checked = hc.enabled === true;
+  $("hcDepartDays").value = hc.dates.depart_in_days || 45;
+  $("hcMaxSerp").value = hc.max_serpapi_per_run != null ? hc.max_serpapi_per_run : 10;
+  $("hcMinSaving").value = hc.min_saving_pct != null ? hc.min_saving_pct : 0;
+  $("hcMaxDates").value = hc.max_dates_per_onward != null ? hc.max_dates_per_onward : 15;
+
+  hcOriginPicker = makeAirportPicker($("hcOriginPicker"));
+  if (hc.origin) hcOriginPicker.set(hc.origin);
+  hcOnwardPicker = makeAirportPicker($("hcOnwardPicker"));
+  hcHubPicker = makeAirportPicker($("hcHubPicker"));
+
+  function drawOnward() {
+    renderCodeTags($("hcOnwardList"), hc.onward_routes, function (i) {
+      hc.onward_routes.splice(i, 1); drawOnward(); markDirty();
+    });
+  }
+  function drawHub() {
+    renderCodeTags($("hcHubList"), hc.chinese_hubs, function (i) {
+      hc.chinese_hubs.splice(i, 1); drawHub(); markDirty();
+    });
+  }
+  drawOnward(); drawHub();
+
+  $("hcOnwardAdd").onclick = function () {
+    var c = hcOnwardPicker.value;
+    if (/^[A-Z]{3}$/.test(c) && hc.onward_routes.indexOf(c) < 0) {
+      hc.onward_routes.push(c); drawOnward(); markDirty();
+      hcOnwardPicker.set("");
+    }
+  };
+  $("hcHubAdd").onclick = function () {
+    var c = hcHubPicker.value;
+    if (/^[A-Z]{3}$/.test(c) && hc.chinese_hubs.indexOf(c) < 0) {
+      hc.chinese_hubs.push(c); drawHub(); markDirty();
+      hcHubPicker.set("");
+    }
+  };
+  ["hcEnabled", "hcDepartDays", "hcMaxSerp", "hcMinSaving", "hcMaxDates"].forEach(function (id) {
+    $(id).addEventListener("change", function () { hcCollect(); markDirty(); });
+  });
+}
+
+/* 把面板输入写回 STATE.config.hidden_city（保存前调用一次，确保最新值）。 */
+function hcCollect() {
+  if (!STATE.config) return;
+  if (!STATE.config.hidden_city || typeof STATE.config.hidden_city !== "object") {
+    STATE.config.hidden_city = hcDefault();
+  }
+  var hc = STATE.config.hidden_city;
+  hc.enabled = $("hcEnabled").checked;
+  if (hcOriginPicker && hcOriginPicker.value) hc.origin = hcOriginPicker.value;
+  hc.dates = hc.dates || { mode: "rolling" };
+  hc.dates.mode = hc.dates.mode || "rolling";
+  hc.dates.depart_in_days = parseInt($("hcDepartDays").value, 10) || 45;
+  hc.max_serpapi_per_run = Math.max(0, parseInt($("hcMaxSerp").value, 10) || 0);
+  hc.min_saving_pct = Math.max(0, Number($("hcMinSaving").value) || 0);
+  hc.max_dates_per_onward = Math.max(1, parseInt($("hcMaxDates").value, 10) || 15);
+  if (hc.max_direct_lookups == null) hc.max_direct_lookups = 6;
+}
+
 /* ========================= 加载配置 ========================= */
 function loadConfig() {
   if (!STATE.token) { setStatus($("listStatus"), "请先在上方保存 Token。", "warn"); return; }
@@ -717,6 +864,7 @@ function loadConfig() {
       .catch(function () { STATE.yamlSha = null; });
     setStatus($("listStatus"), "已载入 " + STATE.config.routes.length + " 条航线。", "ok");
     renderRouteList();
+    renderHiddenCityPanel();
     $("dispatchBtn").disabled = true;
   }).catch(function (e) {
     setStatus($("listStatus"), "载入失败：" + e.message, "err");
@@ -730,6 +878,7 @@ function saveAll() {
   var btn = $("saveAllBtn"); btn.disabled = true;
   setStatus($("saveStatus"), "生成并写入 config.json…", "");
 
+  hcCollect();  // 把隐藏城市面板的最新输入写回 config 再序列化
   var jsonText = JSON.stringify(STATE.config, null, 2) + "\n";
   var yamlText = fwConfigToYaml(STATE.config);
   var msg = "chore(config): update via web panel " + new Date().toISOString();

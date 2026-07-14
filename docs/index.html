@@ -14,6 +14,7 @@
 <!-- 如已 vendor ECharts，取消下一行注释即可自动启用：
 <script src="./vendor/echarts.min.js"></script> -->
 <script src="./vendor/charts.js"></script>
+<script src="./airports.js"></script>
 <style>
   :root {
     --fw-bg: #f5f6f8;
@@ -97,6 +98,36 @@
   .badge-disabled { font-size: 10px; color: var(--fw-text-sub); border: 1px solid var(--fw-border); border-radius: 4px; padding: 0 5px; }
   .empty, .error { text-align: center; color: var(--fw-text-sub); padding: 60px 16px; }
   .error { color: var(--fw-bad); }
+  /* 隐藏城市特价区块 */
+  .hc-section { margin-top: 32px; }
+  .hc-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .hc-head h2 { font-size: 17px; margin: 0; }
+  .hc-head .hc-sub { color: var(--fw-text-sub); font-size: 12px; }
+  .hc-risk {
+    margin: 8px 0 14px; font-size: 12px; color: var(--fw-bad); line-height: 1.6;
+    background: color-mix(in srgb, var(--fw-bad) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fw-bad) 30%, var(--fw-border));
+    border-radius: 8px; padding: 8px 12px;
+  }
+  .hc-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .hc-card {
+    background: var(--fw-card-bg); border: 1px solid var(--fw-border);
+    border-radius: 12px; padding: 14px 16px; box-shadow: var(--fw-shadow);
+  }
+  .hc-card .hc-route { font-size: 15px; font-weight: 600; }
+  .hc-card .hc-hub { font-size: 13px; margin-top: 4px; }
+  .hc-card .hc-hub b { color: var(--fw-accent); }
+  .hc-card .hc-price { font-size: 24px; font-weight: 700; margin: 8px 0 2px; }
+  .hc-card .hc-save { font-size: 12px; color: var(--fw-good); font-weight: 600; }
+  .hc-card .hc-meta { font-size: 12px; color: var(--fw-text-sub); margin-top: 4px; }
+  .hc-card .hc-flag {
+    display: inline-block; font-size: 11px; font-weight: 600; color: var(--fw-bad);
+    border: 1px solid color-mix(in srgb, var(--fw-bad) 40%, var(--fw-border));
+    border-radius: 4px; padding: 0 5px; margin-left: 6px;
+  }
+  .hc-card .hc-buy { display: inline-flex; margin-top: 10px; font-size: 12px; font-weight: 600;
+    color: var(--fw-accent); text-decoration: none; border: 1px solid var(--fw-border);
+    border-radius: 8px; padding: 5px 10px; }
   footer { text-align: center; color: var(--fw-text-sub); font-size: 11px; padding: 24px; }
 </style>
 </head>
@@ -113,6 +144,17 @@
 <main>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none">还没有可展示的航线数据。运行一次抓取后即可看到卡片。</div>
+
+  <section class="hc-section" id="hcSection" style="display:none">
+    <div class="hc-head">
+      <h2>🧳 隐藏城市特价</h2>
+      <span class="hc-sub" id="hcSub"></span>
+    </div>
+    <div class="hc-risk" id="hcRisk">
+      隐藏城市票：仅飞第一段、勿托运行李、勿用于往返程、违反航司条款，风险自负。
+    </div>
+    <div class="hc-grid" id="hcGrid"></div>
+  </section>
 </main>
 <footer>Flight Watch · 数据每日自动更新 · GitHub Pages 静态托管</footer>
 
@@ -270,6 +312,55 @@ function render(summary, meta) {
     grid.appendChild(card);
   });
 }
+
+// 隐藏城市特价：城市中文名（若 airports 表可用则用它，否则退回三字码）。
+function cityLabel(code) {
+  code = String(code || "").toUpperCase();
+  var list = (window.AIRPORTS || []);
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].iata === code) return (list[i].city_cn || "") + code;
+  }
+  return code;
+}
+
+function renderHiddenCity(data) {
+  var hits = (data && data.hits) || [];
+  var section = document.getElementById("hcSection");
+  if (!hits.length) { section.style.display = "none"; return; }
+  section.style.display = "block";
+  var st = (data && data.stats) || {};
+  var nConf = hits.filter(function (h) { return !h.suspected; }).length;
+  document.getElementById("hcSub").textContent =
+    "共 " + hits.length + " 条（确认 " + nConf + " · 疑似 " + (hits.length - nConf) + "）" +
+    (data.generated_at ? " · 更新于 " + data.generated_at : "");
+  var grid = document.getElementById("hcGrid");
+  grid.innerHTML = "";
+  hits.slice(0, 24).forEach(function (h) {
+    var card = el2("div", "hc-card");
+    var layoverCity = (h.layover_city_cn || "") || h.layover_cn;
+    var buyUrl = gflightsUrl(h.origin, h.onward_dest, h.depart_date);
+    var carrier = [h.airline, h.flight_no].filter(Boolean).join(" ");
+    var meta = [h.depart_date ? "出发 " + h.depart_date : "", carrier,
+                h.depart_time || ""].filter(Boolean).join(" · ");
+    card.innerHTML =
+      '<div class="hc-route">' + esc(cityLabel(h.origin)) + ' → ' + esc(cityLabel(h.onward_dest)) +
+        (h.suspected ? '<span class="hc-flag">⚠️未确认中转站</span>' : '') + '</div>' +
+      '<div class="hc-hub">中转 <b>' + esc(layoverCity) + '(' + esc(h.layover_cn) + ')</b></div>' +
+      '<div class="hc-price">' + fmtMoney(h.price_cny, "CNY") + '</div>' +
+      (h.saving_pct != null && h.direct_price_cny != null
+        ? '<div class="hc-save">比直飞' + esc(layoverCity) + ' ' + fmtMoney(h.direct_price_cny, "CNY") +
+          ' 省 ' + h.saving_pct + '%</div>' : '') +
+      (meta ? '<div class="hc-meta">' + esc(meta) + '</div>' : '') +
+      (buyUrl ? '<a class="hc-buy" href="' + esc(buyUrl) + '" target="_blank" rel="noopener">🛒 Google Flights 全程</a>' : '');
+    grid.appendChild(card);
+  });
+}
+function el2(t, c) { var e = document.createElement(t); if (c) e.className = c; return e; }
+
+fetch("./data/hidden_city.json")
+  .then(function (r) { return r.ok ? r.json() : null; })
+  .then(function (d) { if (d) renderHiddenCity(d); })
+  .catch(function () { /* 无隐藏城市数据时静默 */ });
 
 Promise.all([
   fetch("./data/summary.json").then(function (r) { if (!r.ok) throw new Error("summary " + r.status); return r.json(); }),

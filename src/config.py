@@ -67,6 +67,49 @@ class Route:
         )
 
 
+#: default per-onward sampling cap for隐藏城市抓取 (protects daily runtime —
+#: onward_routes × dates can explode; each fast-flights query ≈ 17s).
+HIDDEN_CITY_MAX_DATES = 15
+
+
+@dataclass
+class HiddenCityConfig:
+    """隐藏城市（中转中国）特价票监控配置（config.json 顶层 ``hidden_city`` 段）。
+
+    监控「从 ``origin`` 出发、飞往 ``onward_routes`` 里某个延伸目的地、但中途在
+    ``chinese_hubs`` 里某个中国城市中转」的跳程/隐藏城市票——真实目的地其实是那个
+    中转的中国城市，用户只飞第一段。
+    """
+
+    enabled: bool = False
+    origin: str = ""
+    onward_routes: list = field(default_factory=list)
+    chinese_hubs: list = field(default_factory=list)
+    dates: dict = field(default_factory=lambda: {"mode": "rolling", "depart_in_days": 45})
+    max_serpapi_per_run: int = 10
+    min_saving_pct: float = 0.0
+    #: 每条 onward_route 最多采样多少个日期（成本护栏）。
+    max_dates_per_onward: int = HIDDEN_CITY_MAX_DATES
+    #: fast-flights 直飞基线最多查几次（成本护栏；0 = 不查直飞基线）。
+    max_direct_lookups: int = 6
+
+    @classmethod
+    def from_dict(cls, d: Optional[dict]) -> "HiddenCityConfig":
+        d = d or {}
+        return cls(
+            enabled=bool(d.get("enabled", False)),
+            origin=str(d.get("origin", "") or "").upper(),
+            onward_routes=[str(x).upper() for x in (d.get("onward_routes") or [])],
+            chinese_hubs=[str(x).upper() for x in (d.get("chinese_hubs") or [])],
+            dates=d.get("dates") or {"mode": "rolling", "depart_in_days": 45},
+            max_serpapi_per_run=int(d.get("max_serpapi_per_run", 10) or 0),
+            min_saving_pct=float(d.get("min_saving_pct", 0) or 0),
+            max_dates_per_onward=int(d.get("max_dates_per_onward", HIDDEN_CITY_MAX_DATES)
+                                     or HIDDEN_CITY_MAX_DATES),
+            max_direct_lookups=int(d.get("max_direct_lookups", 6) or 0),
+        )
+
+
 @dataclass
 class Config:
     timezone: str
@@ -77,6 +120,7 @@ class Config:
     notifiers: dict
     dashboard: dict
     raw: dict
+    hidden_city: Optional[HiddenCityConfig] = None
 
     def route_by_id(self, route_id: str) -> Optional[Route]:
         for r in self.routes:
@@ -125,6 +169,7 @@ def load_config(path: str) -> Config:
         notifiers=raw.get("notifiers", {}) or {},
         dashboard=raw.get("dashboard", {}) or {},
         raw=raw,
+        hidden_city=HiddenCityConfig.from_dict(raw.get("hidden_city")),
     )
 
 

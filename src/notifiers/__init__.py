@@ -25,7 +25,8 @@ from . import telegram  # noqa: F401
 
 log = logging.getLogger("flight_watch.notifiers")
 
-__all__ = ["Notifier", "REGISTRY", "register_notifier", "dispatch", "build_stats"]
+__all__ = ["Notifier", "REGISTRY", "register_notifier", "dispatch",
+           "dispatch_hidden_city", "build_stats"]
 
 
 def build_stats(cfg, summary: dict) -> dict:
@@ -103,4 +104,43 @@ def dispatch(cfg, summary: dict, alerts: Optional[list] = None,
         report[name] = sent
         log.info("notifier %s: %d urgent, digest=%s", name, sent["urgent"], sent["digest"])
 
+    return report
+
+
+def dispatch_hidden_city(cfg, hits: Optional[list] = None,
+                         sleep_fn: Callable[[float], None] = time.sleep,
+                         interval: float = 1.0) -> dict:
+    """把隐藏城市命中作为独立卡片下发给支持它的 enabled 渠道。
+
+    无命中时不发送任何卡片。Never raises — 单渠道失败只记录不抛出。
+    """
+    hits = list(hits or [])
+    if not hits:
+        return {}
+    notifiers_cfg = getattr(cfg, "notifiers", {}) or {}
+    dashboard_cfg = getattr(cfg, "dashboard", {}) or {}
+    report: dict = {}
+    for name, ncfg in notifiers_cfg.items():
+        ncfg = ncfg or {}
+        if not ncfg.get("enabled"):
+            continue
+        cls = REGISTRY.get(name)
+        if cls is None:
+            continue
+        merged_cfg = dict(ncfg)
+        merged_cfg["dashboard"] = dashboard_cfg
+        try:
+            notifier = cls(merged_cfg)
+        except Exception as e:
+            log.warning("notifier %s init failed: %s", name, e)
+            continue
+        send = getattr(notifier, "send_hidden_city", None)
+        if not callable(send):
+            continue
+        try:
+            report[name] = bool(send(hits))
+        except Exception as e:
+            log.warning("%s send_hidden_city failed: %s", name, e)
+            report[name] = False
+        sleep_fn(interval)
     return report

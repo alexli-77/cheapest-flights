@@ -426,6 +426,100 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
     }
 
 
+# ------------------------------------------------ hidden-city (隐藏城市) card
+HIDDEN_CITY_RISK = (
+    "隐藏城市票：仅飞第一段、勿托运行李、勿用于往返程、违反航司条款，风险自负"
+)
+
+
+def _city_code_label(code: str) -> str:
+    """"BKK" -> "曼谷BKK"（城市中文名 + 三字码）；查不到城市名时退回三字码。"""
+    code = str(code or "").upper().strip()
+    if not code:
+        return code
+    city = ""
+    if _airport_lookup is not None:
+        try:
+            city = (_airport_lookup(code) or {}).get("city_cn") or ""
+        except Exception:
+            city = ""
+    return f"{city}{code}" if city else code
+
+
+def _hidden_hit_block(hit: dict) -> dict:
+    """一条隐藏城市命中的卡片块。"""
+    origin = str(hit.get("origin") or "").upper()
+    onward = str(hit.get("onward_dest") or "").upper()
+    layover = str(hit.get("layover_cn") or "").upper()
+    layover_city = (hit.get("layover_city_cn") or "").strip()
+    price = hit.get("price_cny")
+    dd = hit.get("depart_date") or ""
+
+    layover_label = f"{layover_city}({layover})" if layover_city else layover
+    head = (f"🧳 {_city_code_label(origin)} → {_city_code_label(onward)}"
+            f" 机票 {_price_str({'price': price, 'currency': 'CNY'})}"
+            f"，中转 {layover_label}")
+    if hit.get("suspected"):
+        head += "  ⚠️未确认中转站"
+    lines = [f"**{head}**"]
+
+    saving = hit.get("saving_pct")
+    direct = hit.get("direct_price_cny")
+    if saving is not None and direct:
+        city_only = layover_city or layover
+        lines.append(f"比直飞{city_only} ¥{_fmt(direct)} 省 {_fmt(saving)}%")
+
+    fi = _flight_info_str(hit)
+    meta = []
+    if dd:
+        meta.append(f"出发 {dd}")
+    if fi:
+        meta.append(fi)
+    if meta:
+        lines.append(" · ".join(meta))
+
+    url = gflights_url(origin, onward, dd)
+    if url:
+        lines.append(f"[→ Google Flights 全程]({url})")
+    lines.append(f"<font color='grey'>{HIDDEN_CITY_RISK}</font>")
+
+    return {"tag": "div", "text": {"tag": "lark_md", "content": "\n".join(lines)}}
+
+
+def build_hidden_city_card(hits: list, dashboard_url: str = "", limit: int = 8) -> dict:
+    """隐藏城市特价专属卡片：每条命中一块，最多 ``limit`` 条，其余折叠成一行。"""
+    hits = list(hits or [])
+    elements: list = []
+    if not hits:
+        elements.append({"tag": "div", "text": {"tag": "lark_md",
+                        "content": "本次未发现经中国中转的隐藏城市特价。"}})
+    else:
+        n_conf = sum(1 for h in hits if not h.get("suspected"))
+        n_susp = len(hits) - n_conf
+        summary = f"共 {len(hits)} 条（确认 {n_conf} · 疑似 {n_susp}）"
+        elements.append({"tag": "div", "text": {"tag": "lark_md", "content": summary}})
+        elements.append({"tag": "hr"})
+        for h in hits[:limit]:
+            elements.append(_hidden_hit_block(h))
+        rest = len(hits) - limit
+        if rest > 0:
+            elements.append({"tag": "div", "text": {"tag": "lark_md",
+                            "content": f"…还有 {rest} 条，见 dashboard"}})
+    elements.append({"tag": "hr"})
+    elements.append(_button("查看隐藏城市 Dashboard", _dashboard_url(dashboard_url)))
+    return {
+        "msg_type": "interactive",
+        "card": {
+            "config": {"wide_screen_mode": True},
+            "header": {
+                "title": {"tag": "plain_text", "content": "🧳 隐藏城市特价"},
+                "template": "turquoise",
+            },
+            "elements": elements,
+        },
+    }
+
+
 # -------------------------------------------------------------- transport
 def default_transport(url: str, payload: dict) -> bool:
     """POST ``payload`` as JSON to ``url``. Honors NOTIFY_DRY_RUN.
@@ -520,6 +614,13 @@ class FeishuNotifier(Notifier):
         flight = _lookup_low(summary, getattr(alert, "route_id", ""),
                              getattr(alert, "depart_date", ""))
         card = build_urgent_card(alert, dashboard_url=self._dashboard_url(), flight=flight)
+        return self._send(card)
+
+    def send_hidden_city(self, hits: list) -> bool:
+        """隐藏城市特价单独一张卡片。无命中时不发（返回 False）。"""
+        if not hits:
+            return False
+        card = build_hidden_city_card(hits, dashboard_url=self._dashboard_url())
         return self._send(card)
 
 
