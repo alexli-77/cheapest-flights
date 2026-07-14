@@ -77,17 +77,28 @@ def _gap_to_target(price, target_price) -> str:
 
 
 def _airport_label(iata: str) -> str:
-    """"YUL" -> "蒙特利尔(YUL)"; falls back to the bare code when unknown."""
+    """"PEK" -> "北京首都(PEK)"; falls back to city then the bare code.
+
+    Uses the airport's ``name_cn`` (机场全名) with the generic ``国际机场`` /
+    ``机场`` suffix stripped, so cards show which airport it is (北京首都) rather
+    than just the city (北京).
+    """
     code = str(iata or "").upper().strip()
     if not code:
         return code
-    city = ""
+    name = ""
     if _airport_lookup is not None:
         try:
-            city = (_airport_lookup(code) or {}).get("city_cn") or ""
+            info = _airport_lookup(code) or {}
+            full = (info.get("name_cn") or "").strip()
+            for suffix in ("国际机场", "机场"):
+                if full.endswith(suffix):
+                    full = full[: -len(suffix)]
+                    break
+            name = full or (info.get("city_cn") or "")
         except Exception:
-            city = ""
-    return f"{city}({code})" if city else code
+            name = ""
+    return f"{name}({code})" if name else code
 
 
 def _od_from_route_id(route_id: str) -> tuple:
