@@ -264,33 +264,54 @@ function layoverFor(layovers, idx, airport) {
   return null;
 }
 
-// 逐段航段 + 段间中转等待 -> 展示行数组（机场中文名；flight_no 去空格；前 4 段）。
+// 段号 keycap emoji（1..9）；第 10 段起退回文字「第N段」。与 Python _SEG_EMOJI 一致。
+var SEG_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
+function segMarker(i) { return i < SEG_EMOJI.length ? SEG_EMOJI[i] : ("第" + (i + 1) + "段"); }
+// 起降行缩进：两个全角空格（U+3000），与 Python _ITIN_INDENT 一致，避免行首半角空格被折叠。
+var ITIN_INDENT = "　　";
+
+// 逐段航段 + 段间中转等待 -> 展示行数组（按用户模板；机场中文名；前 4 段）。
+// 每段 3 行：段号行 + 起飞行 + 到达行；出发行日期前缀仅当出发日 != 上次打印日期
+// （last_printed_date 初始为首段出发日），到达行用 +N 跨日标记。与 Python format_itinerary 对齐。
 function formatItinerary(segments, layovers, maxSegs) {
   maxSegs = maxSegs || 4;
   var segs = (segments || []).filter(function (s) { return s && typeof s === "object"; });
   if (!segs.length) return [];
   layovers = (layovers || []).filter(function (l) { return l && typeof l === "object"; });
   var n = segs.length, shown = segs.slice(0, maxSegs), lines = [];
+  var firstDep = parseFullDt(shown[0].from_time);
+  var lastPrinted = firstDep.d || null;  // Date or null
   shown.forEach(function (seg, i) {
     var fno = flightNoCompact(seg.flight_no);
     var dep = parseFullDt(seg.from_time), arr = parseFullDt(seg.to_time);
     var fromLabel = airportLabelCN(seg.from), toLabel = airportLabelCN(seg.to);
-    var depDisp = (dep.d && dep.hm) ? (pad2(dep.mo) + "-" + pad2(dep.da) + " " + dep.hm) : dep.hm;
+
+    // 段号行：段号 + 航班号 + 飞行时长。
+    var head = segMarker(i);
+    if (fno) head += " " + fno;
+    var dur = fmtDur(seg.duration_min);
+    if (dur) head += " · 飞行" + dur;
+    lines.push(head);
+
+    // 出发行：日期前缀仅当出发日 != 上次打印过的日期；只有出发行更新 lastPrinted。
+    var depPrefix = "";
+    if (dep.d && (!lastPrinted || dep.d.getTime() !== lastPrinted.getTime())) {
+      depPrefix = pad2(dep.mo) + "-" + pad2(dep.da) + " ";
+    }
+    if (dep.d) lastPrinted = dep.d;
+    var depTime = (depPrefix + dep.hm).replace(/\s+$/, "");
+    var depBody = [depTime, fromLabel].filter(Boolean).join(" ");
+    if (depBody) lines.push(ITIN_INDENT + depBody);
+
+    // 到达行：+N 跨日标记（相对本段出发日），不带 MM-DD 前缀。
     var arrDisp = arr.hm;
     if (arr.d && dep.d && arr.hm) {
       var gap = Math.round((arr.d - dep.d) / 86400000);
-      if (gap === 1) arrDisp = arr.hm + "+1";
-      else if (gap > 1) arrDisp = arr.hm + "+" + gap;
+      if (gap > 0) arrDisp = arr.hm + "+" + gap;
     }
-    var head = (n === 1 ? "✈️" : "✈️ 第" + (i + 1) + "段");
-    if (fno) head += " " + fno;
-    var depPart = [depDisp, fromLabel].filter(Boolean).join(" ");
-    var arrPart = [arrDisp, toLabel].filter(Boolean).join(" ");
-    var line = head;
-    if (depPart && arrPart) line += " · " + depPart + " → " + arrPart;
-    else if (depPart || arrPart) line += " · " + (depPart || arrPart);
-    if (n > 1) { var dur = fmtDur(seg.duration_min); if (dur) line += " · 飞行" + dur; }
-    lines.push(line);
+    var arrBody = [arrDisp, toLabel].filter(Boolean).join(" ");
+    if (arrBody) lines.push(ITIN_INDENT + arrBody);
+
     if (i < shown.length - 1) {
       var lo = layoverFor(layovers, i, seg.to);
       if (lo) {

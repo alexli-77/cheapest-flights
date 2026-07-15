@@ -109,9 +109,13 @@ class TestFormatItinerary(unittest.TestCase):
         segs = [self._seg(1, "CA 880", "PVG", "2026-08-06 20:55",
                           "PEK", "2026-08-06 23:40", 165)]
         out = format_itinerary(segs, [])
+        # 新模板：段号行 + 缩进的起飞/到达两行（同日 -> 首行无日期前缀、到达无 +N）。
         self.assertEqual(
-            out, "✈️ CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK)")
-        self.assertNotIn("第1段", out)   # 单段不编号
+            out,
+            "1️⃣ CA880 · 飞行2h45m\n"
+            "　　20:55 上海浦东(PVG)\n"
+            "　　23:40 北京首都(PEK)")
+        self.assertNotIn("第1段", out)   # 单段用 keycap，不用「第N段」文字
         self.assertNotIn("+1", out)      # 同日到达无跨日标记
 
     def test_multi_segment_with_layover_and_crossday(self):
@@ -122,10 +126,15 @@ class TestFormatItinerary(unittest.TestCase):
         los = [{"airport": "PEK", "wait_min": 200}]
         out = format_itinerary(segs, los)
         lines = out.split("\n")
-        self.assertEqual(len(lines), 3)
-        self.assertIn("✈️ 第1段 CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK) · 飞行2h45m", lines[0])
-        self.assertEqual(lines[1], "⏱ 中转 北京首都(PEK) 等待 3h20m")
-        self.assertIn("✈️ 第2段 CA123 · 08-07 03:00 北京首都(PEK) → 07:10 曼谷素万那普(BKK) · 飞行4h10m", lines[2])
+        # 2 段 × 3 行 + 1 中转行 = 7 行。
+        self.assertEqual(len(lines), 7)
+        self.assertEqual(lines[0], "1️⃣ CA880 · 飞行2h45m")
+        self.assertEqual(lines[1], "　　20:55 上海浦东(PVG)")      # 首段出发无日期前缀
+        self.assertEqual(lines[2], "　　23:40 北京首都(PEK)")
+        self.assertEqual(lines[3], "⏱ 中转 北京首都(PEK) 等待 3h20m")
+        self.assertEqual(lines[4], "2️⃣ CA123 · 飞行4h10m")
+        self.assertEqual(lines[5], "　　08-07 03:00 北京首都(PEK)")  # 跨到次日 -> 出发行带日期
+        self.assertEqual(lines[6], "　　07:10 曼谷素万那普(BKK)")
 
     def test_crossday_arrival_marker(self):
         segs = [self._seg(1, "AC 31", "YVR", "2026-08-06 22:05", "PEK", "2026-08-08 05:40", 900)]
@@ -136,13 +145,14 @@ class TestFormatItinerary(unittest.TestCase):
         segs = [self._seg(i, f"XX {i}", "AAA", f"2026-08-0{i} 0{i}:00",
                           "BBB", f"2026-08-0{i} 0{i}:30", 30) for i in range(1, 6)]
         out = format_itinerary(segs, [])
-        self.assertIn("第4段", out)
-        self.assertNotIn("第5段", out)
+        self.assertIn("4️⃣", out)         # 第 4 段的 keycap
+        self.assertNotIn("5️⃣", out)      # 第 5 段被截断
         self.assertIn("… 还有 1 段", out)
 
     def test_missing_fields_tolerant(self):
         segs = [self._seg(1, "", "", "", "", "", None)]
-        self.assertEqual(format_itinerary(segs, []), "✈️")  # 只剩机头图标不崩
+        # 全空段 -> 仅剩段号行（起降行无内容不渲染），不崩。
+        self.assertEqual(format_itinerary(segs, []), "1️⃣")
         self.assertEqual(format_itinerary([], []), "")
         self.assertEqual(format_itinerary(None, None), "")
 
@@ -195,10 +205,13 @@ class TestDigestShowSegments(unittest.TestCase):
         card = build_digest_card([], {"routes_failed": 0}, summary=_summary(_multi_headline()),
                                  routes=[_route()], run_date="2026-08-01", show_segments=True)
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertIn("第1段", blob)
-        self.assertIn("第2段", blob)
+        self.assertIn("1️⃣", blob)               # 段号 keycap
+        self.assertIn("2️⃣", blob)
         self.assertIn("⏱ 中转", blob)
         self.assertIn("等待", blob)
+        # 第二行标注「各段为当地时间」+ 段数
+        self.assertIn("各段为当地时间", blob)
+        self.assertIn("共2段行程", blob)
         # 逐段展示时仍保留行李/中转托运说明
         self.assertIn("中转无需重新托运", blob)
 
@@ -206,8 +219,9 @@ class TestDigestShowSegments(unittest.TestCase):
         card = build_digest_card([], {"routes_failed": 0}, summary=_summary(_multi_headline()),
                                  routes=[_route()], run_date="2026-08-01", show_segments=False)
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertNotIn("第1段", blob)          # 未展开逐段
+        self.assertNotIn("1️⃣", blob)            # 未展开逐段
         self.assertNotIn("⏱ 中转", blob)
+        self.assertNotIn("各段为当地时间", blob)  # 无逐段则无当地时间标注
         self.assertIn("🧳 行李", blob)            # 单行摘要仍有行李行
         self.assertIn("Air China CA 992", blob)  # _headline_lines 的航班行
 
@@ -232,7 +246,7 @@ class TestHiddenCitySegments(unittest.TestCase):
     def test_hidden_card_expands_segments(self):
         card = build_hidden_city_card([self._hit()])
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertIn("第1段", blob)
+        self.assertIn("1️⃣", blob)
         self.assertIn("⏱ 中转 上海浦东(PVG) 等待 1h30m", blob)
         # 行李/风险提示仍在
         self.assertIn("隐藏城市票行李会直挂票面终点", blob)
@@ -241,13 +255,13 @@ class TestHiddenCitySegments(unittest.TestCase):
     def test_hidden_card_off_falls_back(self):
         card = build_hidden_city_card([self._hit()], show_segments=False)
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertNotIn("第1段", blob)
+        self.assertNotIn("1️⃣", blob)
         self.assertIn("China Eastern MU 500", blob)  # 单行摘要
 
     def test_hidden_card_no_segments_single_line(self):
         card = build_hidden_city_card([self._hit(segments=False)])
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertNotIn("第1段", blob)
+        self.assertNotIn("1️⃣", blob)
         self.assertIn("China Eastern MU 500", blob)
 
     def test_detail_expand_limit(self):
@@ -258,9 +272,9 @@ class TestHiddenCitySegments(unittest.TestCase):
             h["onward_dest"] = ["BKK", "SGN", "MNL", "DPS", "KUL", "HAN", "TPE"][i]
             hits.append(h)
         card = build_hidden_city_card(hits, limit=8)
-        # 前 5 条展开逐段 -> "第1段" 应出现 5 次；第 6/7 条回退单行。
+        # 前 5 条展开逐段 -> 段号「1️⃣」应出现 5 次；第 6/7 条回退单行。
         blob = json.dumps(card, ensure_ascii=False)
-        self.assertEqual(blob.count("第1段"), 5)
+        self.assertEqual(blob.count("1️⃣"), 5)
 
 
 if __name__ == "__main__":

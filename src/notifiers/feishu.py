@@ -321,22 +321,44 @@ def _layover_for(layovers: list, idx: int, airport: str):
     return None
 
 
+#: 段号 keycap emoji（1..9）；第 10 段起退回文字「第N段」。
+_SEG_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+
+#: 起降行缩进。飞书 lark_md 会把行首的半角空格吞掉/折叠，导致层次消失；改用两个
+#: 全角空格（U+3000 表意空格），它不会被裁剪，能在飞书里渲染出稳定的缩进层次。
+_ITIN_INDENT = "　　"
+
+
+def _seg_marker(i: int) -> str:
+    """0-based 段序 -> 段号：0->「1️⃣」… 8->「9️⃣」，超过 9 段退回「第N段」文字。"""
+    return _SEG_EMOJI[i] if i < len(_SEG_EMOJI) else f"第{i + 1}段"
+
+
 def format_itinerary(segments, layovers=None, max_segs: int = MAX_ITINERARY_SEGMENTS) -> str:
-    """把逐段航段 + 段间中转等待渲染成 lark_md 多行文本（可空）。
+    """把逐段航段 + 段间中转等待渲染成 lark_md 多行文本（按用户模板，可空）。
 
-    单段（直飞）::
+    每段 3 行（段号行 + 起飞行 + 到达行），段间插入中转等待行::
 
-        ✈️ CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK)
+        1️⃣ WS817 · 飞行1h30m
+        　　17:45 蒙特利尔特鲁多(YUL)
+        　　19:15 多伦多皮尔逊(YYZ)
+        ⏱ 中转 多伦多皮尔逊(YYZ) 等待 6h35m
+        2️⃣ PR119 · 飞行16h15m
+        　　07-16 01:50 多伦多皮尔逊(YYZ)
+        　　06:05+1 马尼拉尼诺·阿基诺(MNL)
 
-    多段（同日到达省略日期，跨日 ``+N``；段间列出中转等待）::
+    规则要点：
 
-        ✈️ 第1段 CA880 · 08-06 20:55 上海浦东(PVG) → 23:40 北京首都(PEK) · 飞行2h45m
-        ⏱ 中转 北京首都(PEK) 等待 3h20m
-        ✈️ 第2段 CA123 · 08-07 03:00 北京首都(PEK) → 07:10 曼谷(BKK) · 飞行4h10m
+    * 段号用 keycap emoji（超过 9 段用「第N段」）；``flight_no`` 去空格；
+      飞行时长缺失则省略「· 飞行…」。
+    * 起降行用全角空格缩进（:data:`_ITIN_INDENT`）。
+    * 出发行日期前缀（``MM-DD``）：仅当该段出发日 != 「整个行程上一次打印过的日期」
+      才显示（``last_printed_date`` 初始化为首段出发日 -> 首段出发行不带日期）。
+      只有出发行会更新 ``last_printed_date``。
+    * 到达行用 ``+N`` 跨日标记（``N = 到达日 - 本段出发日``，>0 才显示），不带 ``MM-DD``。
 
-    机场用中文全名（airports.py）；``flight_no`` 去空格；分钟转「Xh Ym」。超过
-    ``max_segs`` 段则截断并加「… 还有 N 段」。字段缺失容错，绝不抛错；无有效航段
-    返回 ""。
+    机场用中文全名（airports.py）。超过 ``max_segs`` 段则截断并加「… 还有 N 段」。
+    字段缺失容错，绝不抛错；无有效航段返回 ""。
     """
     segs = [s for s in (segments or []) if isinstance(s, dict)]
     if not segs:
@@ -345,6 +367,11 @@ def format_itinerary(segments, layovers=None, max_segs: int = MAX_ITINERARY_SEGM
     n = len(segs)
     shown = segs[:max_segs]
     lines: list = []
+
+    # 「整个行程上一次打印过的日期」：初始化为首段出发日，使首段出发行不带日期前缀。
+    first_dep_dt, _ = _parse_full_dt(shown[0].get("from_time"))
+    last_printed_date = first_dep_dt
+
     for i, seg in enumerate(shown):
         fno = _flight_no_compact(seg.get("flight_no"))
         dep_dt, dep_hhmm = _parse_full_dt(seg.get("from_time"))
@@ -352,33 +379,35 @@ def format_itinerary(segments, layovers=None, max_segs: int = MAX_ITINERARY_SEGM
         from_label = _airport_label(seg.get("from"))
         to_label = _airport_label(seg.get("to"))
 
-        if dep_dt and dep_hhmm:
-            dep_disp = f"{dep_dt.month:02d}-{dep_dt.day:02d} {dep_hhmm}"
-        else:
-            dep_disp = dep_hhmm
-        arr_disp = arr_hhmm
-        if arr_dt and dep_dt and arr_hhmm:
-            day_gap = (arr_dt - dep_dt).days
-            if day_gap == 1:
-                arr_disp = f"{arr_hhmm}+1"
-            elif day_gap > 1:
-                arr_disp = f"{arr_hhmm}+{day_gap}"
-
-        head = "✈️" if n == 1 else f"✈️ 第{i + 1}段"
+        # 段号行：段号 + 航班号 + 飞行时长。
+        head = _seg_marker(i)
         if fno:
             head += f" {fno}"
-        dep_part = " ".join(x for x in (dep_disp, from_label) if x)
-        arr_part = " ".join(x for x in (arr_disp, to_label) if x)
-        line = head
-        if dep_part and arr_part:
-            line += f" · {dep_part} → {arr_part}"
-        elif dep_part or arr_part:
-            line += f" · {dep_part or arr_part}"
-        if n > 1:
-            dur = _fmt_dur(seg.get("duration_min"))
-            if dur:
-                line += f" · 飞行{dur}"
-        lines.append(line)
+        dur = _fmt_dur(seg.get("duration_min"))
+        if dur:
+            head += f" · 飞行{dur}"
+        lines.append(head)
+
+        # 出发行：日期前缀仅当出发日 != 上一次打印过的日期。
+        dep_prefix = ""
+        if dep_dt is not None and (last_printed_date is None or dep_dt != last_printed_date):
+            dep_prefix = f"{dep_dt.month:02d}-{dep_dt.day:02d} "
+        if dep_dt is not None:
+            last_printed_date = dep_dt
+        dep_time = f"{dep_prefix}{dep_hhmm}".strip()
+        dep_body = " ".join(x for x in (dep_time, from_label) if x)
+        if dep_body:
+            lines.append(f"{_ITIN_INDENT}{dep_body}")
+
+        # 到达行：+N 跨日标记（相对本段出发日），不带 MM-DD 前缀。
+        arr_disp = arr_hhmm
+        if arr_dt is not None and dep_dt is not None and arr_hhmm:
+            day_gap = (arr_dt - dep_dt).days
+            if day_gap > 0:
+                arr_disp = f"{arr_hhmm}+{day_gap}"
+        arr_body = " ".join(x for x in (arr_disp, to_label) if x)
+        if arr_body:
+            lines.append(f"{_ITIN_INDENT}{arr_body}")
 
         if i < len(shown) - 1:  # 段间中转等待
             lo = _layover_for(layovers, i, seg.get("to"))
@@ -481,9 +510,23 @@ def _route_block(route, node_map: dict, headline: dict = None,
         parts = [f"最低 {_price_str(low)}"]
         wd = _weekday_cn(best_dd)
         parts.append(f"{_mmdd(best_dd)} {wd}".strip())
-        fi = _flight_info_str(low)
-        if fi:
-            parts.append(fi)
+        # 是否会在下方展开逐段行程（headline 命中本块最低价日期且带 segments）。
+        itin_segs = (headline or {}).get("segments") or []
+        will_expand = bool(
+            show_segments and headline
+            and headline.get("depart_date") == best_dd and itin_segs)
+        if will_expand:
+            # 展开逐段：第二行标注「各段为当地时间」+ 段数（直飞/共N段行程）。
+            # 注：SerpAPI 各段 departure/arrival time 均为各自机场当地时间，笼统写
+            # 某城市时间会误导（会让人以为后段也是出发地时区）。故用固定文案。
+            parts.append("各段为当地时间")
+            n_seg = len(itin_segs)
+            parts.append("直飞" if n_seg == 1 else f"共{n_seg}段行程")
+        else:
+            # 不展开时（show_segments 关或无 segments）回退航司/时刻单行摘要。
+            fi = _flight_info_str(low)
+            if fi:
+                parts.append(fi)
         pct = _digest_pct(node)
         if pct:
             parts.append(pct)
