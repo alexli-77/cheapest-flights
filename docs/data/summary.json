@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-16T02:52:24+08:00",
+  "generated_at": "2026-07-16T11:55:47+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 35340,
+      "fetched_count": 35238,
       "routes_failed": 0,
       "routes_ok": 3,
       "routes_total": 3,
       "run_date": "2026-07-16"
     },
-    "serpapi_remaining_quota": 215
+    "serpapi_remaining_quota": 212
   },
   "routes": {
     "yul-hkg": {
@@ -2603,68 +2603,6 @@
             }
           ]
         }
-      },
-      "headline": {
-        "airline": "西捷航空",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "10:05",
-        "baggage_note": "",
-        "depart_date": "2026-07-15",
-        "depart_time": "17:45",
-        "flight_no": "WS 817",
-        "layover_airports": [
-          "YYZ",
-          "MNL"
-        ],
-        "layovers": [
-          {
-            "airport": "YYZ",
-            "wait_min": 395
-          },
-          {
-            "airport": "MNL",
-            "wait_min": 105
-          }
-        ],
-        "overnight": false,
-        "price": 3139,
-        "segments": [
-          {
-            "airline": "西捷航空",
-            "airplane": "Boeing 737MAX 8 Passenger",
-            "duration_min": 90,
-            "flight_no": "WS 817",
-            "from": "YUL",
-            "from_time": "2026-07-15 17:45",
-            "leg": 1,
-            "to": "YYZ",
-            "to_time": "2026-07-15 19:15"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A350",
-            "duration_min": 975,
-            "flight_no": "PR 119",
-            "from": "YYZ",
-            "from_time": "2026-07-16 01:50",
-            "leg": 2,
-            "to": "MNL",
-            "to_time": "2026-07-17 06:05"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A321",
-            "duration_min": 135,
-            "flight_no": "PR 300",
-            "from": "MNL",
-            "from_time": "2026-07-17 07:50",
-            "leg": 3,
-            "to": "HKG",
-            "to_time": "2026-07-17 10:05"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 2
       }
     },
     "yul-pek": {
@@ -5259,68 +5197,6 @@
             }
           ]
         }
-      },
-      "headline": {
-        "airline": "西捷航空",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "11:55",
-        "baggage_note": "",
-        "depart_date": "2026-07-15",
-        "depart_time": "17:45",
-        "flight_no": "WS 817",
-        "layover_airports": [
-          "YYZ",
-          "MNL"
-        ],
-        "layovers": [
-          {
-            "airport": "YYZ",
-            "wait_min": 395
-          },
-          {
-            "airport": "MNL",
-            "wait_min": 50
-          }
-        ],
-        "overnight": false,
-        "price": 3982,
-        "segments": [
-          {
-            "airline": "西捷航空",
-            "airplane": "Boeing 737MAX 8 Passenger",
-            "duration_min": 90,
-            "flight_no": "WS 817",
-            "from": "YUL",
-            "from_time": "2026-07-15 17:45",
-            "leg": 1,
-            "to": "YYZ",
-            "to_time": "2026-07-15 19:15"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A350",
-            "duration_min": 975,
-            "flight_no": "PR 119",
-            "from": "YYZ",
-            "from_time": "2026-07-16 01:50",
-            "leg": 2,
-            "to": "MNL",
-            "to_time": "2026-07-17 06:05"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A321",
-            "duration_min": 300,
-            "flight_no": "PR 358",
-            "from": "MNL",
-            "from_time": "2026-07-17 06:55",
-            "leg": 3,
-            "to": "PEK",
-            "to_time": "2026-07-17 11:55"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 2
       }
     },
     "yul-yvr": {
@@ -6417,28 +6293,28 @@
         }
       },
       "headline": {
-        "airline": "Flair Airlines",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "11:00",
+        "airline": "波特航空",
+        "airplane": "Embraer 195 E2",
+        "arrive_time": "20:57",
         "baggage_note": "托运需另购",
         "depart_date": "2026-08-05",
-        "depart_time": "08:30",
-        "flight_no": "F8 107",
+        "depart_time": "18:20",
+        "flight_no": "PD 375",
         "layover_airports": [],
         "layovers": [],
         "overnight": false,
         "price": 1073,
         "segments": [
           {
-            "airline": "Flair Airlines",
-            "airplane": "Boeing 737MAX 8 Passenger",
-            "duration_min": 330,
-            "flight_no": "F8 107",
+            "airline": "波特航空",
+            "airplane": "Embraer 195 E2",
+            "duration_min": 337,
+            "flight_no": "PD 375",
             "from": "YUL",
-            "from_time": "2026-08-05 08:30",
+            "from_time": "2026-08-05 18:20",
             "leg": 1,
             "to": "YVR",
-            "to_time": "2026-08-05 11:00"
+            "to_time": "2026-08-05 20:57"
           }
         ],
         "source": "serpapi",
