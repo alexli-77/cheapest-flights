@@ -1,108 +1,18 @@
 {
-  "generated_at": "2026-07-18T11:50:37+08:00",
+  "generated_at": "2026-07-18T23:02:15+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 36220,
+      "fetched_count": 36110,
       "routes_failed": 0,
       "routes_ok": 3,
       "routes_total": 3,
       "run_date": "2026-07-18"
     },
-    "serpapi_remaining_quota": 208
+    "serpapi_remaining_quota": 207
   },
   "routes": {
     "yul-hkg": {
       "depart_dates": {
-        "2026-07-15": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 3139
-          },
-          "latest": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 3139
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 3139
-            }
-          ]
-        },
-        "2026-07-16": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 6358
-          },
-          "latest": {
-            "airline": "Air Canada, Jeju Air",
-            "currency": "CNY",
-            "depart_time": "12:55",
-            "fetch_date": "2026-07-15",
-            "flight_no": "",
-            "price": 6401
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 6358
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 6401
-            }
-          ]
-        },
-        "2026-07-17": {
-          "historical_low": {
-            "airline": "WestJet, Philippine Airlines",
-            "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-07-16",
-            "flight_no": "",
-            "price": 6178
-          },
-          "latest": {
-            "airline": "WestJet, Philippine Airlines",
-            "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-07-16",
-            "flight_no": "",
-            "price": 6178
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 6862
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 6905
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-16",
-              "price": 6178
-            }
-          ]
-        },
         "2026-07-18": {
           "historical_low": {
             "airline": "United",
@@ -3143,100 +3053,72 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "西捷航空",
+        "airplane": "Boeing 737MAX 8 Passenger",
+        "arrive_time": "10:05",
+        "baggage_note": "",
+        "depart_date": "2026-10-07",
+        "depart_time": "06:45",
+        "flight_no": "WS 859",
+        "layover_airports": [
+          "YYZ",
+          "MNL"
+        ],
+        "layovers": [
+          {
+            "airport": "YYZ",
+            "wait_min": 1055
+          },
+          {
+            "airport": "MNL",
+            "wait_min": 105
+          }
+        ],
+        "overnight": false,
+        "price": 3168,
+        "segments": [
+          {
+            "airline": "西捷航空",
+            "airplane": "Boeing 737MAX 8 Passenger",
+            "duration_min": 90,
+            "flight_no": "WS 859",
+            "from": "YUL",
+            "from_time": "2026-10-07 06:45",
+            "leg": 1,
+            "to": "YYZ",
+            "to_time": "2026-10-07 08:15"
+          },
+          {
+            "airline": "菲航",
+            "airplane": "Airbus A350",
+            "duration_min": 975,
+            "flight_no": "PR 119",
+            "from": "YYZ",
+            "from_time": "2026-10-08 01:50",
+            "leg": 2,
+            "to": "MNL",
+            "to_time": "2026-10-09 06:05"
+          },
+          {
+            "airline": "菲航",
+            "airplane": "Airbus A321",
+            "duration_min": 135,
+            "flight_no": "PR 300",
+            "from": "MNL",
+            "from_time": "2026-10-09 07:50",
+            "leg": 3,
+            "to": "HKG",
+            "to_time": "2026-10-09 10:05"
+          }
+        ],
+        "source": "serpapi",
+        "stops": 2
       }
     },
     "yul-pek": {
       "depart_dates": {
-        "2026-07-15": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 3982
-          },
-          "latest": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 3982
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 3982
-            }
-          ]
-        },
-        "2026-07-16": {
-          "historical_low": {
-            "airline": "Air Canada, Korean Air",
-            "currency": "CNY",
-            "depart_time": "12:55",
-            "fetch_date": "2026-07-15",
-            "flight_no": "",
-            "price": 5861
-          },
-          "latest": {
-            "airline": "Air Canada, Korean Air",
-            "currency": "CNY",
-            "depart_time": "12:55",
-            "fetch_date": "2026-07-15",
-            "flight_no": "",
-            "price": 5861
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 6365
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 5861
-            }
-          ]
-        },
-        "2026-07-17": {
-          "historical_low": {
-            "airline": "WestJet, Philippine Airlines",
-            "currency": "CNY",
-            "depart_time": "5:45 PM on Fri, Jul 17",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 6811
-          },
-          "latest": {
-            "airline": "WestJet, Philippine Airlines",
-            "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-07-16",
-            "flight_no": "",
-            "price": 6869
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 6811
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 7474
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-16",
-              "price": 6869
-            }
-          ]
-        },
         "2026-07-18": {
           "historical_low": {
             "airline": "WestJet, Hainan",
@@ -6277,100 +6159,72 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "西捷航空",
+        "airplane": "Boeing 737",
+        "arrive_time": "11:55",
+        "baggage_note": "",
+        "depart_date": "2026-07-19",
+        "depart_time": "17:45",
+        "flight_no": "WS 817",
+        "layover_airports": [
+          "YYZ",
+          "MNL"
+        ],
+        "layovers": [
+          {
+            "airport": "YYZ",
+            "wait_min": 395
+          },
+          {
+            "airport": "MNL",
+            "wait_min": 50
+          }
+        ],
+        "overnight": false,
+        "price": 4010,
+        "segments": [
+          {
+            "airline": "西捷航空",
+            "airplane": "Boeing 737",
+            "duration_min": 90,
+            "flight_no": "WS 817",
+            "from": "YUL",
+            "from_time": "2026-07-19 17:45",
+            "leg": 1,
+            "to": "YYZ",
+            "to_time": "2026-07-19 19:15"
+          },
+          {
+            "airline": "菲航",
+            "airplane": "Airbus A350",
+            "duration_min": 975,
+            "flight_no": "PR 119",
+            "from": "YYZ",
+            "from_time": "2026-07-20 01:50",
+            "leg": 2,
+            "to": "MNL",
+            "to_time": "2026-07-21 06:05"
+          },
+          {
+            "airline": "菲航",
+            "airplane": "Airbus A321",
+            "duration_min": 300,
+            "flight_no": "PR 358",
+            "from": "MNL",
+            "from_time": "2026-07-21 06:55",
+            "leg": 3,
+            "to": "PEK",
+            "to_time": "2026-07-21 11:55"
+          }
+        ],
+        "source": "serpapi",
+        "stops": 2
       }
     },
     "yul-yvr": {
       "depart_dates": {
-        "2026-07-15": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 2743
-          },
-          "latest": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 2743
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 2743
-            }
-          ]
-        },
-        "2026-07-16": {
-          "historical_low": {
-            "airline": "Flair Airlines",
-            "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-07-15",
-            "flight_no": "",
-            "price": 2556
-          },
-          "latest": {
-            "airline": "Flair Airlines",
-            "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-07-15",
-            "flight_no": "",
-            "price": 2556
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 3269
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 2556
-            }
-          ]
-        },
-        "2026-07-17": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-14",
-            "flight_no": "",
-            "price": 2189
-          },
-          "latest": {
-            "airline": "Flair Airlines",
-            "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-07-16",
-            "flight_no": "",
-            "price": 2772
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-14",
-              "price": 2189
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 2556
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-16",
-              "price": 2772
-            }
-          ]
-        },
         "2026-07-18": {
           "historical_low": {
             "airline": "",
@@ -7711,6 +7565,34 @@
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "Flair Airlines",
+        "airplane": "Boeing 737MAX 8 Passenger",
+        "arrive_time": "11:00",
+        "baggage_note": "托运需另购",
+        "depart_date": "2026-08-04",
+        "depart_time": "08:30",
+        "flight_no": "F8 107",
+        "layover_airports": [],
+        "layovers": [],
+        "overnight": false,
+        "price": 922,
+        "segments": [
+          {
+            "airline": "Flair Airlines",
+            "airplane": "Boeing 737MAX 8 Passenger",
+            "duration_min": 330,
+            "flight_no": "F8 107",
+            "from": "YUL",
+            "from_time": "2026-08-04 08:30",
+            "leg": 1,
+            "to": "YVR",
+            "to_time": "2026-08-04 11:00"
+          }
+        ],
+        "source": "serpapi",
+        "stops": 0
       }
     }
   }
