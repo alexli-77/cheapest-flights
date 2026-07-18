@@ -12,7 +12,7 @@ import os
 from collections import defaultdict
 from typing import Iterable, Optional
 
-from .models import FlightQuote, iso_now, month_of, fetch_date_of
+from .models import FlightQuote, iso_now, month_of, fetch_date_of, today_shanghai
 
 
 class Storage:
@@ -174,10 +174,18 @@ class Storage:
         :meth:`persist_summary`.
         """
         ids = route_ids if route_ids is not None else self.route_ids()
+        # Only surface departure dates that haven't already flown. Past dates
+        # linger in the JSONL history (rolling window advances daily) and would
+        # otherwise be picked as the "cheapest" — e.g. showing a 07-15 fare on
+        # 07-18. History is preserved on disk; it's just excluded from the
+        # live summary the cards/dashboard read.
+        today = today_shanghai().isoformat()
         routes_out: dict = {}
         for rid in ids:
             dd_out: dict = {}
             for dd in self.depart_dates(rid):
+                if dd < today:
+                    continue
                 latest = self.latest_low(rid, dd)
                 hlow = self.historical_low(rid, dd)
                 dd_out[dd] = {

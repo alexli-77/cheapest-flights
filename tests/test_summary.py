@@ -87,6 +87,20 @@ class TestSummary(unittest.TestCase):
         with open(path, encoding="utf-8") as f:
             self.assertEqual(json.load(f)["meta"]["serpapi_remaining_quota"], 87)
 
+    def test_summary_excludes_past_depart_dates(self):
+        # Rolling window advances daily; stale past departure dates linger in the
+        # JSONL but must NOT appear in the live summary (or be picked as cheapest).
+        past = q(500, "CA9", "2020-01-01T08:00:00+08:00", depart_date="2020-01-01")
+        future = q(3000, "CA1", "2020-01-01T08:00:00+08:00", depart_date="2099-12-31")
+        self.st.append_quotes([past, future])
+        summary = self.st.build_summary()
+        dd = summary["routes"]["sha-nrt"]["depart_dates"]
+        self.assertNotIn("2020-01-01", dd)   # past date filtered out
+        self.assertIn("2099-12-31", dd)      # future date kept
+        # cheapest visible fare must be the future one, not the cheaper past one
+        prices = [v["latest"]["price"] for v in dd.values() if v.get("latest")]
+        self.assertEqual(min(prices), 3000)
+
     def test_summary_tolerates_legacy_rows_without_depart_time(self):
         # Old JSONL rows may omit depart_time; from_dict + summary must cope.
         legacy = FlightQuote.from_dict({
