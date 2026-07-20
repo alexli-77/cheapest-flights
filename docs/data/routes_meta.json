@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T12:29:54+08:00",
+  "generated_at": "2026-07-21T04:26:31+08:00",
   "routes": [
     {
       "currency": "CNY",
@@ -54,6 +54,96 @@
       "to": "HKG",
       "to_city_cn": "香港",
       "to_name_cn": "香港国际机场"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": 15,
+      "enabled": true,
+      "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
+      "route_id": "yul-han",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": 5000,
+      "to": "HAN",
+      "to_city_cn": "河内",
+      "to_name_cn": "河内内排国际机场"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": 15,
+      "enabled": true,
+      "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
+      "route_id": "yul-sgn",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": 5100,
+      "to": "SGN",
+      "to_city_cn": "胡志明市",
+      "to_name_cn": "胡志明市新山一国际机场"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": 15,
+      "enabled": true,
+      "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
+      "route_id": "yul-bkk",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": 4900,
+      "to": "BKK",
+      "to_city_cn": "曼谷",
+      "to_name_cn": "曼谷素万那普国际机场"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": 15,
+      "enabled": true,
+      "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
+      "route_id": "yul-can",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": 6000,
+      "to": "CAN",
+      "to_city_cn": "广州",
+      "to_name_cn": "广州白云国际机场"
+    },
+    {
+      "currency": "CNY",
+      "drop_alert_pct": 15,
+      "enabled": true,
+      "from": "YUL",
+      "from_city_cn": "蒙特利尔",
+      "from_name_cn": "蒙特利尔特鲁多国际机场",
+      "route_id": "yul-kwl",
+      "sources": [
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
+      ],
+      "target_price": 6500,
+      "to": "KWL",
+      "to_city_cn": "桂林",
+      "to_name_cn": "桂林两江国际机场"
     }
   ],
   "timezone": "Asia/Shanghai"
