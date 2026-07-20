@@ -18,3 +18,6 @@ venv/
 # NOTE: data/ is intentionally NOT ignored — JSONL is the database (Git-as-DB).
 # NOTE: state/serpapi_usage.json is intentionally NOT ignored — the monthly
 #       SerpAPI quota counter must persist across runs/commits.
+# NOTE: state/route_best.json is intentionally NOT ignored — the per-route
+#       all-time best price (route-level new-low baseline) must persist across
+#       runs/commits, otherwise every CI run is a cold start and never alerts.

@@ -24,7 +24,12 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from ..models import now_shanghai, SHANGHAI
-from .rules import REGISTRY, Alert, RuleContext
+from .rules import REGISTRY, Alert, RuleContext, _fmt
+
+try:  # airport 中文名表（卡片文案用）；解析失败/缺失时退回三字码，绝不影响告警。
+    from ..airports import display_label as _airport_display_label
+except Exception:  # pragma: no cover - defensive
+    _airport_display_label = None
 
 log = logging.getLogger("flight_watch.alerts")
 
@@ -81,6 +86,129 @@ def _failure_alerts(state_dir: str) -> list[Alert]:
                 target_price=None,
                 message=f"数据源连续 {n} 天无数据（route={route_id}）",
             ))
+    return out
+
+
+# ------------------------------------------------- route-level new-low alerts
+def _route_label(route, route_id: str) -> str:
+    """"蒙特利尔(YUL)→北京(PEK)" from a route (falls back to the route_id)."""
+    origin = str(getattr(route, "origin", "") or "").upper() if route else ""
+    dest = str(getattr(route, "dest", "") or "").upper() if route else ""
+    if _airport_display_label is not None and origin and dest:
+        try:
+            return f"{_airport_display_label(origin)}→{_airport_display_label(dest)}"
+        except Exception:
+            pass
+    return route_id
+
+
+def _price_str(price, currency: str) -> str:
+    cur = currency or "CNY"
+    return f"¥{_fmt(price)}" if cur == "CNY" else f"{cur} {_fmt(price)}"
+
+
+def _mmdd(dd: str) -> str:
+    parts = str(dd or "").split("-")
+    return "-".join(parts[1:]) if len(parts) == 3 else str(dd or "")
+
+
+def _route_new_low_message(route, route_id, price, prev_price, dd,
+                           drop_pct, target, currency) -> str:
+    label = _route_label(route, route_id)
+    msg = (
+        f"{label} 全航线新低 {_price_str(price, currency)}（出发 {_mmdd(dd)}），"
+        f"前低 {_price_str(prev_price, currency)}，↓{drop_pct:.1f}%"
+    )
+    if target is not None:
+        try:
+            gap = float(price) - float(target)
+        except (TypeError, ValueError):
+            gap = None
+        if gap is not None:
+            if gap <= 0:
+                msg += f"，已低于目标价 {_fmt(target)}"
+            else:
+                msg += f"，距目标价 +{_fmt(gap)}"
+    return msg
+
+
+def _route_new_low_alerts(cfg, summary: dict, state_dir: str,
+                          now: datetime) -> list[Alert]:
+    """Emit at most one urgent ``route_new_low`` alert per route.
+
+    For each route we compute ``route_min`` = the cheapest ``latest.price`` over
+    all currently-monitored (future) depart_dates in the summary. A route-level
+    best price is persisted in ``state/route_best.json``
+    ``{route_id: {"price", "depart_date", "updated"}}``. An alert fires only when
+    ``route_min`` breaks the recorded floor by BOTH ``alerts.new_low_min_pct``
+    (default 2.0 %) AND ``alerts.new_low_min_abs`` (default 50, absolute money) —
+    this kills the per-depart_date 0.1 % micro-new-low spam. Cold start (no
+    record for the route) records the baseline silently and never alerts.
+    """
+    alerts_cfg = getattr(cfg, "alerts", {}) or {}
+    try:
+        min_pct = float(alerts_cfg.get("new_low_min_pct", 2.0))
+    except (TypeError, ValueError):
+        min_pct = 2.0
+    try:
+        min_abs = float(alerts_cfg.get("new_low_min_abs", 50))
+    except (TypeError, ValueError):
+        min_abs = 50.0
+
+    best_path = os.path.join(state_dir, "route_best.json")
+    best = _load_json(best_path)
+
+    out: list[Alert] = []
+    dirty = False
+    routes_summary = (summary or {}).get("routes", {}) or {}
+    for route_id, rdata in routes_summary.items():
+        dd_map = (rdata.get("depart_dates", {}) or {}) if isinstance(rdata, dict) else {}
+        # route_min across all future depart_dates that have a latest price.
+        candidates = []
+        for dd, node in dd_map.items():
+            latest = (node or {}).get("latest") or {}
+            price = latest.get("price")
+            if price is None:
+                continue
+            candidates.append((price, dd, latest))
+        if not candidates:
+            continue
+        price, dd, latest = min(candidates, key=lambda t: t[0])
+        currency = latest.get("currency", "CNY")
+
+        rec = best.get(route_id)
+        prev_price = rec.get("price") if isinstance(rec, dict) else None
+
+        # Cold start: record the baseline silently, never alert this run.
+        if prev_price is None:
+            best[route_id] = {"price": price, "depart_date": dd,
+                              "updated": now.isoformat()}
+            dirty = True
+            continue
+
+        # Only a genuine new low that clears BOTH the pct and abs thresholds.
+        if price >= prev_price or prev_price <= 0:
+            continue
+        drop_abs = prev_price - price
+        drop_pct = drop_abs / prev_price * 100.0
+        if drop_pct < min_pct or drop_abs < min_abs:
+            continue
+
+        route = cfg.route_by_id(route_id)
+        target = getattr(route, "target_price", None) if route else None
+        msg = _route_new_low_message(route, route_id, price, prev_price, dd,
+                                     drop_pct, target, currency)
+        out.append(Alert(
+            rule_id="route_new_low", level="urgent", route_id=route_id,
+            depart_date=dd, price=price, prev_price=prev_price,
+            target_price=target, message=msg,
+        ))
+        best[route_id] = {"price": price, "depart_date": dd,
+                          "updated": now.isoformat()}
+        dirty = True
+
+    if dirty:
+        _save_json(best_path, best)
     return out
 
 
@@ -165,6 +293,10 @@ def run_alerts(cfg, storage, summary: dict,
                     continue
                 if alert is not None:
                     raw.append(alert)
+
+    # Route-level new-low alerts (one urgent per route; replaces the old
+    # per-depart_date historical_low spam). Participate in dedup / cap too.
+    raw.extend(_route_new_low_alerts(cfg, summary, state_dir, now))
 
     # Failure watchdog (system alerts) participate in dedup / cap too.
     raw.extend(_failure_alerts(state_dir))

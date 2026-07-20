@@ -43,7 +43,16 @@ class Alert:
     message: str = ""
 
     def key(self) -> str:
-        """Dedup key for urgent single-push throttling."""
+        """Dedup key for urgent single-push throttling.
+
+        ``route_new_low`` is a *route-level* alert (at most one per route): its
+        dedup key intentionally ignores ``depart_date`` (which is merely the
+        cheapest date at emit time and can shift run-to-run) so the 24h throttle
+        is per-route and never collides with the per-(route, depart_date) keys of
+        the other rules.
+        """
+        if self.rule_id == "route_new_low":
+            return f"{self.route_id}|__routelow__"
         return f"{self.route_id}|{self.depart_date}"
 
     def to_dict(self) -> dict:
@@ -187,11 +196,20 @@ class DropPctRule(AlertRule):
 HISTORICAL_MIN_DAYS = 7
 
 
-@register_rule
+# NOTE: ``HistoricalLowRule`` is deliberately **no longer registered** (the
+# ``@register_rule`` decorator was removed 2026-07). It fired a separate "创历史
+# 新低" urgent per *(route, depart_date)*, so every future departure date's own
+# tiny new low (e.g. 5306 -> 5299, ↓0.1%) pushed its own card — flooding users
+# with misleading alerts about fares far above the route's real floor. New-low
+# detection now happens at the **route level** in
+# ``engine._route_new_low_alerts`` (one urgent per route, only when the whole
+# route's minimum breaks the recorded floor by >= ``alerts.new_low_min_pct``).
+# The class is kept (unregistered) for backward-compatible imports only.
 class HistoricalLowRule(AlertRule):
-    """Fire (urgent) when the latest fetch sets a new all-time low for the
-    route x depart_date, requiring >= 7 days of recorded history first
-    (cold start never triggers).
+    """DEPRECATED / unregistered. Fired (urgent) when the latest fetch set a new
+    all-time low for the route x depart_date, requiring >= 7 days of recorded
+    history first (cold start never triggers). Superseded by the route-level
+    new-low logic in the engine; see the note above.
     """
 
     rule_id = "historical_low"

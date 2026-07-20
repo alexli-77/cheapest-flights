@@ -664,12 +664,18 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
             "url": buy_url,
         })
 
+    # Friendly per-rule header: route-level new-low gets its own title so it
+    # reads as "全航线新低" rather than the generic per-date 紧急降价.
+    header_title = "🔥 紧急降价提醒"
+    if getattr(alert, "rule_id", "") == "route_new_low":
+        header_title = "🔥 全航线新低"
+
     return {
         "msg_type": "interactive",
         "card": {
             "config": {"wide_screen_mode": True},
             "header": {
-                "title": {"tag": "plain_text", "content": "🔥 紧急降价提醒"},
+                "title": {"tag": "plain_text", "content": header_title},
                 "template": "red",
             },
             "elements": [

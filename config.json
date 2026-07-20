@@ -259,7 +259,9 @@
     "daily_digest": true,
     "urgent_single_push": true,
     "urgent_dedup_hours": 24,
-    "max_urgent_per_day": 5
+    "max_urgent_per_day": 5,
+    "new_low_min_pct": 2.0,
+    "new_low_min_abs": 50
   },
   "notifiers": {
     "feishu": {

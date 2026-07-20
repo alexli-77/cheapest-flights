@@ -10,8 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import Route, Config  # noqa: E402
 from src.models import now_shanghai  # noqa: E402
 from src.alerts.rules import (  # noqa: E402
-    REGISTRY, RuleContext, BelowTargetRule, DropPctRule, HistoricalLowRule,
-    HISTORICAL_MIN_DAYS,
+    REGISTRY, RuleContext, BelowTargetRule, DropPctRule,
 )
 from src.alerts.engine import run_alerts  # noqa: E402
 
@@ -57,10 +56,13 @@ def _ctx(route, series):
 
 
 class TestRules(unittest.TestCase):
-    def test_registry_has_three_rules(self):
+    def test_registry_rules(self):
+        # below_target + drop_pct stay registered; the noisy per-depart_date
+        # historical_low is intentionally UN-registered (superseded by the
+        # route-level new-low logic in the engine).
         self.assertIn("below_target", REGISTRY)
         self.assertIn("drop_pct", REGISTRY)
-        self.assertIn("historical_low", REGISTRY)
+        self.assertNotIn("historical_low", REGISTRY)
 
     # ------------------------------------------------------- below_target
     def test_below_target_fires(self):
@@ -98,26 +100,6 @@ class TestRules(unittest.TestCase):
 
     def test_drop_pct_needs_two_points(self):
         self.assertIsNone(DropPctRule().evaluate(_ctx(_route(drop=15), _series([900]))))
-
-    # ------------------------------------------------------- historical_low
-    def test_historical_low_cold_start_not_fire(self):
-        # fewer than 7 days of history => cold start, never fires
-        series = _series([1000, 900, 800, 700, 600, 500])  # 6 days, last is a low
-        self.assertEqual(len(series), HISTORICAL_MIN_DAYS - 1)
-        self.assertIsNone(HistoricalLowRule().evaluate(_ctx(_route(), series)))
-
-    def test_historical_low_fires_new_low(self):
-        # 7 days, last sets a new all-time low
-        series = _series([1000, 950, 900, 950, 920, 930, 880])
-        a = HistoricalLowRule().evaluate(_ctx(_route(), series))
-        self.assertIsNotNone(a)
-        self.assertEqual(a.level, "urgent")
-        self.assertEqual(a.price, 880)
-
-    def test_historical_low_not_new_low(self):
-        # 7 days but last is not below the prior minimum (900 already seen)
-        series = _series([900, 950, 1000, 950, 920, 930, 950])
-        self.assertIsNone(HistoricalLowRule().evaluate(_ctx(_route(), series)))
 
 
 class TestEngineMerge(unittest.TestCase):
@@ -182,6 +164,121 @@ class TestEngineMerge(unittest.TestCase):
         summary = self._summary({"sha-nrt": {"2026-10-01": [1000]}})
         alerts = run_alerts(cfg, None, summary, state_dir=self.state)
         self.assertEqual([a for a in alerts if a.rule_id == "source_failure"], [])
+
+
+class TestRouteNewLow(unittest.TestCase):
+    """Route-level new-low logic (replaces per-depart_date historical_low)."""
+
+    def setUp(self):
+        self.state = tempfile.mkdtemp()
+
+    def _route_nl(self, rid="yul-pek", target=None):
+        return Route(id=rid, origin="YUL", dest="PEK", dates={},
+                     target_price=target, drop_alert_pct=None)
+
+    def _summary(self, series_map):
+        routes = {}
+        for rid, dd_map in series_map.items():
+            dd_out = {}
+            for dd, prices in dd_map.items():
+                dd_out[dd] = _node(_series(prices))
+            routes[rid] = {"depart_dates": dd_out}
+        return {"generated_at": "2026-07-10T09:00:00+08:00", "routes": routes, "meta": {}}
+
+    def _best(self):
+        p = os.path.join(self.state, "route_best.json")
+        if not os.path.exists(p):
+            return {}
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+
+    def _run(self, cfg, summary):
+        return run_alerts(cfg, None, summary, state_dir=self.state)
+
+    def test_cold_start_records_no_alert(self):
+        cfg = _cfg([self._route_nl()])
+        summary = self._summary({"yul-pek": {"2026-07-28": [5306], "2026-07-22": [4003]}})
+        alerts = self._run(cfg, summary)
+        self.assertEqual([a for a in alerts if a.rule_id == "route_new_low"], [])
+        best = self._best()
+        self.assertIn("yul-pek", best)
+        self.assertEqual(best["yul-pek"]["price"], 4003)          # route_min, not per-date
+        self.assertEqual(best["yul-pek"]["depart_date"], "2026-07-22")
+
+    def test_new_low_fires_once(self):
+        cfg = _cfg([self._route_nl()])
+        self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [4003]}}))  # baseline
+        # genuinely lower route min: 3900 = 2.57% below 4003, abs 103
+        alerts = self._run(cfg, self._summary({"yul-pek": {"2026-09-13": [3900]}}))
+        nl = [a for a in alerts if a.rule_id == "route_new_low"]
+        self.assertEqual(len(nl), 1)
+        self.assertEqual(nl[0].level, "urgent")
+        self.assertEqual(nl[0].price, 3900)
+        self.assertEqual(nl[0].prev_price, 4003)
+        self.assertEqual(nl[0].depart_date, "2026-09-13")
+        self.assertIn("全航线新低", nl[0].message)
+        self.assertEqual(self._best()["yul-pek"]["price"], 3900)  # floor updated
+
+    def test_micro_new_low_not_fire(self):
+        cfg = _cfg([self._route_nl()])
+        self._run(cfg, self._summary({"yul-pek": {"2026-07-28": [5306]}}))
+        # 5306 -> 5299 = 0.13% drop, abs 7 -> below both thresholds -> no alert
+        alerts = self._run(cfg, self._summary({"yul-pek": {"2026-07-29": [5299]}}))
+        self.assertEqual([a for a in alerts if a.rule_id == "route_new_low"], [])
+        # baseline NOT ratcheted down by a sub-threshold drip
+        self.assertEqual(self._best()["yul-pek"]["price"], 5306)
+
+    def test_abs_floor_blocks_small_money_drop(self):
+        cfg = _cfg([self._route_nl()])
+        self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [1000]}}))
+        # 1000 -> 975 = 2.5% (>= pct) but abs 25 < 50 -> no alert
+        alerts = self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [975]}}))
+        self.assertEqual([a for a in alerts if a.rule_id == "route_new_low"], [])
+
+    def test_one_alert_per_route_multi_dates(self):
+        cfg = _cfg([self._route_nl()])
+        self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [4003]}}))
+        # several dates each below 4003, but only ONE route-level alert (cheapest)
+        alerts = self._run(cfg, self._summary({"yul-pek": {
+            "2026-07-28": [3990], "2026-07-29": [3950], "2026-09-13": [3800]}}))
+        nl = [a for a in alerts if a.rule_id == "route_new_low"]
+        self.assertEqual(len(nl), 1)
+        self.assertEqual(nl[0].price, 3800)
+        self.assertEqual(nl[0].depart_date, "2026-09-13")
+
+    def test_multi_routes_independent(self):
+        cfg = _cfg([self._route_nl("yul-pek"), self._route_nl("yul-hkg")])
+        self._run(cfg, self._summary({
+            "yul-pek": {"2026-07-22": [4003]}, "yul-hkg": {"2026-07-22": [6000]}}))
+        alerts = self._run(cfg, self._summary({
+            "yul-pek": {"2026-07-22": [3800]}, "yul-hkg": {"2026-07-22": [5500]}}))
+        nl = sorted((a for a in alerts if a.rule_id == "route_new_low"),
+                    key=lambda a: a.route_id)
+        self.assertEqual([a.route_id for a in nl], ["yul-hkg", "yul-pek"])
+        self.assertEqual(self._best()["yul-hkg"]["price"], 5500)
+        self.assertEqual(self._best()["yul-pek"]["price"], 3800)
+
+    def test_dedup_within_24h(self):
+        cfg = _cfg([self._route_nl()])
+        self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [4003]}}))
+        a1 = self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [3900]}}))
+        self.assertEqual(
+            sum(1 for a in a1 if a.rule_id == "route_new_low" and a.level == "urgent"), 1)
+        # a further drop within 24h -> route-level dedup -> downgraded to normal
+        a2 = self._run(cfg, self._summary({"yul-pek": {"2026-07-22": [3800]}}))
+        nl2 = [a for a in a2 if a.rule_id == "route_new_low"]
+        self.assertEqual(len(nl2), 1)
+        self.assertEqual(nl2[0].level, "normal")
+
+    def test_below_target_and_drop_pct_unaffected(self):
+        # below_target still urgent; drop_pct still normal — both independent of
+        # the route-level new-low logic (which only cold-starts here).
+        cfg = _cfg([_route(rid="sha-nrt", target=1500, drop=15)])
+        summary = self._summary({"sha-nrt": {"2026-10-01": [1000, 850]}})
+        alerts = self._run(cfg, summary)
+        rules = {a.rule_id for a in alerts}
+        self.assertIn("below_target", rules)
+        self.assertIn("drop_pct", rules)
 
 
 if __name__ == "__main__":
