@@ -17,6 +17,14 @@
         "source": "serpapi",
         "stops": 2
       },
+      "汉莎航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "LH 475",
+        "price": 11233,
+        "source": "serpapi",
+        "stops": 2
+      },
       "西捷航空": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -68,6 +76,22 @@
         "price": 7582,
         "source": "serpapi",
         "stops": 2
+      },
+      "汉莎航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "LH 475",
+        "price": 11233,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "美联航": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "UA 2751",
+        "price": 9577,
+        "source": "serpapi",
+        "stops": 3
       }
     },
     "2026-09-10": {
@@ -113,6 +137,14 @@
         "source": "serpapi",
         "stops": 2
       },
+      "汉莎航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "LH 475",
+        "price": 11233,
+        "source": "serpapi",
+        "stops": 2
+      },
       "美联航": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -136,6 +168,22 @@
         "fetch_date": "2026-07-21",
         "flight_no": "AC 303",
         "price": 4957,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "卡塔尔航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "QR 764",
+        "price": 7572,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "美联航": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-21",
+        "flight_no": "UA 2384",
+        "price": 8046,
         "source": "serpapi",
         "stops": 2
       },
@@ -170,8 +218,8 @@
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
-        "flight_no": "AC 429",
-        "price": 7133,
+        "flight_no": "AC 67",
+        "price": 5736,
         "source": "serpapi",
         "stops": 2
       },
@@ -221,7 +269,7 @@
       }
     }
   },
-  "generated_at": "2026-07-21T05:09:25+08:00",
+  "generated_at": "2026-07-21T12:27:01+08:00",
   "latest_fetch_date": "2026-07-21",
   "route": "yul-kwl",
   "sources": [

@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-21T05:01:47+08:00",
+  "generated_at": "2026-07-21T12:19:23+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 45199,
+      "fetched_count": 44772,
       "routes_failed": 0,
       "routes_ok": 8,
       "routes_total": 8,
       "run_date": "2026-07-21"
     },
-    "serpapi_remaining_quota": 175
+    "serpapi_remaining_quota": 162
   },
   "routes": {
     "yul-bkk": {
@@ -4717,26 +4717,26 @@
         },
         "2026-09-22": {
           "historical_low": {
-            "airline": "西捷航空",
+            "airline": "加航",
             "currency": "CNY",
             "depart_time": "",
             "fetch_date": "2026-07-21",
-            "flight_no": "WS 817",
-            "price": 6289
+            "flight_no": "AC 67",
+            "price": 5736
           },
           "latest": {
-            "airline": "西捷航空",
+            "airline": "加航",
             "currency": "CNY",
             "depart_time": "",
             "fetch_date": "2026-07-21",
-            "flight_no": "WS 817",
-            "price": 6289
+            "flight_no": "AC 67",
+            "price": 5736
           },
           "series": [
             {
               "currency": "CNY",
               "fetch_date": "2026-07-21",
-              "price": 6289
+              "price": 5736
             }
           ]
         },
