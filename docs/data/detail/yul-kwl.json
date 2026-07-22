@@ -3,17 +3,17 @@
     "2026-09-01": {
       "加航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "AC 301",
-        "price": 5350,
+        "price": 5345,
         "source": "serpapi",
         "stops": 2
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "QR 764",
-        "price": 7939,
+        "price": 7735,
         "source": "serpapi",
         "stops": 2
       },
@@ -58,6 +58,14 @@
         "price": 13520,
         "source": "serpapi",
         "stops": 2
+      },
+      "西捷航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "WS 859",
+        "price": 6585,
+        "source": "serpapi",
+        "stops": 2
       }
     },
     "2026-09-07": {
@@ -71,9 +79,9 @@
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "QR 764",
-        "price": 7582,
+        "price": 7549,
         "source": "serpapi",
         "stops": 2
       },
@@ -123,17 +131,17 @@
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "QR 764",
-        "price": 7582,
+        "price": 7549,
         "source": "serpapi",
         "stops": 2
       },
       "摩洛哥皇家航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "AT 209",
-        "price": 7459,
+        "price": 7435,
         "source": "serpapi",
         "stops": 2
       },
@@ -147,9 +155,9 @@
       },
       "美联航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "UA 2384",
-        "price": 8494,
+        "price": 8458,
         "source": "serpapi",
         "stops": 2
       },
@@ -235,9 +243,9 @@
     "2026-09-25": {
       "加航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "AC 303",
-        "price": 6346,
+        "price": 5466,
         "source": "serpapi",
         "stops": 2
       },
@@ -266,11 +274,27 @@
         "price": 11233,
         "source": "serpapi",
         "stops": 2
+      },
+      "美联航": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "UA 3583",
+        "price": 43628,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "西捷航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "WS 859",
+        "price": 7114,
+        "source": "serpapi",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-07-21T12:27:01+08:00",
-  "latest_fetch_date": "2026-07-21",
+  "generated_at": "2026-07-22T12:29:26+08:00",
+  "latest_fetch_date": "2026-07-22",
   "route": "yul-kwl",
   "sources": [
     "serpapi"

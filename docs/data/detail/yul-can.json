@@ -13,14 +13,22 @@
     "2026-09-04": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "",
-        "price": 5522,
+        "price": 5501,
         "source": "fast_flights",
         "stops": 0
       }
     },
     "2026-09-07": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "",
+        "price": 5299,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada, Asiana Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -41,6 +49,14 @@
       }
     },
     "2026-09-13": {
+      "Air Canada, Asiana Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "",
+        "price": 5501,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Turkish Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -61,6 +77,14 @@
       }
     },
     "2026-09-19": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-22",
+        "flight_no": "",
+        "price": 5501,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada, Asiana Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -73,9 +97,9 @@
     "2026-09-22": {
       "Turkish Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "",
-        "price": 6142,
+        "price": 6120,
         "source": "fast_flights",
         "stops": 1
       }
@@ -93,16 +117,16 @@
     "2026-09-28": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-22",
         "flight_no": "",
-        "price": 6214,
+        "price": 5328,
         "source": "fast_flights",
         "stops": 0
       }
     }
   },
-  "generated_at": "2026-07-21T12:27:01+08:00",
-  "latest_fetch_date": "2026-07-21",
+  "generated_at": "2026-07-22T12:29:26+08:00",
+  "latest_fetch_date": "2026-07-22",
   "route": "yul-can",
   "sources": [
     "fast_flights"
