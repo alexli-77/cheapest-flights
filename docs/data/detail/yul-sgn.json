@@ -3,9 +3,9 @@
     "2026-09-01": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-22",
+        "fetch_date": "2026-07-24",
         "flight_no": "",
-        "price": 6170,
+        "price": 5436,
         "source": "fast_flights",
         "stops": 0
       },
@@ -34,14 +34,22 @@
         "price": 6566,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Air Canada, United, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 5674,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-07": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-24",
         "flight_no": "",
-        "price": 6192,
+        "price": 6091,
         "source": "fast_flights",
         "stops": 0
       },
@@ -70,9 +78,25 @@
         "price": 6134,
         "source": "fast_flights",
         "stops": 1
+      },
+      "WestJet, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 6091,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-13": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 6516,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Emirates": {
         "currency": "CNY",
         "fetch_date": "2026-07-22",
@@ -91,6 +115,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 5033,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
         "fetch_date": "2026-07-23",
@@ -108,14 +140,22 @@
         "price": 6329,
         "source": "fast_flights",
         "stops": 0
+      },
+      "WestJet, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 6329,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-22": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-24",
         "flight_no": "",
-        "price": 6185,
+        "price": 5436,
         "source": "fast_flights",
         "stops": 0
       },
@@ -129,6 +169,14 @@
       }
     },
     "2026-09-25": {
+      "Air Canada, EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 5227,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Emirates": {
         "currency": "CNY",
         "fetch_date": "2026-07-22",
@@ -146,11 +194,19 @@
         "price": 6170,
         "source": "fast_flights",
         "stops": 0
+      },
+      "Air Canada, EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-24",
+        "flight_no": "",
+        "price": 5033,
+        "source": "fast_flights",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-07-23T12:26:45+08:00",
-  "latest_fetch_date": "2026-07-23",
+  "generated_at": "2026-07-24T12:37:38+08:00",
+  "latest_fetch_date": "2026-07-24",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"
