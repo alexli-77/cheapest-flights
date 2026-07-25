@@ -11,9 +11,9 @@
       },
       "Air Canada, ANA": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-25",
         "flight_no": "",
-        "price": 6192,
+        "price": 6170,
         "source": "fast_flights",
         "stops": 1
       }
@@ -47,9 +47,9 @@
     "2026-09-07": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-24",
+        "fetch_date": "2026-07-25",
         "flight_no": "",
-        "price": 6091,
+        "price": 6077,
         "source": "fast_flights",
         "stops": 0
       },
@@ -76,6 +76,14 @@
         "fetch_date": "2026-07-22",
         "flight_no": "",
         "price": 6134,
+        "source": "fast_flights",
+        "stops": 1
+      },
+      "Emirates": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "",
+        "price": 6509,
         "source": "fast_flights",
         "stops": 1
       },
@@ -125,9 +133,9 @@
       },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-25",
         "flight_no": "",
-        "price": 6091,
+        "price": 6077,
         "source": "fast_flights",
         "stops": 2
       }
@@ -135,9 +143,9 @@
     "2026-09-19": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-25",
         "flight_no": "",
-        "price": 6329,
+        "price": 6314,
         "source": "fast_flights",
         "stops": 0
       },
@@ -195,6 +203,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "",
+        "price": 6170,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "Air Canada, EVA Air": {
         "currency": "CNY",
         "fetch_date": "2026-07-24",
@@ -205,8 +221,8 @@
       }
     }
   },
-  "generated_at": "2026-07-24T12:37:38+08:00",
-  "latest_fetch_date": "2026-07-24",
+  "generated_at": "2026-07-25T12:27:27+08:00",
+  "latest_fetch_date": "2026-07-25",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"

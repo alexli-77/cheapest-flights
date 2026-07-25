@@ -19,9 +19,9 @@
       },
       "奧地利航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-25",
         "flight_no": "OS 56",
-        "price": 45551,
+        "price": 45432,
         "source": "serpapi",
         "stops": 2
       },
@@ -53,9 +53,9 @@
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-25",
         "flight_no": "QR 764",
-        "price": 7849,
+        "price": 7828,
         "source": "serpapi",
         "stops": 2
       },
@@ -64,6 +64,14 @@
         "fetch_date": "2026-07-21",
         "flight_no": "LH 479",
         "price": 13520,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "美联航": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "UA 2384",
+        "price": 17357,
         "source": "serpapi",
         "stops": 2
       },
@@ -93,6 +101,14 @@
         "source": "serpapi",
         "stops": 2
       },
+      "奧地利航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "OS 56",
+        "price": 45432,
+        "source": "serpapi",
+        "stops": 2
+      },
       "汉莎航空": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -103,9 +119,9 @@
       },
       "美联航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-25",
         "flight_no": "UA 2751",
-        "price": 9577,
+        "price": 9561,
         "source": "serpapi",
         "stops": 3
       },
@@ -197,17 +213,25 @@
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-25",
         "flight_no": "QR 764",
-        "price": 7572,
+        "price": 7559,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "奧地利航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "OS 56",
+        "price": 43058,
         "source": "serpapi",
         "stops": 2
       },
       "美联航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-07-25",
         "flight_no": "UA 2384",
-        "price": 8046,
+        "price": 8031,
         "source": "serpapi",
         "stops": 2
       },
@@ -299,6 +323,22 @@
         "source": "serpapi",
         "stops": 2
       },
+      "卡塔尔航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "QR 764",
+        "price": 24511,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "奧地利航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-25",
+        "flight_no": "OS 56",
+        "price": 45432,
+        "source": "serpapi",
+        "stops": 2
+      },
       "汉莎航空": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -325,8 +365,8 @@
       }
     }
   },
-  "generated_at": "2026-07-24T12:37:38+08:00",
-  "latest_fetch_date": "2026-07-23",
+  "generated_at": "2026-07-25T12:27:27+08:00",
+  "latest_fetch_date": "2026-07-25",
   "route": "yul-kwl",
   "sources": [
     "serpapi"
