@@ -21,9 +21,9 @@
     "2026-09-04": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-07-27",
         "flight_no": "",
-        "price": 5746,
+        "price": 5738,
         "source": "fast_flights",
         "stops": 0
       },
@@ -106,6 +106,14 @@
         "price": 4752,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Air Canada, Philippine Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-27",
+        "flight_no": "",
+        "price": 4522,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-19": {
@@ -186,11 +194,19 @@
         "price": 4745,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Air Canada, THAI": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-27",
+        "flight_no": "",
+        "price": 5371,
+        "source": "fast_flights",
+        "stops": 1
       }
     }
   },
-  "generated_at": "2026-07-26T12:49:36+08:00",
-  "latest_fetch_date": "2026-07-26",
+  "generated_at": "2026-07-27T12:56:06+08:00",
+  "latest_fetch_date": "2026-07-27",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
