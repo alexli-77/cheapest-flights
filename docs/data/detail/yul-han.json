@@ -145,6 +145,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-30",
+        "flight_no": "",
+        "price": 5602,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, Cathay Pacific": {
         "currency": "CNY",
         "fetch_date": "2026-07-28",
@@ -325,8 +333,8 @@
       }
     }
   },
-  "generated_at": "2026-07-29T12:23:33+08:00",
-  "latest_fetch_date": "2026-07-29",
+  "generated_at": "2026-07-30T12:10:42+08:00",
+  "latest_fetch_date": "2026-07-30",
   "route": "yul-han",
   "sources": [
     "fast_flights"

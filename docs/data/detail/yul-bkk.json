@@ -81,6 +81,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, Philippine Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-30",
+        "flight_no": "",
+        "price": 4536,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, THAI": {
         "currency": "CNY",
         "fetch_date": "2026-07-25",
@@ -142,6 +150,14 @@
         "price": 4932,
         "source": "fast_flights",
         "stops": 0
+      },
+      "Air Canada, China Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-07-30",
+        "flight_no": "",
+        "price": 5162,
+        "source": "fast_flights",
+        "stops": 2
       },
       "Turkish Airlines": {
         "currency": "CNY",
@@ -205,8 +221,8 @@
       }
     }
   },
-  "generated_at": "2026-07-29T12:23:33+08:00",
-  "latest_fetch_date": "2026-07-29",
+  "generated_at": "2026-07-30T12:10:42+08:00",
+  "latest_fetch_date": "2026-07-30",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
