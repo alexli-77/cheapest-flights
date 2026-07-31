@@ -23,8 +23,8 @@
         "whitelist": [],
         "blacklist": []
       },
-      "target_price": 4000,
-      "drop_alert_pct": 15,
+      "target_price": null,
+      "drop_alert_pct": null,
       "sources": [
         "fast_flights",
         "serpapi",
@@ -44,8 +44,8 @@
         "whitelist": [],
         "blacklist": []
       },
-      "target_price": null,
-      "drop_alert_pct": null,
+      "target_price": 1000,
+      "drop_alert_pct": 15,
       "sources": [
         "fast_flights",
         "serpapi",
