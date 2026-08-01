@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T12:30:50+08:00",
+  "generated_at": "2026-08-01T12:31:11+08:00",
   "routes": [
     {
       "currency": "CNY",
@@ -21,7 +21,7 @@
     },
     {
       "currency": "CNY",
-      "drop_alert_pct": null,
+      "drop_alert_pct": 15,
       "enabled": true,
       "from": "YUL",
       "from_city_cn": "蒙特利尔",
@@ -32,7 +32,7 @@
         "serpapi",
         "ctrip_local"
       ],
-      "target_price": null,
+      "target_price": 1000,
       "to": "YVR",
       "to_city_cn": "温哥华",
       "to_name_cn": "温哥华国际机场"
