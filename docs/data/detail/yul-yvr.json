@@ -645,6 +645,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-02",
+        "flight_no": "",
+        "price": 2210,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "WestJet": {
         "currency": "CNY",
         "fetch_date": "2026-07-24",
@@ -1079,6 +1087,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-02",
+        "flight_no": "",
+        "price": 1858,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-01",
@@ -1089,6 +1105,14 @@
       }
     },
     "2026-08-28": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-02",
+        "flight_no": "",
+        "price": 1231,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada": {
         "currency": "CNY",
         "fetch_date": "2026-07-31",
@@ -1117,9 +1141,9 @@
       },
       "Flair Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-07-30",
+        "fetch_date": "2026-08-02",
         "flight_no": "",
-        "price": 1332,
+        "price": 1231,
         "source": "fast_flights",
         "stops": 0
       }
@@ -1127,9 +1151,9 @@
     "2026-08-30": {
       "Flair Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-07-31",
+        "fetch_date": "2026-08-02",
         "flight_no": "",
-        "price": 1591,
+        "price": 1231,
         "source": "fast_flights",
         "stops": 0
       }
@@ -1143,10 +1167,20 @@
         "source": "fast_flights",
         "stops": 0
       }
+    },
+    "2026-09-01": {
+      "Flair Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-02",
+        "flight_no": "",
+        "price": 1591,
+        "source": "fast_flights",
+        "stops": 0
+      }
     }
   },
-  "generated_at": "2026-08-01T12:31:11+08:00",
-  "latest_fetch_date": "2026-08-01",
+  "generated_at": "2026-08-02T12:34:08+08:00",
+  "latest_fetch_date": "2026-08-02",
   "route": "yul-yvr",
   "sources": [
     "fast_flights"

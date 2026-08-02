@@ -52,6 +52,14 @@
         "price": 4738,
         "source": "fast_flights",
         "stops": 1
+      },
+      "United": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-02",
+        "flight_no": "",
+        "price": 5234,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-10": {
@@ -229,8 +237,8 @@
       }
     }
   },
-  "generated_at": "2026-08-01T12:31:11+08:00",
-  "latest_fetch_date": "2026-08-01",
+  "generated_at": "2026-08-02T12:34:08+08:00",
+  "latest_fetch_date": "2026-08-02",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"

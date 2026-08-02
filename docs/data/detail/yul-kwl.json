@@ -11,9 +11,9 @@
       },
       "卡塔尔航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-22",
+        "fetch_date": "2026-08-02",
         "flight_no": "QR 764",
-        "price": 7735,
+        "price": 7601,
         "source": "serpapi",
         "stops": 2
       },
@@ -127,9 +127,9 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-08-02",
         "flight_no": "WS 859",
-        "price": 7106,
+        "price": 5300,
         "source": "serpapi",
         "stops": 2
       }
@@ -261,9 +261,9 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
+        "fetch_date": "2026-08-02",
         "flight_no": "WS 859",
-        "price": 6270,
+        "price": 5298,
         "source": "serpapi",
         "stops": 2
       }
@@ -389,16 +389,16 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-08-01",
-        "flight_no": "WS 817",
-        "price": 6921,
+        "fetch_date": "2026-08-02",
+        "flight_no": "WS 859",
+        "price": 6275,
         "source": "serpapi",
         "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-01T12:31:11+08:00",
-  "latest_fetch_date": "2026-08-01",
+  "generated_at": "2026-08-02T12:34:08+08:00",
+  "latest_fetch_date": "2026-08-02",
   "route": "yul-kwl",
   "sources": [
     "serpapi"
