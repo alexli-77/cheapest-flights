@@ -17,7 +17,7 @@ routes:
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
+    target_price: 5000
     drop_alert_pct: null
     sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
@@ -43,7 +43,7 @@ routes:
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
+    target_price: 4000
     drop_alert_pct: null
     sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
