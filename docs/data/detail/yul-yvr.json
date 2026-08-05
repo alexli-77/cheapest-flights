@@ -949,9 +949,9 @@
     "2026-08-21": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-04",
+        "fetch_date": "2026-08-05",
         "flight_no": "",
-        "price": 1332,
+        "price": 1224,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1077,6 +1077,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 1858,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-27",
@@ -1141,9 +1149,9 @@
     "2026-08-29": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-01",
+        "fetch_date": "2026-08-05",
         "flight_no": "",
-        "price": 1231,
+        "price": 1073,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1185,6 +1193,14 @@
       }
     },
     "2026-09-01": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 1224,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-04",
@@ -1205,14 +1221,22 @@
       },
       "Flair Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-08-03",
+        "fetch_date": "2026-08-05",
         "flight_no": "",
-        "price": 1231,
+        "price": 1073,
         "source": "fast_flights",
         "stops": 0
       }
     },
     "2026-09-03": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 922,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-04",
@@ -1221,10 +1245,20 @@
         "source": "fast_flights",
         "stops": 0
       }
+    },
+    "2026-09-04": {
+      "Air Transat, Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 1649,
+        "source": "fast_flights",
+        "stops": 1
+      }
     }
   },
-  "generated_at": "2026-08-04T12:19:57+08:00",
-  "latest_fetch_date": "2026-08-04",
+  "generated_at": "2026-08-05T12:15:18+08:00",
+  "latest_fetch_date": "2026-08-05",
   "route": "yul-yvr",
   "sources": [
     "fast_flights"

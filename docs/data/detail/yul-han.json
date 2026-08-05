@@ -17,6 +17,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 5285,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Turkish Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -40,6 +48,14 @@
         "fetch_date": "2026-07-29",
         "flight_no": "",
         "price": 5148,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 5537,
         "source": "fast_flights",
         "stops": 2
       },
@@ -71,9 +87,9 @@
       },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-07-26",
+        "fetch_date": "2026-08-05",
         "flight_no": "",
-        "price": 5976,
+        "price": 5854,
         "source": "fast_flights",
         "stops": 2
       },
@@ -129,9 +145,9 @@
       },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-07-23",
+        "fetch_date": "2026-08-05",
         "flight_no": "",
-        "price": 5990,
+        "price": 5854,
         "source": "fast_flights",
         "stops": 2
       }
@@ -312,6 +328,14 @@
         "price": 6170,
         "source": "fast_flights",
         "stops": 2
+      },
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-05",
+        "flight_no": "",
+        "price": 5537,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-28": {
@@ -349,8 +373,8 @@
       }
     }
   },
-  "generated_at": "2026-08-04T12:19:56+08:00",
-  "latest_fetch_date": "2026-08-04",
+  "generated_at": "2026-08-05T12:15:18+08:00",
+  "latest_fetch_date": "2026-08-05",
   "route": "yul-han",
   "sources": [
     "fast_flights"
