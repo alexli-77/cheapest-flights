@@ -127,9 +127,9 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-08-02",
+        "fetch_date": "2026-08-06",
         "flight_no": "WS 859",
-        "price": 5300,
+        "price": 5290,
         "source": "serpapi",
         "stops": 2
       }
@@ -171,9 +171,9 @@
     "2026-09-13": {
       "加航": {
         "currency": "CNY",
-        "fetch_date": "2026-07-21",
-        "flight_no": "AC 313",
-        "price": 5165,
+        "fetch_date": "2026-08-06",
+        "flight_no": "AC 311",
+        "price": 4987,
         "source": "serpapi",
         "stops": 2
       },
@@ -261,9 +261,9 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-08-02",
+        "fetch_date": "2026-08-06",
         "flight_no": "WS 859",
-        "price": 5298,
+        "price": 5287,
         "source": "serpapi",
         "stops": 2
       }
@@ -373,9 +373,9 @@
       },
       "汉莎航空": {
         "currency": "CNY",
-        "fetch_date": "2026-08-01",
+        "fetch_date": "2026-08-06",
         "flight_no": "LH 475",
-        "price": 11167,
+        "price": 11166,
         "source": "serpapi",
         "stops": 2
       },
@@ -397,8 +397,8 @@
       }
     }
   },
-  "generated_at": "2026-08-05T12:15:18+08:00",
-  "latest_fetch_date": "2026-08-05",
+  "generated_at": "2026-08-06T12:21:00+08:00",
+  "latest_fetch_date": "2026-08-06",
   "route": "yul-kwl",
   "sources": [
     "serpapi"
