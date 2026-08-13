@@ -1,6 +1,14 @@
 {
   "airlines_by_depart": {
     "2026-09-01": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-13",
+        "flight_no": "",
+        "price": 9101,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-08-01",
@@ -397,10 +405,11 @@
       }
     }
   },
-  "generated_at": "2026-08-12T11:23:29+08:00",
-  "latest_fetch_date": "2026-08-07",
+  "generated_at": "2026-08-13T11:37:10+08:00",
+  "latest_fetch_date": "2026-08-13",
   "route": "yul-kwl",
   "sources": [
+    "fast_flights",
     "serpapi"
   ]
 }

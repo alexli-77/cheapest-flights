@@ -40,6 +40,14 @@
         "price": 5645,
         "source": "fast_flights",
         "stops": 1
+      },
+      "WestJet, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-13",
+        "flight_no": "",
+        "price": 5904,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-04": {
@@ -397,8 +405,8 @@
       }
     }
   },
-  "generated_at": "2026-08-12T11:23:29+08:00",
-  "latest_fetch_date": "2026-08-12",
+  "generated_at": "2026-08-13T11:37:10+08:00",
+  "latest_fetch_date": "2026-08-13",
   "route": "yul-han",
   "sources": [
     "fast_flights"
