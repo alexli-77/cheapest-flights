@@ -1163,9 +1163,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-07-31",
+        "fetch_date": "2026-08-14",
         "flight_no": "",
-        "price": 1858,
+        "price": 1634,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1332,6 +1332,14 @@
         "price": 1073,
         "source": "fast_flights",
         "stops": 0
+      },
+      "Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 1634,
+        "source": "fast_flights",
+        "stops": 0
       }
     },
     "2026-09-04": {
@@ -1366,6 +1374,14 @@
         "fetch_date": "2026-08-12",
         "flight_no": "",
         "price": 1598,
+        "source": "fast_flights",
+        "stops": 0
+      },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 1858,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1408,6 +1424,14 @@
         "fetch_date": "2026-08-13",
         "flight_no": "",
         "price": 1339,
+        "source": "fast_flights",
+        "stops": 0
+      },
+      "Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 1901,
         "source": "fast_flights",
         "stops": 0
       }
@@ -1477,9 +1501,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-08-11",
+        "fetch_date": "2026-08-14",
         "flight_no": "",
-        "price": 1109,
+        "price": 1066,
         "source": "fast_flights",
         "stops": 0
       }
@@ -1490,6 +1514,14 @@
         "fetch_date": "2026-08-12",
         "flight_no": "",
         "price": 929,
+        "source": "fast_flights",
+        "stops": 0
+      },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 1066,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1511,10 +1543,20 @@
         "source": "fast_flights",
         "stops": 0
       }
+    },
+    "2026-09-13": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 1087,
+        "source": "fast_flights",
+        "stops": 0
+      }
     }
   },
-  "generated_at": "2026-08-13T11:37:10+08:00",
-  "latest_fetch_date": "2026-08-13",
+  "generated_at": "2026-08-14T11:43:53+08:00",
+  "latest_fetch_date": "2026-08-14",
   "route": "yul-yvr",
   "sources": [
     "fast_flights"

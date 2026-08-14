@@ -9,6 +9,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, Air China": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-14",
+        "flight_no": "",
+        "price": 5299,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, Asiana Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-09",
@@ -301,8 +309,8 @@
       }
     }
   },
-  "generated_at": "2026-08-13T11:37:10+08:00",
-  "latest_fetch_date": "2026-08-13",
+  "generated_at": "2026-08-14T11:43:53+08:00",
+  "latest_fetch_date": "2026-08-14",
   "route": "yul-can",
   "sources": [
     "fast_flights"
