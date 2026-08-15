@@ -59,6 +59,14 @@
       }
     },
     "2026-09-04": {
+      "Qatar Airways, China Southern": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-15",
+        "flight_no": "",
+        "price": 12665,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-07-21",
@@ -413,8 +421,8 @@
       }
     }
   },
-  "generated_at": "2026-08-14T11:43:53+08:00",
-  "latest_fetch_date": "2026-08-14",
+  "generated_at": "2026-08-15T10:30:02+08:00",
+  "latest_fetch_date": "2026-08-15",
   "route": "yul-kwl",
   "sources": [
     "fast_flights",
