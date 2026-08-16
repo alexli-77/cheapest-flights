@@ -27,9 +27,9 @@
       },
       "American, JAL": {
         "currency": "CNY",
-        "fetch_date": "2026-08-05",
+        "fetch_date": "2026-08-16",
         "flight_no": "",
-        "price": 5285,
+        "price": 5213,
         "source": "fast_flights",
         "stops": 2
       },
@@ -87,9 +87,9 @@
     "2026-09-07": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-08",
+        "fetch_date": "2026-08-16",
         "flight_no": "",
-        "price": 5328,
+        "price": 5213,
         "source": "fast_flights",
         "stops": 0
       },
@@ -405,8 +405,8 @@
       }
     }
   },
-  "generated_at": "2026-08-15T10:30:02+08:00",
-  "latest_fetch_date": "2026-08-15",
+  "generated_at": "2026-08-16T10:34:15+08:00",
+  "latest_fetch_date": "2026-08-16",
   "route": "yul-han",
   "sources": [
     "fast_flights"
