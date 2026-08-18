@@ -24,6 +24,14 @@
         "price": 5321,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Air Canada, THAI": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-18",
+        "flight_no": "",
+        "price": 5450,
+        "source": "fast_flights",
+        "stops": 1
       }
     },
     "2026-09-04": {
@@ -301,8 +309,8 @@
       }
     }
   },
-  "generated_at": "2026-08-17T10:43:40+08:00",
-  "latest_fetch_date": "2026-08-17",
+  "generated_at": "2026-08-18T10:40:55+08:00",
+  "latest_fetch_date": "2026-08-18",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
