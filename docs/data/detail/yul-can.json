@@ -110,6 +110,14 @@
         "price": 6610,
         "source": "fast_flights",
         "stops": 2
+      },
+      "WestJet, China Southern": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-19",
+        "flight_no": "",
+        "price": 6178,
+        "source": "fast_flights",
+        "stops": 1
       }
     },
     "2026-09-13": {
@@ -309,8 +317,8 @@
       }
     }
   },
-  "generated_at": "2026-08-18T10:40:55+08:00",
-  "latest_fetch_date": "2026-08-18",
+  "generated_at": "2026-08-19T10:28:47+08:00",
+  "latest_fetch_date": "2026-08-19",
   "route": "yul-can",
   "sources": [
     "fast_flights"
