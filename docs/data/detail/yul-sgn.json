@@ -411,6 +411,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-22",
+        "flight_no": "",
+        "price": 5335,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Qatar Airways": {
         "currency": "CNY",
         "fetch_date": "2026-08-07",
@@ -421,8 +429,8 @@
       }
     }
   },
-  "generated_at": "2026-08-21T10:33:23+08:00",
-  "latest_fetch_date": "2026-08-21",
+  "generated_at": "2026-08-22T10:26:12+08:00",
+  "latest_fetch_date": "2026-08-22",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"
