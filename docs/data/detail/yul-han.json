@@ -159,6 +159,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Air Canada, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-23",
+        "flight_no": "",
+        "price": 6307,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, China Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-07-28",
@@ -429,8 +437,8 @@
       }
     }
   },
-  "generated_at": "2026-08-22T10:26:12+08:00",
-  "latest_fetch_date": "2026-08-22",
+  "generated_at": "2026-08-23T10:35:21+08:00",
+  "latest_fetch_date": "2026-08-23",
   "route": "yul-han",
   "sources": [
     "fast_flights"
