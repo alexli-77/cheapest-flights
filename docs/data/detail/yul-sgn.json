@@ -376,6 +376,14 @@
         "price": 5494,
         "source": "fast_flights",
         "stops": 1
+      },
+      "United, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-24",
+        "flight_no": "",
+        "price": 4795,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-28": {
@@ -426,11 +434,19 @@
         "price": 6149,
         "source": "fast_flights",
         "stops": 1
+      },
+      "United, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-24",
+        "flight_no": "",
+        "price": 4759,
+        "source": "fast_flights",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-23T10:35:21+08:00",
-  "latest_fetch_date": "2026-08-23",
+  "generated_at": "2026-08-24T10:43:16+08:00",
+  "latest_fetch_date": "2026-08-24",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"

@@ -225,6 +225,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Air Canada, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-24",
+        "flight_no": "",
+        "price": 6278,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "American, JAL": {
         "currency": "CNY",
         "fetch_date": "2026-08-19",
@@ -437,8 +445,8 @@
       }
     }
   },
-  "generated_at": "2026-08-23T10:35:21+08:00",
-  "latest_fetch_date": "2026-08-23",
+  "generated_at": "2026-08-24T10:43:16+08:00",
+  "latest_fetch_date": "2026-08-24",
   "route": "yul-han",
   "sources": [
     "fast_flights"
