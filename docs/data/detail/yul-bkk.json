@@ -58,6 +58,14 @@
         "price": 5400,
         "source": "fast_flights",
         "stops": 2
+      },
+      "United": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-25",
+        "flight_no": "",
+        "price": 5537,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-07": {
@@ -139,9 +147,9 @@
       },
       "Air Canada, Philippine Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-08-19",
+        "fetch_date": "2026-08-25",
         "flight_no": "",
-        "price": 4068,
+        "price": 3701,
         "source": "fast_flights",
         "stops": 2
       },
@@ -157,9 +165,9 @@
     "2026-09-16": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-22",
+        "fetch_date": "2026-08-25",
         "flight_no": "",
-        "price": 4104,
+        "price": 4082,
         "source": "fast_flights",
         "stops": 0
       },
@@ -309,8 +317,8 @@
       }
     }
   },
-  "generated_at": "2026-08-24T10:43:16+08:00",
-  "latest_fetch_date": "2026-08-24",
+  "generated_at": "2026-08-25T10:30:59+08:00",
+  "latest_fetch_date": "2026-08-25",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"

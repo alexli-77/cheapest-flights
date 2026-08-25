@@ -61,9 +61,9 @@
       },
       "Air Canada, Asiana Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-08-21",
+        "fetch_date": "2026-08-25",
         "flight_no": "",
-        "price": 6876,
+        "price": 6847,
         "source": "fast_flights",
         "stops": 2
       },
@@ -408,6 +408,14 @@
         "price": 5494,
         "source": "fast_flights",
         "stops": 1
+      },
+      "WestJet, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-25",
+        "flight_no": "",
+        "price": 6250,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-28": {
@@ -445,8 +453,8 @@
       }
     }
   },
-  "generated_at": "2026-08-24T10:43:16+08:00",
-  "latest_fetch_date": "2026-08-24",
+  "generated_at": "2026-08-25T10:30:59+08:00",
+  "latest_fetch_date": "2026-08-25",
   "route": "yul-han",
   "sources": [
     "fast_flights"
