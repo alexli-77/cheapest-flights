@@ -37,9 +37,9 @@
     "2026-09-04": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-07-27",
+        "fetch_date": "2026-08-26",
         "flight_no": "",
-        "price": 5738,
+        "price": 5674,
         "source": "fast_flights",
         "stops": 0
       },
@@ -314,11 +314,19 @@
         "price": 5162,
         "source": "fast_flights",
         "stops": 2
+      },
+      "Delta, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-26",
+        "flight_no": "",
+        "price": 5429,
+        "source": "fast_flights",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-25T10:30:59+08:00",
-  "latest_fetch_date": "2026-08-25",
+  "generated_at": "2026-08-26T10:38:12+08:00",
+  "latest_fetch_date": "2026-08-26",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
