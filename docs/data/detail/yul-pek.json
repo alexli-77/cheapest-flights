@@ -2123,9 +2123,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-08-22",
+        "fetch_date": "2026-08-28",
         "flight_no": "",
-        "price": 5558,
+        "price": 5458,
         "source": "fast_flights",
         "stops": 1
       },
@@ -2466,6 +2466,14 @@
         "price": 4162,
         "source": "fast_flights",
         "stops": 0
+      },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-28",
+        "flight_no": "",
+        "price": 5458,
+        "source": "fast_flights",
+        "stops": 1
       },
       "United": {
         "currency": "CNY",
@@ -3433,9 +3441,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-07-20",
+        "fetch_date": "2026-08-28",
         "flight_no": "",
-        "price": 5890,
+        "price": 5522,
         "source": "fast_flights",
         "stops": 1
       },
@@ -3810,6 +3818,14 @@
         "fetch_date": "2026-08-04",
         "flight_no": "",
         "price": 5414,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "Air Canada, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-28",
+        "flight_no": "",
+        "price": 7726,
         "source": "fast_flights",
         "stops": 2
       },
@@ -4199,6 +4215,14 @@
       }
     },
     "2026-11-23": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-28",
+        "flight_no": "",
+        "price": 5746,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada": {
         "currency": "CNY",
         "fetch_date": "2026-08-25",
@@ -4227,10 +4251,20 @@
         "source": "fast_flights",
         "stops": 2
       }
+    },
+    "2026-11-26": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-28",
+        "flight_no": "",
+        "price": 5515,
+        "source": "fast_flights",
+        "stops": 0
+      }
     }
   },
-  "generated_at": "2026-08-27T18:32:21+08:00",
-  "latest_fetch_date": "2026-08-27",
+  "generated_at": "2026-08-28T20:05:34+08:00",
+  "latest_fetch_date": "2026-08-28",
   "route": "yul-pek",
   "sources": [
     "fast_flights",

@@ -101,6 +101,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-28",
+        "flight_no": "",
+        "price": 4918,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United": {
         "currency": "CNY",
         "fetch_date": "2026-08-05",
@@ -333,8 +341,8 @@
       }
     }
   },
-  "generated_at": "2026-08-27T18:32:21+08:00",
-  "latest_fetch_date": "2026-08-27",
+  "generated_at": "2026-08-28T20:05:34+08:00",
+  "latest_fetch_date": "2026-08-28",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
