@@ -41,6 +41,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 6566,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "WestJet, China Southern": {
         "currency": "CNY",
         "fetch_date": "2026-08-27",
@@ -95,9 +103,9 @@
       },
       "Air Canada, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-08-27",
+        "fetch_date": "2026-08-29",
         "flight_no": "",
-        "price": 7315,
+        "price": 5609,
         "source": "fast_flights",
         "stops": 2
       }
@@ -179,9 +187,9 @@
       },
       "WestJet, China Southern": {
         "currency": "CNY",
-        "fetch_date": "2026-08-28",
+        "fetch_date": "2026-08-29",
         "flight_no": "",
-        "price": 6199,
+        "price": 6170,
         "source": "fast_flights",
         "stops": 1
       }
@@ -370,11 +378,19 @@
         "price": 5357,
         "source": "fast_flights",
         "stops": 1
+      },
+      "WestJet, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 6300,
+        "source": "fast_flights",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-28T20:05:34+08:00",
-  "latest_fetch_date": "2026-08-28",
+  "generated_at": "2026-08-29T15:44:57+08:00",
+  "latest_fetch_date": "2026-08-29",
   "route": "yul-can",
   "sources": [
     "fast_flights"

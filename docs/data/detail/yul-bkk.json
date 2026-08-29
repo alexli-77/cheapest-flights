@@ -59,6 +59,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 5803,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United": {
         "currency": "CNY",
         "fetch_date": "2026-08-25",
@@ -103,9 +111,9 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-08-28",
+        "fetch_date": "2026-08-29",
         "flight_no": "",
-        "price": 4918,
+        "price": 4896,
         "source": "fast_flights",
         "stops": 1
       },
@@ -168,6 +176,14 @@
         "price": 5731,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 4896,
+        "source": "fast_flights",
+        "stops": 1
       }
     },
     "2026-09-16": {
@@ -186,6 +202,14 @@
         "price": 4752,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Air Canada, China Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 5105,
+        "source": "fast_flights",
+        "stops": 2
       },
       "Air Canada, Philippine Airlines": {
         "currency": "CNY",
@@ -252,6 +276,14 @@
         "fetch_date": "2026-08-22",
         "flight_no": "",
         "price": 5155,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "Air Canada, United": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 5220,
         "source": "fast_flights",
         "stops": 2
       },
@@ -333,16 +365,16 @@
       },
       "Delta, Korean Air": {
         "currency": "CNY",
-        "fetch_date": "2026-08-27",
+        "fetch_date": "2026-08-29",
         "flight_no": "",
-        "price": 5414,
+        "price": 5400,
         "source": "fast_flights",
         "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-28T20:05:34+08:00",
-  "latest_fetch_date": "2026-08-28",
+  "generated_at": "2026-08-29T15:44:57+08:00",
+  "latest_fetch_date": "2026-08-29",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"

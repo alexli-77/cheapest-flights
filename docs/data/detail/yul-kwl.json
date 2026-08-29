@@ -323,6 +323,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada, United, Air China": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-29",
+        "flight_no": "",
+        "price": 9122,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-08-05",
@@ -493,8 +501,8 @@
       }
     }
   },
-  "generated_at": "2026-08-28T20:05:34+08:00",
-  "latest_fetch_date": "2026-08-28",
+  "generated_at": "2026-08-29T15:44:57+08:00",
+  "latest_fetch_date": "2026-08-29",
   "route": "yul-kwl",
   "sources": [
     "fast_flights",
