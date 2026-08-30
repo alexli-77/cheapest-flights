@@ -1607,9 +1607,9 @@
     "2026-09-11": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-26",
+        "fetch_date": "2026-08-30",
         "flight_no": "",
-        "price": 828,
+        "price": 727,
         "source": "fast_flights",
         "stops": 0
       },
@@ -1935,6 +1935,14 @@
       }
     },
     "2026-09-28": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-30",
+        "flight_no": "",
+        "price": 1087,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-29",
@@ -1943,10 +1951,20 @@
         "source": "fast_flights",
         "stops": 0
       }
+    },
+    "2026-09-29": {
+      "Flair Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-30",
+        "flight_no": "",
+        "price": 1238,
+        "source": "fast_flights",
+        "stops": 0
+      }
     }
   },
-  "generated_at": "2026-08-29T15:44:57+08:00",
-  "latest_fetch_date": "2026-08-29",
+  "generated_at": "2026-08-30T14:04:22+08:00",
+  "latest_fetch_date": "2026-08-30",
   "route": "yul-yvr",
   "sources": [
     "fast_flights"

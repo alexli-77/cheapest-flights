@@ -373,6 +373,14 @@
       }
     },
     "2026-09-19": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-30",
+        "flight_no": "",
+        "price": 9122,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-08-01",
@@ -501,8 +509,8 @@
       }
     }
   },
-  "generated_at": "2026-08-29T15:44:57+08:00",
-  "latest_fetch_date": "2026-08-29",
+  "generated_at": "2026-08-30T14:04:22+08:00",
+  "latest_fetch_date": "2026-08-30",
   "route": "yul-kwl",
   "sources": [
     "fast_flights",
