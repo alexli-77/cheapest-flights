@@ -33,6 +33,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-31",
+        "flight_no": "",
+        "price": 5378,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-08-19",
@@ -75,6 +83,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-31",
+        "flight_no": "",
+        "price": 5918,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-07-30",
@@ -98,6 +114,14 @@
         "fetch_date": "2026-07-22",
         "flight_no": "",
         "price": 6170,
+        "source": "fast_flights",
+        "stops": 1
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-08-31",
+        "flight_no": "",
+        "price": 4774,
         "source": "fast_flights",
         "stops": 1
       },
@@ -469,8 +493,8 @@
       }
     }
   },
-  "generated_at": "2026-08-30T14:04:22+08:00",
-  "latest_fetch_date": "2026-08-30",
+  "generated_at": "2026-08-31T14:19:00+08:00",
+  "latest_fetch_date": "2026-08-31",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"
