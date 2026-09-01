@@ -41,6 +41,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 5933,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-08-19",
@@ -82,6 +90,14 @@
         "price": 5674,
         "source": "fast_flights",
         "stops": 2
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 5076,
+        "source": "fast_flights",
+        "stops": 1
       },
       "Turkish Airlines": {
         "currency": "CNY",
@@ -261,9 +277,9 @@
       },
       "Air Canada, China Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-08-08",
+        "fetch_date": "2026-09-01",
         "flight_no": "",
-        "price": 5148,
+        "price": 5126,
         "source": "fast_flights",
         "stops": 2
       },
@@ -327,9 +343,9 @@
       },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-07-28",
+        "fetch_date": "2026-09-01",
         "flight_no": "",
-        "price": 6307,
+        "price": 6271,
         "source": "fast_flights",
         "stops": 2
       }
@@ -364,6 +380,14 @@
         "fetch_date": "2026-08-15",
         "flight_no": "",
         "price": 4450,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "Air Canada, United, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 5364,
         "source": "fast_flights",
         "stops": 2
       },
@@ -414,6 +438,14 @@
         "fetch_date": "2026-07-22",
         "flight_no": "",
         "price": 6761,
+        "source": "fast_flights",
+        "stops": 1
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 6502,
         "source": "fast_flights",
         "stops": 1
       },
@@ -490,11 +522,19 @@
         "price": 4745,
         "source": "fast_flights",
         "stops": 2
+      },
+      "WestJet, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 6005,
+        "source": "fast_flights",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-08-31T14:19:00+08:00",
-  "latest_fetch_date": "2026-08-31",
+  "generated_at": "2026-09-01T13:54:08+08:00",
+  "latest_fetch_date": "2026-09-01",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"

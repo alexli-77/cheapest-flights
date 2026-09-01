@@ -37,9 +37,9 @@
     "2026-09-04": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-26",
+        "fetch_date": "2026-09-01",
         "flight_no": "",
-        "price": 5674,
+        "price": 5206,
         "source": "fast_flights",
         "stops": 0
       },
@@ -145,9 +145,9 @@
       },
       "Air Canada, Korean Air": {
         "currency": "CNY",
-        "fetch_date": "2026-07-28",
+        "fetch_date": "2026-09-01",
         "flight_no": "",
-        "price": 5321,
+        "price": 4889,
         "source": "fast_flights",
         "stops": 1
       },
@@ -287,6 +287,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Air Canada, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-01",
+        "flight_no": "",
+        "price": 4889,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "Air Canada, United": {
         "currency": "CNY",
         "fetch_date": "2026-08-29",
@@ -389,8 +397,8 @@
       }
     }
   },
-  "generated_at": "2026-08-31T14:19:00+08:00",
-  "latest_fetch_date": "2026-08-31",
+  "generated_at": "2026-09-01T13:54:08+08:00",
+  "latest_fetch_date": "2026-09-01",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
