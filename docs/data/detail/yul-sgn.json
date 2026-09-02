@@ -183,6 +183,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Air Canada, United, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-02",
+        "flight_no": "",
+        "price": 5342,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Emirates": {
         "currency": "CNY",
         "fetch_date": "2026-07-28",
@@ -243,9 +251,9 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-08-25",
+        "fetch_date": "2026-09-02",
         "flight_no": "",
-        "price": 4788,
+        "price": 4766,
         "source": "fast_flights",
         "stops": 1
       },
@@ -299,6 +307,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-02",
+        "flight_no": "",
+        "price": 5904,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-08-06",
@@ -343,9 +359,9 @@
       },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-09-01",
+        "fetch_date": "2026-09-02",
         "flight_no": "",
-        "price": 6271,
+        "price": 6250,
         "source": "fast_flights",
         "stops": 2
       }
@@ -385,9 +401,9 @@
       },
       "Air Canada, United, ANA": {
         "currency": "CNY",
-        "fetch_date": "2026-09-01",
+        "fetch_date": "2026-09-02",
         "flight_no": "",
-        "price": 5364,
+        "price": 5342,
         "source": "fast_flights",
         "stops": 2
       },
@@ -533,8 +549,8 @@
       }
     }
   },
-  "generated_at": "2026-09-01T13:54:08+08:00",
-  "latest_fetch_date": "2026-09-01",
+  "generated_at": "2026-09-02T13:28:43+08:00",
+  "latest_fetch_date": "2026-09-02",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"
