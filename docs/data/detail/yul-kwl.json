@@ -107,6 +107,14 @@
         "source": "serpapi",
         "stops": 2
       },
+      "瑞航": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "LX 87",
+        "price": 46312,
+        "source": "serpapi",
+        "stops": 2
+      },
       "美联航": {
         "currency": "CNY",
         "fetch_date": "2026-07-28",
@@ -407,9 +415,17 @@
       },
       "加航": {
         "currency": "CNY",
-        "fetch_date": "2026-08-01",
-        "flight_no": "AC 311",
-        "price": 5336,
+        "fetch_date": "2026-09-04",
+        "flight_no": "AC 389",
+        "price": 5243,
+        "source": "serpapi",
+        "stops": 2
+      },
+      "汉莎航空": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "LH 475",
+        "price": 15979,
         "source": "serpapi",
         "stops": 2
       },
@@ -467,9 +483,9 @@
     "2026-09-25": {
       "加航": {
         "currency": "CNY",
-        "fetch_date": "2026-09-03",
+        "fetch_date": "2026-09-04",
         "flight_no": "AC 301",
-        "price": 5207,
+        "price": 5205,
         "source": "serpapi",
         "stops": 2
       },
@@ -549,8 +565,8 @@
       }
     }
   },
-  "generated_at": "2026-09-03T13:24:22+08:00",
-  "latest_fetch_date": "2026-09-03",
+  "generated_at": "2026-09-04T13:26:42+08:00",
+  "latest_fetch_date": "2026-09-04",
   "route": "yul-kwl",
   "sources": [
     "fast_flights",

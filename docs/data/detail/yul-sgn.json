@@ -365,6 +365,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Air Canada, United": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 5112,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-08-07",
@@ -417,9 +425,9 @@
       },
       "Air Canada, United, ANA": {
         "currency": "CNY",
-        "fetch_date": "2026-09-02",
+        "fetch_date": "2026-09-04",
         "flight_no": "",
-        "price": 5342,
+        "price": 4766,
         "source": "fast_flights",
         "stops": 2
       },
@@ -459,9 +467,9 @@
       },
       "Air Canada, United": {
         "currency": "CNY",
-        "fetch_date": "2026-08-01",
+        "fetch_date": "2026-09-04",
         "flight_no": "",
-        "price": 5515,
+        "price": 5112,
         "source": "fast_flights",
         "stops": 2
       },
@@ -565,8 +573,8 @@
       }
     }
   },
-  "generated_at": "2026-09-03T13:24:22+08:00",
-  "latest_fetch_date": "2026-09-03",
+  "generated_at": "2026-09-04T13:26:42+08:00",
+  "latest_fetch_date": "2026-09-04",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"

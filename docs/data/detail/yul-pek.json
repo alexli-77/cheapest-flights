@@ -3263,6 +3263,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "KLM": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 10627,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United": {
         "currency": "CNY",
         "fetch_date": "2026-08-05",
@@ -3958,6 +3966,14 @@
         "price": 6516,
         "source": "fast_flights",
         "stops": 1
+      },
+      "Delta, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 6581,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-11-04": {
@@ -4034,6 +4050,14 @@
         "fetch_date": "2026-08-17",
         "flight_no": "",
         "price": 6113,
+        "source": "fast_flights",
+        "stops": 1
+      },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 6235,
         "source": "fast_flights",
         "stops": 1
       }
@@ -4460,6 +4484,14 @@
         "price": 5580,
         "source": "fast_flights",
         "stops": 0
+      },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 5616,
+        "source": "fast_flights",
+        "stops": 1
       }
     },
     "2026-12-01": {
@@ -4481,10 +4513,20 @@
         "source": "fast_flights",
         "stops": 0
       }
+    },
+    "2026-12-03": {
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-04",
+        "flight_no": "",
+        "price": 5616,
+        "source": "fast_flights",
+        "stops": 1
+      }
     }
   },
-  "generated_at": "2026-09-03T13:24:22+08:00",
-  "latest_fetch_date": "2026-09-03",
+  "generated_at": "2026-09-04T13:26:42+08:00",
+  "latest_fetch_date": "2026-09-04",
   "route": "yul-pek",
   "sources": [
     "fast_flights",
