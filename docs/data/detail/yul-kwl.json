@@ -323,9 +323,9 @@
       },
       "西捷航空": {
         "currency": "CNY",
-        "fetch_date": "2026-08-05",
+        "fetch_date": "2026-09-05",
         "flight_no": "WS 817",
-        "price": 5306,
+        "price": 5298,
         "source": "serpapi",
         "stops": 2
       }
@@ -439,6 +439,14 @@
       }
     },
     "2026-09-22": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-05",
+        "flight_no": "",
+        "price": 9151,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada, United, Air China": {
         "currency": "CNY",
         "fetch_date": "2026-09-02",
@@ -481,6 +489,14 @@
       }
     },
     "2026-09-25": {
+      "Qatar Airways, China Southern": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-05",
+        "flight_no": "",
+        "price": 8676,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "加航": {
         "currency": "CNY",
         "fetch_date": "2026-09-04",
@@ -565,8 +581,8 @@
       }
     }
   },
-  "generated_at": "2026-09-04T13:26:42+08:00",
-  "latest_fetch_date": "2026-09-04",
+  "generated_at": "2026-09-05T13:30:49+08:00",
+  "latest_fetch_date": "2026-09-05",
   "route": "yul-kwl",
   "sources": [
     "fast_flights",
