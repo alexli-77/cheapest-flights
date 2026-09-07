@@ -133,6 +133,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Air Canada, United": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-07",
+        "flight_no": "",
+        "price": 5184,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Qatar Airways": {
         "currency": "CNY",
         "fetch_date": "2026-08-31",
@@ -183,6 +191,14 @@
         "source": "fast_flights",
         "stops": 1
       },
+      "Air Canada, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-07",
+        "flight_no": "",
+        "price": 6365,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, United, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-09-06",
@@ -230,6 +246,14 @@
         "fetch_date": "2026-08-13",
         "flight_no": "",
         "price": 4615,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "Air Canada, Cathay Pacific": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-07",
+        "flight_no": "",
+        "price": 6365,
         "source": "fast_flights",
         "stops": 2
       },
@@ -309,9 +333,9 @@
       },
       "Air Canada, United": {
         "currency": "CNY",
-        "fetch_date": "2026-08-26",
+        "fetch_date": "2026-09-07",
         "flight_no": "",
-        "price": 5364,
+        "price": 4745,
         "source": "fast_flights",
         "stops": 2
       },
@@ -420,6 +444,14 @@
         "fetch_date": "2026-08-15",
         "flight_no": "",
         "price": 4450,
+        "source": "fast_flights",
+        "stops": 2
+      },
+      "Air Canada, United": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-07",
+        "flight_no": "",
+        "price": 4745,
         "source": "fast_flights",
         "stops": 2
       },
@@ -581,8 +613,8 @@
       }
     }
   },
-  "generated_at": "2026-09-06T13:41:51+08:00",
-  "latest_fetch_date": "2026-09-06",
+  "generated_at": "2026-09-07T13:51:22+08:00",
+  "latest_fetch_date": "2026-09-07",
   "route": "yul-sgn",
   "sources": [
     "fast_flights"
