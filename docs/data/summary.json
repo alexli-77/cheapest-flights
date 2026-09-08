@@ -1,283 +1,18 @@
 {
-  "generated_at": "2026-09-07T13:43:41+08:00",
+  "generated_at": "2026-09-08T13:32:23+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 38916,
+      "fetched_count": 39356,
       "routes_failed": 0,
       "routes_ok": 8,
       "routes_total": 8,
-      "run_date": "2026-09-07"
+      "run_date": "2026-09-08"
     },
-    "serpapi_remaining_quota": 24
+    "serpapi_remaining_quota": 0
   },
   "routes": {
     "yul-bkk": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "Air Canada",
-            "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-08-07",
-            "flight_no": "",
-            "price": 4601
-          },
-          "latest": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
-            "flight_no": "",
-            "price": 5306
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 5285
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-22",
-              "price": 5270
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-23",
-              "price": 5285
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 4752
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-25",
-              "price": 4745
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-26",
-              "price": 4745
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 4752
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-28",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-29",
-              "price": 4752
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 4766
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-31",
-              "price": 5299
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-01",
-              "price": 5234
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 5234
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-03",
-              "price": 5234
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-04",
-              "price": 5386
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 5227
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-06",
-              "price": 5249
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-07",
-              "price": 4601
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 4622
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 4622
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 4622
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 4630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 4630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 4622
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 4630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 5450
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 5357
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 5458
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 5292
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 5350
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 5386
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 5393
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 5400
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 5400
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 5393
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 4831
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 4831
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 4824
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 4918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 4896
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 5436
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 4903
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 4910
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 4896
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 5472
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 5328
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 5465
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 5429
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-07",
-              "price": 5306
-            }
-          ]
-        },
         "2026-09-10": {
           "historical_low": {
             "airline": "Air Canada, Korean Air",
@@ -288,12 +23,12 @@
             "price": 4867
           },
           "latest": {
-            "airline": "Air Canada, ANA",
+            "airline": "Air Canada, Korean Air",
             "currency": "CNY",
-            "depart_time": "08:40",
-            "fetch_date": "2026-09-07",
+            "depart_time": "12:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5270
+            "price": 4903
           },
           "series": [
             {
@@ -540,6 +275,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5270
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4903
             }
           ]
         },
@@ -553,12 +293,12 @@
             "price": 3694
           },
           "latest": {
-            "airline": "Delta, Korean Air",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "07:00",
-            "fetch_date": "2026-09-07",
+            "depart_time": "12:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5681
+            "price": 5263
           },
           "series": [
             {
@@ -800,6 +540,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5681
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5263
             }
           ]
         },
@@ -813,12 +558,12 @@
             "price": 3946
           },
           "latest": {
-            "airline": "Air Canada, China Airlines",
+            "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "18:00",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 4831
+            "price": 4543
           },
           "series": [
             {
@@ -1065,6 +810,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 4831
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4543
             }
           ]
         },
@@ -1073,17 +823,17 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "19:45",
-            "fetch_date": "2026-08-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 4896
+            "price": 4831
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "19:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5544
+            "price": 4831
           },
           "series": [
             {
@@ -1325,6 +1075,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5544
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4831
             }
           ]
         },
@@ -1341,7 +1096,7 @@
             "airline": "Air Canada, China Airlines",
             "currency": "CNY",
             "depart_time": "19:45",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 4831
           },
@@ -1590,6 +1345,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 4831
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4831
             }
           ]
         },
@@ -1606,7 +1366,7 @@
             "airline": "United",
             "currency": "CNY",
             "depart_time": "18:35",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5544
           },
@@ -1855,6 +1615,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5544
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5544
             }
           ]
         },
@@ -1871,9 +1636,9 @@
             "airline": "Air Canada, Etihad",
             "currency": "CNY",
             "depart_time": "11:10",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6228
+            "price": 5839
           },
           "series": [
             {
@@ -2115,6 +1880,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6228
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5839
             }
           ]
         }
@@ -2122,271 +1892,6 @@
     },
     "yul-can": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "Air Canada, Asiana Airlines",
-            "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-08-18",
-            "flight_no": "",
-            "price": 4918
-          },
-          "latest": {
-            "airline": "WestJet, Cathay Pacific",
-            "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-09-07",
-            "flight_no": "",
-            "price": 6336
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 5263
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-22",
-              "price": 5299
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-23",
-              "price": 5256
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 5314
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-25",
-              "price": 5306
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-26",
-              "price": 5306
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 5256
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-28",
-              "price": 5299
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-29",
-              "price": 5306
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 5263
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-31",
-              "price": 5278
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-01",
-              "price": 5278
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 5443
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-03",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-04",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 5638
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-06",
-              "price": 5609
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-07",
-              "price": 5249
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 5162
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 5162
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 5162
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 5299
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 5263
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 5148
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 5285
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 5508
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 5508
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 5515
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 4918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 5191
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 5436
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 5206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 5206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 5206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 5400
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 5861
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 5861
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 7315
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 5861
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 5609
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 5760
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 5875
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 5854
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 5890
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 5911
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 5890
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 5890
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-07",
-              "price": 6336
-            }
-          ]
-        },
         "2026-09-10": {
           "historical_low": {
             "airline": "Air Canada, Asiana Airlines",
@@ -2397,12 +1902,12 @@
             "price": 4954
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "12:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6206
+            "price": 5796
           },
           "series": [
             {
@@ -2649,6 +2154,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6206
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5796
             }
           ]
         },
@@ -2662,12 +2172,12 @@
             "price": 4954
           },
           "latest": {
-            "airline": "WestJet, China Southern",
+            "airline": "Air Canada, Air China",
             "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6206
+            "price": 6163
           },
           "series": [
             {
@@ -2914,6 +2424,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6206
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6163
             }
           ]
         },
@@ -2927,12 +2442,12 @@
             "price": 4954
           },
           "latest": {
-            "airline": "Air Canada, Air China",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5450
+            "price": 5882
           },
           "series": [
             {
@@ -3179,6 +2694,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5450
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5882
             }
           ]
         },
@@ -3195,9 +2715,9 @@
             "airline": "Air Canada, Asiana Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5450
+            "price": 5292
           },
           "series": [
             {
@@ -3444,6 +2964,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5450
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5292
             }
           ]
         },
@@ -3457,12 +2982,12 @@
             "price": 4730
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, Asiana Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5450
+            "price": 5292
           },
           "series": [
             {
@@ -3709,6 +3234,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5450
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5292
             }
           ]
         },
@@ -3722,12 +3252,12 @@
             "price": 4961
           },
           "latest": {
-            "airline": "Air Canada, Air China",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5450
+            "price": 5292
           },
           "series": [
             {
@@ -3974,6 +3504,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5450
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5292
             }
           ]
         },
@@ -3987,12 +3522,12 @@
             "price": 4831
           },
           "latest": {
-            "airline": "Air Canada, Air China",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "21:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5450
+            "price": 5292
           },
           "series": [
             {
@@ -4239,6 +3774,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5450
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5292
             }
           ]
         }
@@ -4246,271 +3786,6 @@
     },
     "yul-han": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-08-16",
-            "flight_no": "",
-            "price": 5213
-          },
-          "latest": {
-            "airline": "",
-            "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
-            "flight_no": "",
-            "price": 5954
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 5357
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-22",
-              "price": 5342
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-23",
-              "price": 5990
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 5983
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-25",
-              "price": 5976
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-26",
-              "price": 5976
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 5983
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-28",
-              "price": 5897
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-29",
-              "price": 5904
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 5998
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-31",
-              "price": 5933
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-01",
-              "price": 6242
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 6329
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-03",
-              "price": 6329
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-04",
-              "price": 5861
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 5854
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-06",
-              "price": 5882
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-07",
-              "price": 5875
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 5328
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 5904
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 5904
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 5911
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 5335
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 5328
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 5911
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 5933
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 5213
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 5940
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 5940
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 5918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 5962
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 5976
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 5976
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 6307
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 5969
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 5947
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 5947
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 5933
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 5947
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 5918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 5918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 5926
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 5940
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 5918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 5954
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 5969
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 5947
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 5947
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-07",
-              "price": 5954
-            }
-          ]
-        },
         "2026-09-10": {
           "historical_low": {
             "airline": "",
@@ -4524,7 +3799,7 @@
             "airline": "WestJet, Cathay Pacific",
             "currency": "CNY",
             "depart_time": "06:45",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5954
           },
@@ -4773,6 +4048,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5954
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5954
             }
           ]
         },
@@ -4786,10 +4066,10 @@
             "price": 4954
           },
           "latest": {
-            "airline": "",
+            "airline": "WestJet, Cathay Pacific",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "17:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5954
           },
@@ -5038,6 +4318,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5954
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5954
             }
           ]
         },
@@ -5054,7 +4339,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5206
           },
@@ -5303,6 +4588,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5206
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5206
             }
           ]
         },
@@ -5319,7 +4609,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6192
           },
@@ -5568,6 +4858,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6192
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6192
             }
           ]
         },
@@ -5584,7 +4879,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5206
           },
@@ -5833,6 +5128,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5206
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5206
             }
           ]
         },
@@ -5849,7 +5149,7 @@
             "airline": "WestJet, Korean Air",
             "currency": "CNY",
             "depart_time": "06:45",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6257
           },
@@ -6098,6 +5398,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6257
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6257
             }
           ]
         },
@@ -6111,12 +5416,12 @@
             "price": 5134
           },
           "latest": {
-            "airline": "American, JAL",
+            "airline": "Air Canada, Cathay Pacific",
             "currency": "CNY",
-            "depart_time": "17:34",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6271
+            "price": 6869
           },
           "series": [
             {
@@ -6363,6 +5668,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6271
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6869
             }
           ]
         }
@@ -6370,216 +5680,6 @@
     },
     "yul-hkg": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "Air Canada",
-            "currency": "CNY",
-            "depart_time": "16:30",
-            "fetch_date": "2026-08-14",
-            "flight_no": "",
-            "price": 5494
-          },
-          "latest": {
-            "airline": "Air Canada, United",
-            "currency": "CNY",
-            "depart_time": "08:20",
-            "fetch_date": "2026-09-06",
-            "flight_no": "",
-            "price": 6206
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 5666
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-18",
-              "price": 5918
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 5904
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 5897
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 5897
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 6120
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 6127
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 6113
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 6163
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 6156
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 6163
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 6012
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 5594
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 5494
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 5695
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 5695
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 5702
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 5566
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 5897
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 5933
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 6077
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 6077
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 6077
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 6070
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 6206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 6098
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 5602
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 5760
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 6178
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 6098
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 6106
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 6199
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 6170
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 6214
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 6228
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 6206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 6206
-            }
-          ]
-        },
         "2026-09-08": {
           "historical_low": {
             "airline": "",
@@ -6803,9 +5903,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5695
           },
           "series": [
             {
@@ -6997,6 +6097,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5688
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5695
             }
           ]
         },
@@ -7013,9 +6118,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5969
+            "price": 6214
           },
           "series": [
             {
@@ -7197,6 +6302,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5969
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -7210,12 +6320,12 @@
             "price": 3442
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "WestJet, Philippine Airlines",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "17:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5969
+            "price": 5818
           },
           "series": [
             {
@@ -7397,6 +6507,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5969
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5818
             }
           ]
         },
@@ -7413,7 +6528,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6538
           },
@@ -7592,6 +6707,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6538
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6538
             }
           ]
         },
@@ -7605,10 +6725,10 @@
             "price": 5386
           },
           "latest": {
-            "airline": "WestJet, Philippine Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5638
           },
@@ -7787,6 +6907,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5638
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5638
             }
           ]
         },
@@ -7803,9 +6928,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6163
+            "price": 6214
           },
           "series": [
             {
@@ -7977,6 +7102,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6163
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -7990,12 +7120,12 @@
             "price": 5155
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "19:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5594
           },
           "series": [
             {
@@ -8167,6 +7297,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5688
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -8180,12 +7315,12 @@
             "price": 5155
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5594
           },
           "series": [
             {
@@ -8352,6 +7487,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5688
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -8365,12 +7505,12 @@
             "price": 5191
           },
           "latest": {
-            "airline": "United",
+            "airline": "Air Canada, Korean Air",
             "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6214
+            "price": 5645
           },
           "series": [
             {
@@ -8532,6 +7672,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6214
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5645
             }
           ]
         },
@@ -8545,12 +7690,12 @@
             "price": 3715
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "19:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5818
+            "price": 5666
           },
           "series": [
             {
@@ -8712,6 +7857,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5818
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5666
             }
           ]
         },
@@ -8725,12 +7875,12 @@
             "price": 5436
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "19:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6257
+            "price": 5666
           },
           "series": [
             {
@@ -8887,6 +8037,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6257
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5666
             }
           ]
         },
@@ -8903,9 +8058,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "18:00",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5954
+            "price": 5407
           },
           "series": [
             {
@@ -9057,6 +8212,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5954
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5407
             }
           ]
         },
@@ -9070,12 +8230,12 @@
             "price": 5141
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "19:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5407
           },
           "series": [
             {
@@ -9227,6 +8387,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5688
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5407
             }
           ]
         },
@@ -9240,12 +8405,12 @@
             "price": 5083
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "19:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5314
           },
           "series": [
             {
@@ -9392,6 +8557,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5314
             }
           ]
         },
@@ -9405,12 +8575,12 @@
             "price": 5083
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:00",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5314
           },
           "series": [
             {
@@ -9552,6 +8722,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5314
             }
           ]
         },
@@ -9565,12 +8740,12 @@
             "price": 5134
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, Korean Air",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6214
+            "price": 5645
           },
           "series": [
             {
@@ -9712,6 +8887,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6214
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5645
             }
           ]
         },
@@ -9725,12 +8905,12 @@
             "price": 5342
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5969
+            "price": 5573
           },
           "series": [
             {
@@ -9867,6 +9047,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5969
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5573
             }
           ]
         },
@@ -9880,12 +9065,12 @@
             "price": 5342
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5969
+            "price": 5854
           },
           "series": [
             {
@@ -10017,6 +9202,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5969
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5854
             }
           ]
         },
@@ -10030,12 +9220,12 @@
             "price": 5090
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6163
+            "price": 5594
           },
           "series": [
             {
@@ -10167,6 +9357,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6163
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -10182,10 +9377,10 @@
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "13:10",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5594
           },
           "series": [
             {
@@ -10312,6 +9507,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -10328,9 +9528,9 @@
             "airline": "Turkish Airlines",
             "currency": "CNY",
             "depart_time": "20:05",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6192
+            "price": 6199
           },
           "series": [
             {
@@ -10452,6 +9652,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6192
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6199
             }
           ]
         },
@@ -10465,12 +9670,12 @@
             "price": 5090
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6163
+            "price": 5594
           },
           "series": [
             {
@@ -10592,6 +9797,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6163
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -10605,12 +9815,12 @@
             "price": 5350
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5969
+            "price": 5854
           },
           "series": [
             {
@@ -10717,25 +9927,30 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5969
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5854
             }
           ]
         },
         "2026-10-02": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:00",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5350
+            "price": 5249
           },
           "latest": {
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6466
+            "price": 5249
           },
           "series": [
             {
@@ -10847,6 +10062,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6466
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5249
             }
           ]
         },
@@ -10860,10 +10080,10 @@
             "price": 5350
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, United",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6732
           },
@@ -10977,6 +10197,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6732
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6732
             }
           ]
         },
@@ -10990,12 +10215,12 @@
             "price": 6091
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, United",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6221
+            "price": 6732
           },
           "series": [
             {
@@ -11102,6 +10327,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6221
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6732
             }
           ]
         },
@@ -11118,7 +10348,7 @@
             "airline": "Air Canada, United",
             "currency": "CNY",
             "depart_time": "08:10",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6214
           },
@@ -11222,6 +10452,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6214
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -11235,10 +10470,10 @@
             "price": 5400
           },
           "latest": {
-            "airline": "Air Canada, United",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6214
           },
@@ -11342,6 +10577,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6214
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -11358,7 +10598,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6214
           },
@@ -11457,6 +10697,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6214
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -11470,12 +10715,12 @@
             "price": 6091
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, United",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6206
+            "price": 6214
           },
           "series": [
             {
@@ -11567,6 +10812,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 6206
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6214
             }
           ]
         },
@@ -11812,10 +11062,10 @@
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "13:30",
-            "fetch_date": "2026-09-05",
+            "depart_time": "16:40",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5753
+            "price": 6422
           },
           "series": [
             {
@@ -11907,6 +11157,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5753
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6422
             }
           ]
         },
@@ -12150,12 +11405,12 @@
             "price": 5278
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "20:00",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5738
+            "price": 5594
           },
           "series": [
             {
@@ -12247,6 +11502,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5738
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -12480,12 +11740,12 @@
             "price": 5306
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, EVA Air",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5602
+            "price": 5969
           },
           "series": [
             {
@@ -12572,6 +11832,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5602
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5969
             }
           ]
         },
@@ -12787,20 +12052,20 @@
         },
         "2026-10-20": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "13:30",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5090
+            "price": 5076
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "13:30",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5090
+            "price": 5076
           },
           "series": [
             {
@@ -12882,6 +12147,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5090
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5076
             }
           ]
         },
@@ -13097,10 +12367,10 @@
           "latest": {
             "airline": "Air Canada, EVA Air",
             "currency": "CNY",
-            "depart_time": "20:00",
-            "fetch_date": "2026-09-05",
+            "depart_time": "17:05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5602
+            "price": 5609
           },
           "series": [
             {
@@ -13177,6 +12447,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5602
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5609
             }
           ]
         },
@@ -13380,12 +12655,12 @@
             "price": 5234
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "15:00",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5285
           },
           "series": [
             {
@@ -13457,6 +12732,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5306
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5285
             }
           ]
         },
@@ -13642,20 +12922,20 @@
         },
         "2026-10-29": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5285
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5285
           },
           "series": [
             {
@@ -13717,6 +12997,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5306
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5285
             }
           ]
         },
@@ -13902,10 +13187,10 @@
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:05",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5515
+            "price": 5940
           },
           "series": [
             {
@@ -13967,6 +13252,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5515
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5940
             }
           ]
         },
@@ -14132,20 +13422,20 @@
         },
         "2026-11-04": {
           "historical_low": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:25",
-            "fetch_date": "2026-08-06",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5242
+            "price": 5198
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:25",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5328
+            "price": 5198
           },
           "series": [
             {
@@ -14202,6 +13492,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5328
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5198
             }
           ]
         },
@@ -14357,20 +13652,20 @@
         },
         "2026-11-07": {
           "historical_low": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:25",
-            "fetch_date": "2026-08-30",
+            "depart_time": "15:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5558
+            "price": 5458
           },
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "15:10",
-            "fetch_date": "2026-09-05",
+            "depart_time": "15:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5602
+            "price": 5458
           },
           "series": [
             {
@@ -14417,6 +13712,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5602
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5458
             }
           ]
         },
@@ -14570,12 +13870,12 @@
             "price": 5292
           },
           "latest": {
-            "airline": "Air Canada, EVA Air",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:10",
-            "fetch_date": "2026-09-05",
+            "depart_time": "15:10",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5738
           },
           "series": [
             {
@@ -14622,6 +13922,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5688
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5738
             }
           ]
         },
@@ -14752,20 +14057,20 @@
         },
         "2026-11-13": {
           "historical_low": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-08-27",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5522
+            "price": 5458
           },
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5566
+            "price": 5458
           },
           "series": [
             {
@@ -14807,6 +14112,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5566
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5458
             }
           ]
         },
@@ -14940,12 +14250,12 @@
             "price": 5227
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Air Canada, ANA",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5285
           },
           "series": [
             {
@@ -14982,6 +14292,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5306
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5285
             }
           ]
         },
@@ -15097,20 +14412,20 @@
         },
         "2026-11-19": {
           "historical_low": {
-            "airline": "",
+            "airline": "Air Canada, EVA Air",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5263
+            "price": 4932
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada, EVA Air",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5263
+            "price": 4932
           },
           "series": [
             {
@@ -15142,6 +14457,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5263
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4932
             }
           ]
         },
@@ -15249,18 +14569,18 @@
           "historical_low": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:05",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5515
+            "price": 5458
           },
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:05",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5515
+            "price": 5458
           },
           "series": [
             {
@@ -15287,6 +14607,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5515
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5458
             }
           ]
         },
@@ -15385,17 +14710,17 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "18:15",
-            "fetch_date": "2026-08-27",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5227
+            "price": 5198
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5198
           },
           "series": [
             {
@@ -15417,6 +14742,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5306
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5198
             }
           ]
         },
@@ -15502,20 +14832,20 @@
         },
         "2026-11-28": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5566
+            "price": 5458
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5566
+            "price": 5458
           },
           "series": [
             {
@@ -15532,6 +14862,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5566
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5458
             }
           ]
         },
@@ -15607,20 +14942,20 @@
         },
         "2026-12-01": {
           "historical_low": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5198
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5306
+            "price": 5198
           },
           "series": [
             {
@@ -15632,6 +14967,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5306
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5198
             }
           ]
         },
@@ -15697,26 +15037,31 @@
         },
         "2026-12-04": {
           "historical_low": {
-            "airline": "Air Canada, Asiana Airlines",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5623
+            "price": 5458
           },
           "latest": {
-            "airline": "Air Canada, Asiana Airlines",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "depart_time": "18:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5623
+            "price": 5458
           },
           "series": [
             {
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5623
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5458
             }
           ]
         },
@@ -15769,213 +15114,36 @@
               "price": 6026
             }
           ]
-        }
-      },
-      "headline": {
-        "airline": "加航",
-        "airplane": "Airbus A220-300 Passenger",
-        "arrive_time": "05:10",
-        "baggage_note": "",
-        "depart_date": "2026-11-21",
-        "depart_time": "08:05",
-        "flight_no": "AC 331",
-        "layover_airports": [
-          "YEG",
-          "YVR"
-        ],
-        "layovers": [
-          {
-            "airport": "YEG",
-            "wait_min": 346
-          },
-          {
-            "airport": "YVR",
-            "wait_min": 311
-          }
-        ],
-        "overnight": false,
-        "price": 4738,
-        "segments": [
-          {
-            "airline": "加航",
-            "airplane": "Airbus A220-300 Passenger",
-            "duration_min": 294,
-            "flight_no": "AC 331",
-            "from": "YUL",
-            "from_time": "2026-11-21 08:05",
-            "leg": 1,
-            "to": "YEG",
-            "to_time": "2026-11-21 11:59"
-          },
-          {
-            "airline": "加航",
-            "airplane": "Airbus A220-300 Passenger",
-            "duration_min": 104,
-            "flight_no": "AC 245",
-            "from": "YEG",
-            "from_time": "2026-11-21 17:45",
-            "leg": 2,
-            "to": "YVR",
-            "to_time": "2026-11-21 18:29"
-          },
-          {
-            "airline": "加航",
-            "airplane": "Boeing 787",
-            "duration_min": 870,
-            "flight_no": "AC 7",
-            "from": "YVR",
-            "from_time": "2026-11-21 23:40",
-            "leg": 3,
-            "to": "HKG",
-            "to_time": "2026-11-23 05:10"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 2
-      }
-    },
-    "yul-kwl": {
-      "depart_dates": {
-        "2026-09-07": {
+        },
+        "2026-12-07": {
           "historical_low": {
-            "airline": "加航",
+            "airline": "Turkish Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-07-21",
-            "flight_no": "AC 303",
-            "price": 4957
+            "depart_time": "20:35",
+            "fetch_date": "2026-09-08",
+            "flight_no": "",
+            "price": 6199
           },
           "latest": {
-            "airline": "西捷航空",
+            "airline": "Turkish Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
-            "flight_no": "WS 859",
-            "price": 5343
+            "depart_time": "20:35",
+            "fetch_date": "2026-09-08",
+            "flight_no": "",
+            "price": 6199
           },
           "series": [
             {
               "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 4957
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-22",
-              "price": 5291
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-23",
-              "price": 5276
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-25",
-              "price": 7559
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-28",
-              "price": 7544
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-01",
-              "price": 5356
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 4974
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-03",
-              "price": 4974
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-04",
-              "price": 5692
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 5602
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-06",
-              "price": 5009
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-07",
-              "price": 5281
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 8366
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 8424
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 8446
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 9619
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 9619
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 5481
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 5300
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 5482
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 5921
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 5301
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 6147
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-07",
-              "price": 5343
+              "fetch_date": "2026-09-08",
+              "price": 6199
             }
           ]
-        },
+        }
+      }
+    },
+    "yul-kwl": {
+      "depart_dates": {
         "2026-09-10": {
           "historical_low": {
             "airline": "加航",
@@ -16546,12 +15714,12 @@
             "price": 5205
           },
           "latest": {
-            "airline": "Qatar Airways, China Southern",
+            "airline": "Air Canada, United, Air China",
             "currency": "CNY",
-            "depart_time": "21:35",
-            "fetch_date": "2026-09-07",
+            "depart_time": "17:40",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 8683
+            "price": 9158
           },
           "series": [
             {
@@ -16638,6 +15806,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 8683
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 9158
             }
           ]
         },
@@ -16651,12 +15824,12 @@
             "price": 4632
           },
           "latest": {
-            "airline": "加航",
+            "airline": "United, Air China",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
-            "flight_no": "AC 301",
-            "price": 5515
+            "depart_time": "09:15",
+            "fetch_date": "2026-09-08",
+            "flight_no": "",
+            "price": 20448
           },
           "series": [
             {
@@ -16748,6 +15921,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5515
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 20448
             }
           ]
         }
@@ -16755,216 +15933,6 @@
     },
     "yul-pek": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "United",
-            "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-07-24",
-            "flight_no": "",
-            "price": 4990
-          },
-          "latest": {
-            "airline": "Air Canada",
-            "currency": "CNY",
-            "depart_time": "21:30",
-            "fetch_date": "2026-09-06",
-            "flight_no": "",
-            "price": 5594
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-15",
-              "price": 5760
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-18",
-              "price": 5011
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 5508
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 4990
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 4990
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 5004
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 5774
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 5580
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 5616
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 5616
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 5616
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 5630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 5630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 5623
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 5630
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 5407
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 5638
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 5681
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 5501
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 5652
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 5666
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 5638
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 5638
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 5645
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 5659
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 5558
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 5674
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 5616
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 5594
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 5594
-            }
-          ]
-        },
         "2026-09-08": {
           "historical_low": {
             "airline": "西捷航空",
@@ -17185,10 +16153,10 @@
             "price": 4003
           },
           "latest": {
-            "airline": "WestJet, Philippine Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "17:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 4140
           },
@@ -17382,6 +16350,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 4140
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4140
             }
           ]
         },
@@ -17395,10 +16368,10 @@
             "price": 5004
           },
           "latest": {
-            "airline": "",
+            "airline": "WestJet, Cathay Pacific",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "06:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5666
           },
@@ -17587,6 +16560,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5666
             }
           ]
         },
@@ -17600,12 +16578,12 @@
             "price": 5177
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "21:55",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5911
+            "price": 5796
           },
           "series": [
             {
@@ -17787,6 +16765,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5911
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5796
             }
           ]
         },
@@ -17803,9 +16786,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 7265
+            "price": 5796
           },
           "series": [
             {
@@ -17987,6 +16970,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 7265
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5796
             }
           ]
         },
@@ -18003,7 +16991,7 @@
             "airline": "Air Canada, Cathay Pacific",
             "currency": "CNY",
             "depart_time": "21:55",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5666
           },
@@ -18182,6 +17170,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5666
             }
           ]
         },
@@ -18195,12 +17188,12 @@
             "price": 4975
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5594
           },
           "series": [
             {
@@ -18372,6 +17365,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5594
             }
           ]
         },
@@ -18388,9 +17386,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -18562,6 +17560,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -18578,9 +17581,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -18742,6 +17745,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -18755,12 +17763,12 @@
             "price": 5083
           },
           "latest": {
-            "airline": "WestJet, Cathay Pacific",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -18922,6 +17930,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -18935,12 +17948,12 @@
             "price": 4162
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "21:55",
-            "fetch_date": "2026-09-07",
+            "depart_time": "21:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5911
+            "price": 5760
           },
           "series": [
             {
@@ -19102,6 +18115,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5911
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5760
             }
           ]
         },
@@ -19115,12 +18133,12 @@
             "price": 4961
           },
           "latest": {
-            "airline": "WestJet, Cathay Pacific",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5911
+            "price": 5760
           },
           "series": [
             {
@@ -19272,6 +18290,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5911
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5760
             }
           ]
         },
@@ -19285,12 +18308,12 @@
             "price": 4133
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "21:55",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5580
           },
           "series": [
             {
@@ -19442,6 +18465,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5580
             }
           ]
         },
@@ -19455,12 +18483,12 @@
             "price": 4982
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -19612,6 +18640,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -19625,12 +18658,12 @@
             "price": 4990
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "11:10",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -19772,6 +18805,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -19785,12 +18823,12 @@
             "price": 4133
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "07:00",
-            "fetch_date": "2026-09-07",
+            "depart_time": "09:00",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -19932,6 +18970,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -19948,9 +18991,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5666
+            "price": 5393
           },
           "series": [
             {
@@ -20092,6 +19135,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5666
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -20108,9 +19156,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5724
+            "price": 5566
           },
           "series": [
             {
@@ -20242,6 +19290,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5724
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5566
             }
           ]
         },
@@ -20258,9 +19311,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5746
           },
           "series": [
             {
@@ -20392,6 +19445,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5746
             }
           ]
         },
@@ -20405,12 +19463,12 @@
             "price": 4802
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5724
+            "price": 5566
           },
           "series": [
             {
@@ -20542,6 +19600,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5724
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5566
             }
           ]
         },
@@ -20555,12 +19618,12 @@
             "price": 4990
           },
           "latest": {
-            "airline": "United",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5393
           },
           "series": [
             {
@@ -20682,6 +19745,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -20695,12 +19763,12 @@
             "price": 4975
           },
           "latest": {
-            "airline": "United",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5393
           },
           "series": [
             {
@@ -20822,6 +19890,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -20838,9 +19911,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5393
           },
           "series": [
             {
@@ -20962,6 +20035,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -20975,12 +20053,12 @@
             "price": 4802
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5854
+            "price": 5393
           },
           "series": [
             {
@@ -21092,6 +20170,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -21105,10 +20188,10 @@
             "price": 5256
           },
           "latest": {
-            "airline": "",
+            "airline": "United",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:35",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5854
           },
@@ -21222,6 +20305,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5854
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5854
             }
           ]
         },
@@ -21235,12 +20323,12 @@
             "price": 4802
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 8827
+            "price": 6926
           },
           "series": [
             {
@@ -21352,6 +20440,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 8827
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6926
             }
           ]
         },
@@ -21365,10 +20458,10 @@
             "price": 4954
           },
           "latest": {
-            "airline": "",
+            "airline": "WestJet, Hainan",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "06:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 9374
           },
@@ -21477,6 +20570,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 9374
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 9374
             }
           ]
         },
@@ -21490,10 +20588,10 @@
             "price": 6113
           },
           "latest": {
-            "airline": "",
+            "airline": "Emirates",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "10:15",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 10778
           },
@@ -21597,6 +20695,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 10778
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 10778
             }
           ]
         },
@@ -21613,7 +20716,7 @@
             "airline": "KLM",
             "currency": "CNY",
             "depart_time": "18:50",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 10130
           },
@@ -21717,6 +20820,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 10130
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 10130
             }
           ]
         },
@@ -21730,10 +20838,10 @@
             "price": 5803
           },
           "latest": {
-            "airline": "",
+            "airline": "WestJet, Philippine Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "17:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 9130
           },
@@ -21827,6 +20935,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 9130
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 9130
             }
           ]
         },
@@ -21843,9 +20956,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 11585
+            "price": 13327
           },
           "series": [
             {
@@ -21932,6 +21045,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 11585
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 13327
             }
           ]
         },
@@ -22175,12 +21293,12 @@
             "price": 4406
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "21:30",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 9216
+            "price": 7517
           },
           "series": [
             {
@@ -22272,6 +21390,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 9216
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 7517
             }
           ]
         },
@@ -22515,12 +21638,12 @@
             "price": 4406
           },
           "latest": {
-            "airline": "United",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5846
+            "price": 5854
           },
           "series": [
             {
@@ -22612,6 +21735,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5846
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5854
             }
           ]
         },
@@ -22845,12 +21973,12 @@
             "price": 5026
           },
           "latest": {
-            "airline": "United",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "18:35",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 8294
+            "price": 8842
           },
           "series": [
             {
@@ -22937,6 +22065,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 8294
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 8842
             }
           ]
         },
@@ -23163,9 +22296,9 @@
             "airline": "United",
             "currency": "CNY",
             "depart_time": "18:35",
-            "fetch_date": "2026-09-05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5846
+            "price": 5854
           },
           "series": [
             {
@@ -23247,6 +22380,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5846
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5854
             }
           ]
         },
@@ -23460,10 +22598,10 @@
             "price": 5177
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5796
           },
@@ -23541,6 +22679,11 @@
             {
               "currency": "CNY",
               "fetch_date": "2026-09-05",
+              "price": 5796
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
               "price": 5796
             }
           ]
@@ -23745,12 +22888,12 @@
             "price": 4428
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "07:30",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5897
+            "price": 5602
           },
           "series": [
             {
@@ -23817,6 +22960,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5897
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5602
             }
           ]
         },
@@ -24010,10 +23158,10 @@
             "price": 5191
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "07:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5594
           },
@@ -24081,6 +23229,11 @@
             {
               "currency": "CNY",
               "fetch_date": "2026-09-05",
+              "price": 5594
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
               "price": 5594
             }
           ]
@@ -24265,12 +23418,12 @@
             "price": 5616
           },
           "latest": {
-            "airline": "WestJet, Hainan",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6142
+            "price": 6386
           },
           "series": [
             {
@@ -24332,6 +23485,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 6142
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6386
             }
           ]
         },
@@ -24505,12 +23663,12 @@
             "price": 5731
           },
           "latest": {
-            "airline": "Turkish Airlines",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "19:55",
-            "fetch_date": "2026-09-05",
+            "depart_time": "07:55",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6192
+            "price": 6149
           },
           "series": [
             {
@@ -24567,6 +23725,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 6192
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6149
             }
           ]
         },
@@ -24730,12 +23893,12 @@
             "price": 5011
           },
           "latest": {
-            "airline": "WestJet, Hainan",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "20:00",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6142
+            "price": 6530
           },
           "series": [
             {
@@ -24787,6 +23950,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 6142
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6530
             }
           ]
         },
@@ -24943,9 +24111,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5594
+            "price": 5393
           },
           "series": [
             {
@@ -24992,6 +24160,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5594
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -25127,20 +24300,20 @@
         },
         "2026-11-13": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "07:55",
-            "fetch_date": "2026-08-24",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5688
+            "price": 5580
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "07:55",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5767
+            "price": 5580
           },
           "series": [
             {
@@ -25182,6 +24355,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5767
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5580
             }
           ]
         },
@@ -25318,9 +24496,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5594
+            "price": 5393
           },
           "series": [
             {
@@ -25357,6 +24535,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5594
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -25480,12 +24663,12 @@
             "price": 5191
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5897
+            "price": 5393
           },
           "series": [
             {
@@ -25517,6 +24700,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5897
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -25630,12 +24818,12 @@
             "price": 5342
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "07:50",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5767
+            "price": 6199
           },
           "series": [
             {
@@ -25662,6 +24850,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5767
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6199
             }
           ]
         },
@@ -25765,12 +24958,12 @@
             "price": 4406
           },
           "latest": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 4435
+            "price": 5393
           },
           "series": [
             {
@@ -25792,6 +24985,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 4435
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -25885,12 +25083,12 @@
             "price": 5760
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5796
+            "price": 6379
           },
           "series": [
             {
@@ -25907,6 +25105,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5796
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6379
             }
           ]
         },
@@ -25982,20 +25185,20 @@
         },
         "2026-12-01": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-09-02",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5558
+            "price": 5393
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-09-05",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5594
+            "price": 5393
           },
           "series": [
             {
@@ -26007,6 +25210,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5594
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5393
             }
           ]
         },
@@ -26074,24 +25282,29 @@
           "historical_low": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "07:50",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5767
+            "price": 5580
           },
           "latest": {
             "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "07:50",
-            "fetch_date": "2026-09-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5767
+            "price": 5580
           },
           "series": [
             {
               "currency": "CNY",
               "fetch_date": "2026-09-05",
               "price": 5767
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5580
             }
           ]
         },
@@ -26144,338 +25357,36 @@
               "price": 6199
             }
           ]
-        }
-      },
-      "headline": {
-        "airline": "西捷航空",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "11:55",
-        "baggage_note": "",
-        "depart_date": "2026-09-09",
-        "depart_time": "17:45",
-        "flight_no": "WS 817",
-        "layover_airports": [
-          "YYZ",
-          "MNL"
-        ],
-        "layovers": [
-          {
-            "airport": "YYZ",
-            "wait_min": 385
-          },
-          {
-            "airport": "MNL",
-            "wait_min": 60
-          }
-        ],
-        "overnight": false,
-        "price": 4140,
-        "segments": [
-          {
-            "airline": "西捷航空",
-            "airplane": "Boeing 737MAX 8 Passenger",
-            "duration_min": 90,
-            "flight_no": "WS 817",
-            "from": "YUL",
-            "from_time": "2026-09-09 17:45",
-            "leg": 1,
-            "to": "YYZ",
-            "to_time": "2026-09-09 19:15"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A350",
-            "duration_min": 985,
-            "flight_no": "PR 119",
-            "from": "YYZ",
-            "from_time": "2026-09-10 01:40",
-            "leg": 2,
-            "to": "MNL",
-            "to_time": "2026-09-11 06:05"
-          },
-          {
-            "airline": "菲航",
-            "airplane": "Airbus A321",
-            "duration_min": 290,
-            "flight_no": "PR 358",
-            "from": "MNL",
-            "from_time": "2026-09-11 07:05",
-            "leg": 3,
-            "to": "PEK",
-            "to_time": "2026-09-11 11:55"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 2
-      }
-    },
-    "yul-sgn": {
-      "depart_dates": {
-        "2026-09-07": {
+        },
+        "2026-12-07": {
           "historical_low": {
-            "airline": "",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-08-05",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 4442
+            "price": 5674
           },
           "latest": {
-            "airline": "Air Canada, United",
+            "airline": "Air Canada",
             "currency": "CNY",
-            "depart_time": "08:20",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:45",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 5184
+            "price": 5674
           },
           "series": [
             {
               "currency": "CNY",
-              "fetch_date": "2026-07-21",
-              "price": 6192
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-22",
-              "price": 6170
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-23",
-              "price": 6185
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-24",
-              "price": 6091
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-25",
-              "price": 6077
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-26",
-              "price": 6077
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-27",
-              "price": 6084
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-28",
-              "price": 6070
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-29",
-              "price": 6084
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-30",
-              "price": 6192
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-07-31",
-              "price": 6206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-01",
-              "price": 6206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-02",
-              "price": 6206
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-03",
-              "price": 6199
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-04",
-              "price": 6199
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-05",
-              "price": 4442
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-06",
-              "price": 4694
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-07",
-              "price": 4687
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 4709
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 4709
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 4709
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 4716
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 4716
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 4709
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 4716
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 4723
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 4752
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 4766
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 4766
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 4766
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 4759
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 4745
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 4738
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 4752
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 4766
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 4745
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 4745
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 4774
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 5386
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 5364
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 6041
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 6062
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 6034
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 6034
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-07",
-              "price": 5184
+              "fetch_date": "2026-09-08",
+              "price": 5674
             }
           ]
-        },
+        }
+      }
+    },
+    "yul-sgn": {
+      "depart_dates": {
         "2026-09-10": {
           "historical_low": {
             "airline": "Air Canada, ANA",
@@ -26486,12 +25397,12 @@
             "price": 4378
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "07:00",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6365
+            "price": 5184
           },
           "series": [
             {
@@ -26738,6 +25649,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6365
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5184
             }
           ]
         },
@@ -26751,12 +25667,12 @@
             "price": 4615
           },
           "latest": {
-            "airline": "Air Canada, Cathay Pacific",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "21:55",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 6365
+            "price": 6538
           },
           "series": [
             {
@@ -27003,6 +25919,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6365
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6538
             }
           ]
         },
@@ -27019,7 +25940,7 @@
             "airline": "Air Canada, United",
             "currency": "CNY",
             "depart_time": "08:20",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 4745
           },
@@ -27268,6 +26189,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 4745
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4745
             }
           ]
         },
@@ -27284,7 +26210,7 @@
             "airline": "Air Canada, United",
             "currency": "CNY",
             "depart_time": "08:20",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5090
           },
@@ -27533,6 +26459,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5090
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5090
             }
           ]
         },
@@ -27549,7 +26480,7 @@
             "airline": "Air Canada, United",
             "currency": "CNY",
             "depart_time": "08:20",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 4745
           },
@@ -27798,6 +26729,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 4745
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 4745
             }
           ]
         },
@@ -27814,7 +26750,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 5090
           },
@@ -28063,6 +26999,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 5090
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 5090
             }
           ]
         },
@@ -28079,7 +27020,7 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 6228
           },
@@ -28323,6 +27264,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 6228
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 6228
             }
           ]
         }
@@ -28330,176 +27276,6 @@
     },
     "yul-yvr": {
       "depart_dates": {
-        "2026-09-07": {
-          "historical_low": {
-            "airline": "WestJet",
-            "currency": "CNY",
-            "depart_time": "07:15",
-            "fetch_date": "2026-08-08",
-            "flight_no": "",
-            "price": 1332
-          },
-          "latest": {
-            "airline": "Flair Airlines",
-            "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-06",
-            "flight_no": "",
-            "price": 3406
-          },
-          "series": [
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-08",
-              "price": 1332
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-09",
-              "price": 1908
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-10",
-              "price": 1332
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-11",
-              "price": 1354
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-12",
-              "price": 1598
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-13",
-              "price": 1894
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-14",
-              "price": 2146
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-15",
-              "price": 2182
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-16",
-              "price": 1908
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-17",
-              "price": 1908
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-18",
-              "price": 1685
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-19",
-              "price": 1757
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-20",
-              "price": 1771
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-21",
-              "price": 1778
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-22",
-              "price": 1778
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-23",
-              "price": 1778
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-24",
-              "price": 1354
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-25",
-              "price": 1764
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-26",
-              "price": 1613
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-27",
-              "price": 1606
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-28",
-              "price": 1922
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-29",
-              "price": 2585
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-30",
-              "price": 2347
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-08-31",
-              "price": 2592
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-01",
-              "price": 2232
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-02",
-              "price": 2945
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-03",
-              "price": 2621
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-04",
-              "price": 1951
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-05",
-              "price": 2412
-            },
-            {
-              "currency": "CNY",
-              "fetch_date": "2026-09-06",
-              "price": 3406
-            }
-          ]
-        },
         "2026-09-08": {
           "historical_low": {
             "airline": "Flair Airlines",
@@ -28683,9 +27459,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1627
+            "price": 2830
           },
           "series": [
             {
@@ -28832,6 +27608,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1627
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 2830
             }
           ]
         },
@@ -28845,12 +27626,12 @@
             "price": 828
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 2095
+            "price": 1778
           },
           "series": [
             {
@@ -28992,6 +27773,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 2095
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1778
             }
           ]
         },
@@ -29005,10 +27791,10 @@
             "price": 727
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 1260
           },
@@ -29147,6 +27933,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1260
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -29163,9 +27954,9 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1361
+            "price": 1260
           },
           "series": [
             {
@@ -29297,6 +28088,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1361
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -29310,12 +28106,12 @@
             "price": 936
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1260
+            "price": 1778
           },
           "series": [
             {
@@ -29442,6 +28238,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1260
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1778
             }
           ]
         },
@@ -29455,12 +28256,12 @@
             "price": 727
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1361
+            "price": 1260
           },
           "series": [
             {
@@ -29582,6 +28383,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1361
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -29598,9 +28404,9 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1102
+            "price": 1260
           },
           "series": [
             {
@@ -29717,6 +28523,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1102
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -29730,12 +28541,12 @@
             "price": 1001
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "13:10",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1973
+            "price": 1836
           },
           "series": [
             {
@@ -29847,6 +28658,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1973
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1836
             }
           ]
         },
@@ -29863,9 +28679,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1102
+            "price": 1260
           },
           "series": [
             {
@@ -29972,6 +28788,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1102
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -29988,9 +28809,9 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 950
+            "price": 1260
           },
           "series": [
             {
@@ -30092,6 +28913,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -30108,7 +28934,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -30207,6 +29033,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -30220,12 +29051,12 @@
             "price": 828
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1102
+            "price": 1260
           },
           "series": [
             {
@@ -30317,6 +29148,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1102
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1260
             }
           ]
         },
@@ -30333,7 +29169,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 1102
           },
@@ -30422,6 +29258,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1102
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1102
             }
           ]
         },
@@ -30435,10 +29276,10 @@
             "price": 727
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -30522,6 +29363,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -30535,12 +29381,12 @@
             "price": 1001
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "13:10",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1613
+            "price": 1375
           },
           "series": [
             {
@@ -30617,6 +29463,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1613
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1375
             }
           ]
         },
@@ -30633,7 +29484,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -30707,6 +29558,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -30720,10 +29576,10 @@
             "price": 727
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 742
           },
@@ -30792,6 +29648,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 742
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 742
             }
           ]
         },
@@ -30805,10 +29666,10 @@
             "price": 720
           },
           "latest": {
-            "airline": "",
+            "airline": "Flair Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -30872,6 +29733,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -30888,9 +29754,9 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 842
+            "price": 742
           },
           "series": [
             {
@@ -30947,6 +29813,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 842
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 742
             }
           ]
         },
@@ -30960,12 +29831,12 @@
             "price": 1087
           },
           "latest": {
-            "airline": "",
+            "airline": "Flair Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1260
+            "price": 1102
           },
           "series": [
             {
@@ -31017,6 +29888,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1260
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1102
             }
           ]
         },
@@ -31033,9 +29909,9 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 742
+            "price": 842
           },
           "series": [
             {
@@ -31082,6 +29958,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 742
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 842
             }
           ]
         },
@@ -31098,9 +29979,9 @@
             "airline": "",
             "currency": "CNY",
             "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1433
+            "price": 1714
           },
           "series": [
             {
@@ -31142,6 +30023,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1433
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1714
             }
           ]
         },
@@ -31158,7 +30044,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 842
           },
@@ -31197,6 +30083,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 842
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 842
             }
           ]
         },
@@ -31213,7 +30104,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -31247,6 +30138,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -31260,10 +30156,10 @@
             "price": 842
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -31292,6 +30188,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -31308,7 +30209,7 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 950
           },
@@ -31332,6 +30233,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 950
             }
           ]
         },
@@ -31345,10 +30251,10 @@
             "price": 1102
           },
           "latest": {
-            "airline": "Flair Airlines",
+            "airline": "",
             "currency": "CNY",
-            "depart_time": "08:30",
-            "fetch_date": "2026-09-07",
+            "depart_time": "",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
             "price": 1102
           },
@@ -31367,6 +30273,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1102
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1102
             }
           ]
         },
@@ -31380,12 +30291,12 @@
             "price": 950
           },
           "latest": {
-            "airline": "",
+            "airline": "Porter Airlines",
             "currency": "CNY",
-            "depart_time": "",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 950
+            "price": 1080
           },
           "series": [
             {
@@ -31397,62 +30308,69 @@
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 950
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1080
             }
           ]
         },
         "2026-10-07": {
           "historical_low": {
-            "airline": "Air Canada",
+            "airline": "Porter Airlines",
             "currency": "CNY",
-            "depart_time": "07:20",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1375
+            "price": 1080
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Porter Airlines",
             "currency": "CNY",
-            "depart_time": "07:20",
-            "fetch_date": "2026-09-07",
+            "depart_time": "18:20",
+            "fetch_date": "2026-09-08",
             "flight_no": "",
-            "price": 1375
+            "price": 1080
           },
           "series": [
             {
               "currency": "CNY",
               "fetch_date": "2026-09-07",
               "price": 1375
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1080
+            }
+          ]
+        },
+        "2026-10-08": {
+          "historical_low": {
+            "airline": "Flair Airlines",
+            "currency": "CNY",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
+            "flight_no": "",
+            "price": 1102
+          },
+          "latest": {
+            "airline": "Flair Airlines",
+            "currency": "CNY",
+            "depart_time": "08:30",
+            "fetch_date": "2026-09-08",
+            "flight_no": "",
+            "price": 1102
+          },
+          "series": [
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-08",
+              "price": 1102
             }
           ]
         }
-      },
-      "headline": {
-        "airline": "Flair Airlines",
-        "airplane": "Boeing 737MAX 8 Passenger",
-        "arrive_time": "11:00",
-        "baggage_note": "托运需另购",
-        "depart_date": "2026-09-25",
-        "depart_time": "08:30",
-        "flight_no": "F8 107",
-        "layover_airports": [],
-        "layovers": [],
-        "overnight": false,
-        "price": 742,
-        "segments": [
-          {
-            "airline": "Flair Airlines",
-            "airplane": "Boeing 737MAX 8 Passenger",
-            "duration_min": 330,
-            "flight_no": "F8 107",
-            "from": "YUL",
-            "from_time": "2026-09-25 08:30",
-            "leg": 1,
-            "to": "YVR",
-            "to_time": "2026-09-25 11:00"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 0
       }
     }
   }

@@ -2607,9 +2607,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-09-01",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5789,
+        "price": 5760,
         "source": "fast_flights",
         "stops": 1
       },
@@ -2691,9 +2691,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-08-27",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5465,
+        "price": 5393,
         "source": "fast_flights",
         "stops": 1
       },
@@ -2759,9 +2759,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-07-16",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5422,
+        "price": 5393,
         "source": "fast_flights",
         "stops": 1
       },
@@ -2961,9 +2961,9 @@
     "2026-09-28": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-09-03",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5594,
+        "price": 5393,
         "source": "fast_flights",
         "stops": 0
       },
@@ -4073,6 +4073,14 @@
         "source": "fast_flights",
         "stops": 0
       },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-08",
+        "flight_no": "",
+        "price": 6149,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Turkish Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-08-30",
@@ -4285,9 +4293,9 @@
     "2026-11-13": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-09-02",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5760,
+        "price": 5580,
         "source": "fast_flights",
         "stops": 0
       },
@@ -4355,11 +4363,11 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-08-24",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5530,
+        "price": 5393,
         "source": "fast_flights",
-        "stops": 2
+        "stops": 1
       }
     },
     "2026-11-17": {
@@ -4461,6 +4469,14 @@
       }
     },
     "2026-11-22": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-08",
+        "flight_no": "",
+        "price": 6199,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada": {
         "currency": "CNY",
         "fetch_date": "2026-08-27",
@@ -4509,11 +4525,11 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-08-30",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5717,
+        "price": 5393,
         "source": "fast_flights",
-        "stops": 2
+        "stops": 1
       }
     },
     "2026-11-26": {
@@ -4607,6 +4623,14 @@
       }
     },
     "2026-12-01": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-08",
+        "flight_no": "",
+        "price": 5393,
+        "source": "fast_flights",
+        "stops": 0
+      },
       "Air Canada": {
         "currency": "CNY",
         "fetch_date": "2026-09-02",
@@ -4647,11 +4671,11 @@
     "2026-12-04": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-09-05",
+        "fetch_date": "2026-09-08",
         "flight_no": "",
-        "price": 5767,
+        "price": 5580,
         "source": "fast_flights",
-        "stops": 2
+        "stops": 1
       }
     },
     "2026-12-05": {
@@ -4673,10 +4697,20 @@
         "source": "fast_flights",
         "stops": 1
       }
+    },
+    "2026-12-07": {
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-08",
+        "flight_no": "",
+        "price": 5674,
+        "source": "fast_flights",
+        "stops": 1
+      }
     }
   },
-  "generated_at": "2026-09-07T13:51:22+08:00",
-  "latest_fetch_date": "2026-09-07",
+  "generated_at": "2026-09-08T13:39:41+08:00",
+  "latest_fetch_date": "2026-09-08",
   "route": "yul-pek",
   "sources": [
     "fast_flights",
