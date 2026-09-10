@@ -267,6 +267,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Air Canada, EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-10",
+        "flight_no": "",
+        "price": 5897,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
         "fetch_date": "2026-08-27",
@@ -453,8 +461,8 @@
       }
     }
   },
-  "generated_at": "2026-09-09T13:41:01+08:00",
-  "latest_fetch_date": "2026-09-09",
+  "generated_at": "2026-09-10T13:38:28+08:00",
+  "latest_fetch_date": "2026-09-10",
   "route": "yul-can",
   "sources": [
     "fast_flights"
