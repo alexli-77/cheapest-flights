@@ -317,6 +317,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-11",
+        "flight_no": "",
+        "price": 5386,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "WestJet, Cathay Pacific": {
         "currency": "CNY",
         "fetch_date": "2026-08-06",
@@ -337,9 +345,9 @@
       },
       "Air Canada, ANA": {
         "currency": "CNY",
-        "fetch_date": "2026-08-12",
+        "fetch_date": "2026-09-11",
         "flight_no": "",
-        "price": 5270,
+        "price": 4766,
         "source": "fast_flights",
         "stops": 2
       },
@@ -387,9 +395,9 @@
       },
       "Air Canada, Cathay Pacific": {
         "currency": "CNY",
-        "fetch_date": "2026-09-10",
+        "fetch_date": "2026-09-11",
         "flight_no": "",
-        "price": 6350,
+        "price": 6336,
         "source": "fast_flights",
         "stops": 2
       },
@@ -477,8 +485,8 @@
       }
     }
   },
-  "generated_at": "2026-09-10T13:38:28+08:00",
-  "latest_fetch_date": "2026-09-10",
+  "generated_at": "2026-09-11T13:38:28+08:00",
+  "latest_fetch_date": "2026-09-11",
   "route": "yul-han",
   "sources": [
     "fast_flights"

@@ -311,6 +311,14 @@
         "source": "fast_flights",
         "stops": 2
       },
+      "Air Canada, Etihad": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-11",
+        "flight_no": "",
+        "price": 4896,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "Air Canada, Korean Air": {
         "currency": "CNY",
         "fetch_date": "2026-09-01",
@@ -426,11 +434,19 @@
         "price": 5400,
         "source": "fast_flights",
         "stops": 2
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-11",
+        "flight_no": "",
+        "price": 6329,
+        "source": "fast_flights",
+        "stops": 1
       }
     }
   },
-  "generated_at": "2026-09-10T13:38:28+08:00",
-  "latest_fetch_date": "2026-09-10",
+  "generated_at": "2026-09-11T13:38:28+08:00",
+  "latest_fetch_date": "2026-09-11",
   "route": "yul-bkk",
   "sources": [
     "fast_flights"
