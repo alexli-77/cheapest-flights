@@ -2360,6 +2360,14 @@
         "price": 4961,
         "source": "fast_flights",
         "stops": 1
+      },
+      "WestJet, Philippine Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-12",
+        "flight_no": "",
+        "price": 4133,
+        "source": "fast_flights",
+        "stops": 2
       }
     },
     "2026-09-14": {
@@ -3151,9 +3159,9 @@
       },
       "Air Algerie": {
         "currency": "CNY",
-        "fetch_date": "2026-09-10",
+        "fetch_date": "2026-09-12",
         "flight_no": "",
-        "price": 11470,
+        "price": 11426,
         "source": "fast_flights",
         "stops": 1
       },
@@ -3198,6 +3206,14 @@
         "price": 5551,
         "source": "fast_flights",
         "stops": 2
+      },
+      "Air Canada, United": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-12",
+        "flight_no": "",
+        "price": 16128,
+        "source": "fast_flights",
+        "stops": 1
       },
       "KLM": {
         "currency": "CNY",
@@ -4031,9 +4047,9 @@
     "2026-11-02": {
       "?": {
         "currency": "CNY",
-        "fetch_date": "2026-08-07",
+        "fetch_date": "2026-09-12",
         "flight_no": "",
-        "price": 6444,
+        "price": 6134,
         "source": "fast_flights",
         "stops": 0
       },
@@ -4421,11 +4437,11 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-09-03",
+        "fetch_date": "2026-09-12",
         "flight_no": "",
-        "price": 5594,
+        "price": 4637,
         "source": "fast_flights",
-        "stops": 1
+        "stops": 2
       }
     },
     "2026-11-18": {
@@ -4537,11 +4553,11 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-09-09",
+        "fetch_date": "2026-09-12",
         "flight_no": "",
-        "price": 5414,
+        "price": 4428,
         "source": "fast_flights",
-        "stops": 1
+        "stops": 2
       }
     },
     "2026-11-24": {
@@ -4645,11 +4661,11 @@
     "2026-11-29": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-09-09",
+        "fetch_date": "2026-09-12",
         "flight_no": "",
-        "price": 5602,
+        "price": 4428,
         "source": "fast_flights",
-        "stops": 1
+        "stops": 2
       }
     },
     "2026-11-30": {
@@ -4809,10 +4825,20 @@
         "source": "fast_flights",
         "stops": 1
       }
+    },
+    "2026-12-11": {
+      "?": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-12",
+        "flight_no": "",
+        "price": 8136,
+        "source": "fast_flights",
+        "stops": 0
+      }
     }
   },
-  "generated_at": "2026-09-11T13:38:28+08:00",
-  "latest_fetch_date": "2026-09-11",
+  "generated_at": "2026-09-12T13:31:08+08:00",
+  "latest_fetch_date": "2026-09-12",
   "route": "yul-pek",
   "sources": [
     "fast_flights",
