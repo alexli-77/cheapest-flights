@@ -31,6 +31,27 @@
         "fast_flights"
       ],
       "enabled": true
+    },
+    {
+      "id": "yul-hnd",
+      "from": "YUL",
+      "to": "HND",
+      "dates": {
+        "mode": "fixed",
+        "fixed_dates": [
+          "2026-10-03"
+        ]
+      },
+      "airlines": {
+        "whitelist": [],
+        "blacklist": []
+      },
+      "target_price": null,
+      "drop_alert_pct": null,
+      "sources": [
+        "fast_flights"
+      ],
+      "enabled": true
     }
   ],
   "cross_check": {
