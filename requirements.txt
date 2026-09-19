@@ -5,6 +5,12 @@
 # parser (IndexError on current Google Flights responses, verified 2026-07-10).
 # 2.2 is the last version verified working end-to-end (59 results SHA->NRT).
 fast-flights==2.2
+# primp is fast-flights' HTTP layer but 2.2 declares it WITHOUT a version pin,
+# so CI pulls the latest primp on every install. primp >=1.0 dropped the
+# snake_case impersonate targets (e.g. "chrome_126") that fast-flights 2.2
+# hardcodes, breaking every request with: Invalid impersonate: "chrome_126".
+# Pin to the last 0.x that still accepts "chrome_126" (verified 2026-09-19).
+primp==0.15.0
 typing-extensions==4.15.0  # needed if fast-flights is ever bumped to 3.x
 PyYAML==6.0.2
 requests==2.32.3
