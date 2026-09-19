@@ -10,7 +10,29 @@
     ],
     "max_retries": 2
   },
-  "routes": [],
+  "routes": [
+    {
+      "id": "yul-nrt",
+      "from": "YUL",
+      "to": "NRT",
+      "dates": {
+        "mode": "fixed",
+        "fixed_dates": [
+          "2026-10-03"
+        ]
+      },
+      "airlines": {
+        "whitelist": [],
+        "blacklist": []
+      },
+      "target_price": null,
+      "drop_alert_pct": null,
+      "sources": [
+        "fast_flights"
+      ],
+      "enabled": true
+    }
+  ],
   "cross_check": {
     "source": "serpapi",
     "daily_quota": 3,
