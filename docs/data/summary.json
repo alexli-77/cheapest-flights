@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-19T12:45:29+08:00",
+  "generated_at": "2026-09-19T22:43:05+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 0,
-      "routes_failed": 2,
-      "routes_ok": 0,
+      "fetched_count": 532,
+      "routes_failed": 0,
+      "routes_ok": 2,
       "routes_total": 2,
       "run_date": "2026-09-19"
     },
@@ -12,10 +12,62 @@
   },
   "routes": {
     "yul-hnd": {
-      "depart_dates": {}
+      "depart_dates": {
+        "2026-10-03": {
+          "historical_low": {
+            "airline": "Delta",
+            "currency": "CNY",
+            "depart_time": "07:00",
+            "fetch_date": "2026-09-19",
+            "flight_no": "",
+            "price": 6545
+          },
+          "latest": {
+            "airline": "Delta",
+            "currency": "CNY",
+            "depart_time": "07:00",
+            "fetch_date": "2026-09-19",
+            "flight_no": "",
+            "price": 6545
+          },
+          "series": [
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-19",
+              "price": 6545
+            }
+          ]
+        }
+      }
     },
     "yul-nrt": {
-      "depart_dates": {}
+      "depart_dates": {
+        "2026-10-03": {
+          "historical_low": {
+            "airline": "WestJet",
+            "currency": "CNY",
+            "depart_time": "07:15",
+            "fetch_date": "2026-09-19",
+            "flight_no": "",
+            "price": 6293
+          },
+          "latest": {
+            "airline": "WestJet",
+            "currency": "CNY",
+            "depart_time": "07:15",
+            "fetch_date": "2026-09-19",
+            "flight_no": "",
+            "price": 6293
+          },
+          "series": [
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-19",
+              "price": 6293
+            }
+          ]
+        }
+      }
     }
   }
 }
