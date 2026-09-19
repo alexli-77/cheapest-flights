@@ -8,31 +8,31 @@ defaults:
   retry_backoffs_seconds: [15, 40]
   max_retries: 2
 routes:
-  - id: yul-nrt
+  - id: yul-pek
     from: YUL
-    to: NRT
+    to: PEK
     dates:
-      mode: fixed
-      fixed_dates: ["2026-10-03"]
+      mode: rolling
+      depart_in_days: 90
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
+    target_price: 5000
     drop_alert_pct: null
-    sources: [fast_flights]
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
-  - id: yul-hnd
+  - id: yul-yvr
     from: YUL
-    to: HND
+    to: YVR
     dates:
-      mode: fixed
-      fixed_dates: ["2026-10-03"]
+      mode: rolling
+      depart_in_days: 30
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights]
+    target_price: 1000
+    drop_alert_pct: 15
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
 cross_check:
   source: serpapi
