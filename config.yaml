@@ -20,7 +20,20 @@ routes:
     target_price: 5000
     drop_alert_pct: null
     sources: [fast_flights, serpapi, ctrip_local]
-    enabled: false
+    enabled: true
+  - id: yul-yvr
+    from: YUL
+    to: YVR
+    dates:
+      mode: rolling
+      depart_in_days: 30
+    airlines:
+      whitelist: []
+      blacklist: []
+    target_price: 1000
+    drop_alert_pct: 15
+    sources: [fast_flights, serpapi, ctrip_local]
+    enabled: true
   - id: yul-hkg
     from: YUL
     to: HKG
@@ -33,48 +46,52 @@ routes:
     target_price: 4000
     drop_alert_pct: null
     sources: [fast_flights, serpapi, ctrip_local]
-    enabled: false
-  - id: yul-kwl
+    enabled: true
+  - id: yul-han
     from: YUL
-    to: KWL
+    to: HAN
     dates:
       mode: fixed
       fixed_dates: ["2026-09-01", "2026-09-04", "2026-09-07", "2026-09-10", "2026-09-13", "2026-09-16", "2026-09-19", "2026-09-22", "2026-09-25", "2026-09-28"]
     airlines:
       whitelist: []
       blacklist: []
-    target_price: 6500
+    target_price: 5000
     drop_alert_pct: 15
     trip_type: one_way
     sources: [fast_flights, serpapi, ctrip_local]
-    enabled: false
+    enabled: true
     note: "阳朔婚礼行程(10/6)·9月出发·飞东南亚转火车进广西"
-  - id: yul-nrt
+  - id: yul-sgn
     from: YUL
-    to: NRT
+    to: SGN
     dates:
       mode: fixed
-      fixed_dates: ["2026-10-03"]
+      fixed_dates: ["2026-09-01", "2026-09-04", "2026-09-07", "2026-09-10", "2026-09-13", "2026-09-16", "2026-09-19", "2026-09-22", "2026-09-25", "2026-09-28"]
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights]
+    target_price: 5100
+    drop_alert_pct: 15
+    trip_type: one_way
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
-  - id: yul-hnd
+    note: "阳朔婚礼行程(10/6)·9月出发·飞东南亚转火车进广西"
+  - id: yul-bkk
     from: YUL
-    to: HND
+    to: BKK
     dates:
       mode: fixed
-      fixed_dates: ["2026-10-03"]
+      fixed_dates: ["2026-09-01", "2026-09-04", "2026-09-07", "2026-09-10", "2026-09-13", "2026-09-16", "2026-09-19", "2026-09-22", "2026-09-25", "2026-09-28"]
     airlines:
       whitelist: []
       blacklist: []
-    target_price: null
-    drop_alert_pct: null
-    sources: [fast_flights]
+    target_price: 4900
+    drop_alert_pct: 15
+    trip_type: one_way
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
+    note: "阳朔婚礼行程(10/6)·9月出发·飞东南亚转火车进广西"
 cross_check:
   source: serpapi
   daily_quota: 3
