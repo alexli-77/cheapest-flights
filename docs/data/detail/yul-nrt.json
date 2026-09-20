@@ -1,6 +1,14 @@
 {
   "airlines_by_depart": {
     "2026-10-03": {
+      "United": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-20",
+        "flight_no": "",
+        "price": 7243,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "WestJet": {
         "currency": "CNY",
         "fetch_date": "2026-09-19",
@@ -11,8 +19,8 @@
       }
     }
   },
-  "generated_at": "2026-09-19T22:50:35+08:00",
-  "latest_fetch_date": "2026-09-19",
+  "generated_at": "2026-09-20T13:06:55+08:00",
+  "latest_fetch_date": "2026-09-20",
   "route": "yul-nrt",
   "sources": [
     "fast_flights"
