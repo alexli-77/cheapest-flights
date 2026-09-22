@@ -182,6 +182,23 @@ class TestFeishuCards(unittest.TestCase):
         self.assertIn("失败 1", text_blob)
         self.assertIn("暂无数据", text_blob)  # route present but no summary data
 
+    def test_digest_spike_button(self):
+        # spike_url 给了 -> 底部并排出现「手动查 Skyscanner」按钮;没给则只有 Dashboard
+        with_url = build_digest_card([], {"routes_failed": 0}, summary={"routes": {}},
+                                     routes=[], run_date="2026-07-10",
+                                     spike_url="https://x/actions/workflows/spike.yml")
+        action = with_url["card"]["elements"][-1]
+        texts = [b["text"]["content"] for b in action["actions"]]
+        self.assertIn("查看趋势图 Dashboard", texts)
+        self.assertTrue(any("Skyscanner" in t for t in texts))
+        spike_btn = [b for b in action["actions"] if "Skyscanner" in b["text"]["content"]][0]
+        self.assertEqual(spike_btn["url"], "https://x/actions/workflows/spike.yml")
+
+        without = build_digest_card([], {"routes_failed": 0}, summary={"routes": {}},
+                                    routes=[], run_date="2026-07-10")
+        texts2 = [b["text"]["content"] for b in without["card"]["elements"][-1]["actions"]]
+        self.assertNotIn("🔍 手动查 Skyscanner 实时价", texts2)
+
     def test_sign_matches_reference(self):
         ts = "1700000000"
         secret = "mysecret"

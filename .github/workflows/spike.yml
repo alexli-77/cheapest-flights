@@ -1,0 +1,46 @@
+name: skyscanner-spike
+
+# 手动触发的 Skyscanner 实时查价:手机点 Run workflow(日期已预填)-> 结果推到飞书。
+# 免上电脑执行本地脚本。用免费档 RapidAPI,一次约 3-4 次调用。
+on:
+  workflow_dispatch:
+    inputs:
+      origin:
+        description: "出发机场 IATA"
+        required: true
+        default: "YUL"
+      dest:
+        description: "到达机场 IATA"
+        required: true
+        default: "NRT"
+      date:
+        description: "出发日期 YYYY-MM-DD"
+        required: true
+        default: "2026-10-03"
+
+jobs:
+  spike:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+      FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install requests
+        run: pip install requests==2.32.3
+
+      - name: Run spike -> notify Feishu
+        # --top 0:只报最低价,不拆 agent(省额度、避开 404 端点)。--notify:结果发飞书。
+        run: |
+          python scripts/skyscanner_spike.py \
+            "${{ inputs.origin }}" "${{ inputs.dest }}" "${{ inputs.date }}" \
+            --top 0 --notify
