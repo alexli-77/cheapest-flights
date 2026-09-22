@@ -1,6 +1,14 @@
 {
   "airlines_by_depart": {
     "2026-10-03": {
+      "American, JAL": {
+        "currency": "CNY",
+        "fetch_date": "2026-09-22",
+        "flight_no": "",
+        "price": 6934,
+        "source": "fast_flights",
+        "stops": 1
+      },
       "United": {
         "currency": "CNY",
         "fetch_date": "2026-09-20",
@@ -19,8 +27,8 @@
       }
     }
   },
-  "generated_at": "2026-09-21T13:12:38+08:00",
-  "latest_fetch_date": "2026-09-21",
+  "generated_at": "2026-09-22T08:14:25+08:00",
+  "latest_fetch_date": "2026-09-22",
   "route": "yul-nrt",
   "sources": [
     "fast_flights"
