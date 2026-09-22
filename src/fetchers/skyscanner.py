@@ -38,7 +38,8 @@ BASE = f"https://{HOST}"
 TIMEOUT = 30
 DEFAULT_MONTHLY_CAP = 95      # < 免费档 100,留余量
 DEFAULT_EVERY_N_DAYS = 2      # 隔天跑,把额度摊到全月
-DEFAULT_MAX_POLLS = 2         # searchFlights 后最多轮询几次
+DEFAULT_MAX_POLLS = 0         # 首个 searchFlights 已够;searchIncomplete 端点实测 404,
+                              # 默认不轮询以省额度(找到正确端点再调大)
 
 
 def _env_int(name: str, default: int) -> int:
@@ -167,14 +168,20 @@ class SkyScannerFetcher(FetcherAdapter):
         ctx = (res.get("data") or {}).get("context") or {}
         status, session = ctx.get("status"), ctx.get("sessionId")
         itins = (res.get("data") or {}).get("itineraries") or []
+        # 轮询是「尽力而为」的增强:首个 searchFlights 通常已带 itineraries;若轮询端点
+        # 报错(实测 searchIncomplete 会 404),不要让整次抓取失败——直接用已拿到的结果。
         polls = 0
         while status == "incomplete" and session and polls < self.max_polls:
             polls += 1
             time.sleep(1.5)
-            more = self._get("/api/v1/flights/searchIncomplete", {
-                "sessionId": session, "currency": self.currency,
-                "market": self.market, "countryCode": self.country,
-            })
+            try:
+                more = self._get("/api/v1/flights/searchIncomplete", {
+                    "sessionId": session, "currency": self.currency,
+                    "market": self.market, "countryCode": self.country,
+                })
+            except FetchError as e:
+                log.info("skyscanner 轮询失败(%s),改用首个响应的 %d 条结果", e, len(itins))
+                break
             mctx = (more.get("data") or {}).get("context") or {}
             mitins = (more.get("data") or {}).get("itineraries") or []
             if mitins:
