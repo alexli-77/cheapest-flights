@@ -558,7 +558,7 @@ def _route_block(route, node_map: dict, headline: dict = None,
 def build_digest_card(alerts: list, stats: dict, summary: dict = None,
                       routes: list = None, dashboard_url: str = "",
                       run_date: str = "", run_status: str = "运行正常",
-                      show_segments: bool = True) -> dict:
+                      show_segments: bool = True, spike_url: str = "") -> dict:
     """Build the compact daily digest interactive card (heartbeat-safe).
 
     One block per route showing that route's cheapest摘要 (from the enhanced
@@ -608,7 +608,22 @@ def build_digest_card(alerts: list, stats: dict, summary: dict = None,
         change_line = "今日无价格异动。"
     elements.append({"tag": "div", "text": {"tag": "lark_md", "content": change_line}})
 
-    elements.append(_button("查看趋势图 Dashboard", _dashboard_url(dashboard_url)))
+    # 底部按钮:Dashboard;若配置了 spike_url,并排加一个「手动查 Skyscanner 实时价」
+    # 链接(点开 GitHub Actions 手动触发 spike,结果回推飞书,免上电脑)。
+    btn_actions = [{
+        "tag": "button",
+        "text": {"tag": "plain_text", "content": "查看趋势图 Dashboard"},
+        "type": "primary",
+        "url": _dashboard_url(dashboard_url) or "",
+    }]
+    if spike_url:
+        btn_actions.append({
+            "tag": "button",
+            "text": {"tag": "plain_text", "content": "🔍 手动查 Skyscanner 实时价"},
+            "type": "default",
+            "url": spike_url,
+        })
+    elements.append({"tag": "action", "actions": btn_actions})
 
     template = "blue" if stats.get("routes_failed", 0) == 0 else "orange"
     return {
@@ -871,6 +886,10 @@ class FeishuNotifier(Notifier):
         """notifiers.feishu.show_segments 开关（默认 True = 展开逐段行程）。"""
         return bool(self.cfg.get("show_segments", True))
 
+    def _spike_url(self) -> str:
+        """notifiers.feishu.spike_url：手动查 Skyscanner 的 GitHub Actions 链接（可空）。"""
+        return str(self.cfg.get("spike_url", "") or "")
+
     def _maybe_sign(self, payload: dict) -> dict:
         """Add timestamp + sign fields if FEISHU_SECRET is set."""
         secret = os.environ.get(SECRET_ENV)
@@ -902,6 +921,7 @@ class FeishuNotifier(Notifier):
             run_date=stats.get("run_date", ""),
             run_status=stats.get("run_status", "运行正常"),
             show_segments=self._show_segments(),
+            spike_url=self._spike_url(),
         )
         return self._send(card)
 

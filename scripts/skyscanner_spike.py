@@ -253,9 +253,36 @@ def _legs_ids_for_details(itin: dict) -> list:
     return ids
 
 
+def _feishu_send(text: str) -> None:
+    """把一段文本发到 FEISHU_WEBHOOK(可选 FEISHU_SECRET 加签)。失败只打日志。
+
+    供 --notify 模式用(GitHub Actions 手动触发 spike -> 结果推到飞书,免上电脑)。
+    """
+    import base64
+    import hashlib
+    import hmac
+    url = os.environ.get("FEISHU_WEBHOOK")
+    if not url:
+        print("[notify] FEISHU_WEBHOOK 未设置,跳过推送")
+        return
+    payload = {"msg_type": "text", "content": {"text": text}}
+    secret = os.environ.get("FEISHU_SECRET")
+    if secret:
+        ts = str(int(time.time()))
+        sign = base64.b64encode(hmac.new(
+            f"{ts}\n{secret}".encode("utf-8"), b"", digestmod=hashlib.sha256
+        ).digest()).decode("utf-8")
+        payload["timestamp"] = ts
+        payload["sign"] = sign
+    try:
+        requests.post(url, json=payload, timeout=15)
+    except requests.RequestException as e:
+        print(f"[notify] 飞书推送失败:{e}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Sky Scrapper 报价 spike(携程价对比)")
-    ap.add_argument("origin", help="出发机场 IATA,如 YUL")
+    ap.add_argument("origin", help="出发机场 IATA,如 PEK")
     ap.add_argument("dest", help="到达机场 IATA,如 PEK")
     ap.add_argument("date", help="出发日期 YYYY-MM-DD")
     ap.add_argument("--currency", default="CNY")
@@ -263,11 +290,28 @@ def main() -> None:
     ap.add_argument("--country", default="CN", help="国家码,默认 CN")
     ap.add_argument("--cabin", default="economy")
     ap.add_argument("--adults", type=int, default=1)
-    ap.add_argument("--top", type=int, default=3, help="取最便宜的前 N 条 itinerary 拆 agent")
+    ap.add_argument("--top", type=int, default=3, help="取最便宜的前 N 条 itinerary 拆 agent(0=只报最低价,省额度)")
     ap.add_argument("--pace", type=float, default=2.0, help="每次调用之间的间隔秒数(免费档限流用)")
     ap.add_argument("--dump", action="store_true", help="附带打印原始 JSON")
+    ap.add_argument("--notify", action="store_true", help="把结果(含失败)推到 FEISHU_WEBHOOK")
     args = ap.parse_args()
 
+    # --notify:任何失败也要发一条飞书,别让用户点了链接却收不到反馈。
+    if args.notify:
+        try:
+            _run(args)
+        except SystemExit as e:
+            _feishu_send(f"🔍 Skyscanner 查价失败 {args.origin}→{args.dest} {args.date}\n"
+                         f"原因:{e}\n(多半是免费额度用尽,下月重置;或稍后重试)")
+            raise
+        except Exception as e:  # noqa: BLE001
+            _feishu_send(f"🔍 Skyscanner 查价异常 {args.origin}→{args.dest} {args.date}\n{e}")
+            raise
+    else:
+        _run(args)
+
+
+def _run(args) -> None:
     print(f"# 解析机场 {args.origin} / {args.dest} ...")
     o = resolve_airport(args.origin)
     time.sleep(args.pace)  # 免费档限流:两次 searchAirport 之间隔开
@@ -300,6 +344,19 @@ def main() -> None:
     cheapest_price = priced[0][1]
     print(f"\n== 全渠道最低价:{args.currency} {cheapest_price:.0f} ==")
     print(f"   航段:{_leg_summary(priced[0][0])}")
+
+    # --notify:发一条紧凑的飞书文本(最低价 + 前几档),够手机上做决策。
+    if args.notify:
+        lines = [f"🔍 Skyscanner 实时查价 {args.origin}→{args.dest} {args.date}",
+                 f"全渠道最低:{args.currency} {cheapest_price:.0f}",
+                 f"  {_leg_summary(priced[0][0])}"]
+        if len(priced) > 1:
+            lines.append("其他低价:")
+            for it, p in priced[1:4]:
+                lines.append(f"  {args.currency} {p:.0f} · {_leg_summary(it)}")
+        lines.append("提示:与携程App/Google Flights对比后再订(此为公开挂牌价,不含券后)。")
+        _feishu_send("\n".join(lines))
+        print("[notify] 已推送飞书")
 
     print(f"\n== 前 {args.top} 条最便宜 itinerary 的出票渠道(agent)拆解 ==")
     ctrip_prices = []
