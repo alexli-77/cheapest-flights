@@ -16,4 +16,5 @@ from .base import (  # noqa: F401
 # Import submodules for their @register_fetcher side effects.
 from . import fast_flights  # noqa: F401
 from . import serpapi  # noqa: F401
+from . import skyscanner  # noqa: F401
 from . import ctrip_local  # noqa: F401
