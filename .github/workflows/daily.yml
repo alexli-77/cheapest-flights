@@ -25,7 +25,7 @@ jobs:
       # 每天跑(2 航线×单日期≈4-6 调用/天),约 3 周后触月额度自动降级回 fast_flights。
       # 若加更多航线导致额度吃紧,把这个调成 2/3 隔天跑摊开。
       SKYSCANNER_EVERY_N_DAYS: "1"
-      SKYSCANNER_MAX_POLLS: "2"
+      SKYSCANNER_MAX_POLLS: "0"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
