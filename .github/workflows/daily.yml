@@ -19,6 +19,11 @@ jobs:
       FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
       FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
       SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+      # Sky Scrapper (RapidAPI) —— Skyscanner 报价源;免费档,隔天跑+月额度守卫控成本。
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      SKYSCANNER_MONTHLY_CAP: "95"
+      SKYSCANNER_EVERY_N_DAYS: "2"
+      SKYSCANNER_MAX_POLLS: "2"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
