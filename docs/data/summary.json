@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-23T12:51:30+08:00",
+  "generated_at": "2026-09-24T13:00:05+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 504,
+      "fetched_count": 496,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-09-23"
+      "run_date": "2026-09-24"
     },
     "serpapi_remaining_quota": 0
   },
@@ -18,17 +18,17 @@
             "airline": "Delta",
             "currency": "CNY",
             "depart_time": "07:00",
-            "fetch_date": "2026-09-23",
+            "fetch_date": "2026-09-24",
             "flight_no": "",
-            "price": 6430
+            "price": 6408
           },
           "latest": {
             "airline": "Delta",
             "currency": "CNY",
             "depart_time": "07:00",
-            "fetch_date": "2026-09-23",
+            "fetch_date": "2026-09-24",
             "flight_no": "",
-            "price": 6430
+            "price": 6408
           },
           "series": [
             {
@@ -55,6 +55,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-23",
               "price": 6430
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-24",
+              "price": 6408
             }
           ]
         }
@@ -72,12 +77,12 @@
             "price": 6293
           },
           "latest": {
-            "airline": "American, JAL",
+            "airline": "WestJet",
             "currency": "CNY",
-            "depart_time": "17:34",
-            "fetch_date": "2026-09-23",
+            "depart_time": "20:00",
+            "fetch_date": "2026-09-24",
             "flight_no": "",
-            "price": 6919
+            "price": 6350
           },
           "series": [
             {
@@ -104,6 +109,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-23",
               "price": 6919
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-24",
+              "price": 6350
             }
           ]
         }
