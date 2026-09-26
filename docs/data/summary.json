@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-25T13:04:27+08:00",
+  "generated_at": "2026-09-26T13:07:24+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 446,
+      "fetched_count": 428,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-09-25"
+      "run_date": "2026-09-26"
     },
     "serpapi_remaining_quota": 0
   },
@@ -26,7 +26,7 @@
             "airline": "Delta",
             "currency": "CNY",
             "depart_time": "07:00",
-            "fetch_date": "2026-09-25",
+            "fetch_date": "2026-09-26",
             "flight_no": "",
             "price": 6394
           },
@@ -65,6 +65,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-25",
               "price": 6394
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-26",
+              "price": 6394
             }
           ]
         }
@@ -82,12 +87,12 @@
             "price": 6293
           },
           "latest": {
-            "airline": "American, JAL",
+            "airline": "United",
             "currency": "CNY",
-            "depart_time": "17:34",
-            "fetch_date": "2026-09-25",
+            "depart_time": "06:00",
+            "fetch_date": "2026-09-26",
             "flight_no": "",
-            "price": 7085
+            "price": 7524
           },
           "series": [
             {
@@ -124,6 +129,11 @@
               "currency": "CNY",
               "fetch_date": "2026-09-25",
               "price": 7085
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-09-26",
+              "price": 7524
             }
           ]
         }
