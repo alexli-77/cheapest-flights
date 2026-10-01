@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-09-30T13:40:29+08:00",
+  "generated_at": "2026-10-01T14:05:46+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 442,
+      "fetched_count": 440,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-09-30"
+      "run_date": "2026-10-01"
     },
-    "serpapi_remaining_quota": 0
+    "serpapi_remaining_quota": 240
   },
   "routes": {
     "yul-hnd": {
@@ -23,12 +23,12 @@
             "price": 6372
           },
           "latest": {
-            "airline": "Delta",
+            "airline": "American, JAL",
             "currency": "CNY",
-            "depart_time": "07:00",
-            "fetch_date": "2026-09-30",
+            "depart_time": "07:50",
+            "fetch_date": "2026-10-01",
             "flight_no": "",
-            "price": 6372
+            "price": 7265
           },
           "series": [
             {
@@ -90,9 +90,60 @@
               "currency": "CNY",
               "fetch_date": "2026-09-30",
               "price": 6372
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-01",
+              "price": 7265
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "达美航空",
+        "airplane": "Canadair RJ 700",
+        "arrive_time": "13:05",
+        "baggage_note": "",
+        "depart_date": "2026-10-03",
+        "depart_time": "07:00",
+        "flight_no": "DL 5427",
+        "layover_airports": [
+          "MSP"
+        ],
+        "layovers": [
+          {
+            "airport": "MSP",
+            "wait_min": 78
+          }
+        ],
+        "overnight": false,
+        "price": 7265,
+        "segments": [
+          {
+            "airline": "达美航空",
+            "airplane": "Canadair RJ 700",
+            "duration_min": 177,
+            "flight_no": "DL 5427",
+            "from": "YUL",
+            "from_time": "2026-10-03 07:00",
+            "leg": 1,
+            "to": "MSP",
+            "to_time": "2026-10-03 08:57"
+          },
+          {
+            "airline": "达美航空",
+            "airplane": "Airbus A350",
+            "duration_min": 770,
+            "flight_no": "DL 121",
+            "from": "MSP",
+            "from_time": "2026-10-03 10:15",
+            "leg": 2,
+            "to": "HND",
+            "to_time": "2026-10-04 13:05"
+          }
+        ],
+        "source": "serpapi",
+        "stops": 1
       }
     },
     "yul-nrt": {
@@ -102,17 +153,17 @@
             "airline": "WestJet",
             "currency": "CNY",
             "depart_time": "07:15",
-            "fetch_date": "2026-09-19",
+            "fetch_date": "2026-10-01",
             "flight_no": "",
-            "price": 6293
+            "price": 6286
           },
           "latest": {
             "airline": "WestJet",
             "currency": "CNY",
-            "depart_time": "20:00",
-            "fetch_date": "2026-09-30",
+            "depart_time": "07:15",
+            "fetch_date": "2026-10-01",
             "flight_no": "",
-            "price": 6307
+            "price": 6286
           },
           "series": [
             {
@@ -174,9 +225,60 @@
               "currency": "CNY",
               "fetch_date": "2026-09-30",
               "price": 6307
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-01",
+              "price": 6286
             }
           ]
         }
+      },
+      "headline": {
+        "airline": "西捷航空",
+        "airplane": "Boeing 737",
+        "arrive_time": "16:20",
+        "baggage_note": "",
+        "depart_date": "2026-10-03",
+        "depart_time": "07:15",
+        "flight_no": "WS 559",
+        "layover_airports": [
+          "YYC"
+        ],
+        "layovers": [
+          {
+            "airport": "YYC",
+            "wait_min": 290
+          }
+        ],
+        "overnight": false,
+        "price": 6286,
+        "segments": [
+          {
+            "airline": "西捷航空",
+            "airplane": "Boeing 737",
+            "duration_min": 285,
+            "flight_no": "WS 559",
+            "from": "YUL",
+            "from_time": "2026-10-03 07:15",
+            "leg": 1,
+            "to": "YYC",
+            "to_time": "2026-10-03 10:00"
+          },
+          {
+            "airline": "西捷航空",
+            "airplane": "Boeing 787",
+            "duration_min": 630,
+            "flight_no": "WS 80",
+            "from": "YYC",
+            "from_time": "2026-10-03 14:50",
+            "leg": 2,
+            "to": "NRT",
+            "to_time": "2026-10-04 16:20"
+          }
+        ],
+        "source": "serpapi",
+        "stops": 1
       }
     }
   }
