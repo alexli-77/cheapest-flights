@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-02T13:48:51+08:00",
+  "generated_at": "2026-10-03T13:25:34+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 456,
+      "fetched_count": 400,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-10-02"
+      "run_date": "2026-10-03"
     },
-    "serpapi_remaining_quota": 238
+    "serpapi_remaining_quota": 236
   },
   "routes": {
     "yul-hnd": {
@@ -23,12 +23,12 @@
             "price": 6372
           },
           "latest": {
-            "airline": "American, JAL",
+            "airline": "Delta",
             "currency": "CNY",
-            "depart_time": "15:45",
-            "fetch_date": "2026-10-02",
+            "depart_time": "06:00",
+            "fetch_date": "2026-10-03",
             "flight_no": "",
-            "price": 7286
+            "price": 7344
           },
           "series": [
             {
@@ -100,6 +100,11 @@
               "currency": "CNY",
               "fetch_date": "2026-10-02",
               "price": 7286
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-03",
+              "price": 7344
             }
           ]
         }
@@ -122,7 +127,7 @@
           }
         ],
         "overnight": false,
-        "price": 7286,
+        "price": 7344,
         "segments": [
           {
             "airline": "达美航空",
@@ -163,12 +168,12 @@
             "price": 6286
           },
           "latest": {
-            "airline": "WestJet",
+            "airline": "American, JAL",
             "currency": "CNY",
-            "depart_time": "07:15",
-            "fetch_date": "2026-10-02",
+            "depart_time": "17:34",
+            "fetch_date": "2026-10-03",
             "flight_no": "",
-            "price": 6451
+            "price": 7265
           },
           "series": [
             {
@@ -240,51 +245,56 @@
               "currency": "CNY",
               "fetch_date": "2026-10-02",
               "price": 6451
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-03",
+              "price": 7265
             }
           ]
         }
       },
       "headline": {
-        "airline": "美航",
-        "airplane": "Embraer 175",
-        "arrive_time": "13:25",
+        "airline": "西捷航空",
+        "airplane": "Boeing 737",
+        "arrive_time": "16:20",
         "baggage_note": "",
         "depart_date": "2026-10-03",
-        "depart_time": "17:34",
-        "flight_no": "AA 3602",
+        "depart_time": "07:15",
+        "flight_no": "WS 559",
         "layover_airports": [
-          "ORD"
+          "YYC"
         ],
         "layovers": [
           {
-            "airport": "ORD",
-            "wait_min": 896
+            "airport": "YYC",
+            "wait_min": 290
           }
         ],
         "overnight": false,
-        "price": 6451,
+        "price": 7265,
         "segments": [
           {
-            "airline": "美航",
-            "airplane": "Embraer 175",
-            "duration_min": 165,
-            "flight_no": "AA 3602",
+            "airline": "西捷航空",
+            "airplane": "Boeing 737",
+            "duration_min": 285,
+            "flight_no": "WS 559",
             "from": "YUL",
-            "from_time": "2026-10-03 17:34",
+            "from_time": "2026-10-03 07:15",
             "leg": 1,
-            "to": "ORD",
-            "to_time": "2026-10-03 19:19"
+            "to": "YYC",
+            "to_time": "2026-10-03 10:00"
           },
           {
-            "airline": "日航",
+            "airline": "西捷航空",
             "airplane": "Boeing 787",
-            "duration_min": 790,
-            "flight_no": "JL 55",
-            "from": "ORD",
-            "from_time": "2026-10-04 10:15",
+            "duration_min": 630,
+            "flight_no": "WS 80",
+            "from": "YYC",
+            "from_time": "2026-10-03 14:50",
             "leg": 2,
             "to": "NRT",
-            "to_time": "2026-10-05 13:25"
+            "to_time": "2026-10-04 16:20"
           }
         ],
         "source": "serpapi",
