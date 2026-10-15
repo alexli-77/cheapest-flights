@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T12:59:13+08:00",
+  "generated_at": "2026-10-15T20:31:36+08:00",
   "routes": [
     {
       "currency": "CNY",
@@ -10,7 +10,9 @@
       "from_name_cn": "蒙特利尔特鲁多国际机场",
       "route_id": "yul-nrt",
       "sources": [
-        "fast_flights"
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
       ],
       "target_price": null,
       "to": "NRT",
@@ -26,7 +28,9 @@
       "from_name_cn": "蒙特利尔特鲁多国际机场",
       "route_id": "yul-hnd",
       "sources": [
-        "fast_flights"
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
       ],
       "target_price": null,
       "to": "HND",

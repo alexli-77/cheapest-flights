@@ -25,10 +25,30 @@
         "source": "fast_flights",
         "stops": 1
       }
+    },
+    "2026-12-11": {
+      "Delta, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-15",
+        "flight_no": "",
+        "price": 6422,
+        "source": "fast_flights",
+        "stops": 2
+      }
+    },
+    "2026-12-12": {
+      "WestJet": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-15",
+        "flight_no": "",
+        "price": 8460,
+        "source": "fast_flights",
+        "stops": 2
+      }
     }
   },
-  "generated_at": "2026-10-15T12:59:13+08:00",
-  "latest_fetch_date": "2026-10-03",
+  "generated_at": "2026-10-15T20:31:36+08:00",
+  "latest_fetch_date": "2026-10-15",
   "route": "yul-nrt",
   "sources": [
     "fast_flights"

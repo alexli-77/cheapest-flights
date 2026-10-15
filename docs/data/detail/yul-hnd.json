@@ -17,10 +17,30 @@
         "source": "fast_flights",
         "stops": 1
       }
+    },
+    "2026-12-11": {
+      "Delta": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-15",
+        "flight_no": "",
+        "price": 6624,
+        "source": "fast_flights",
+        "stops": 1
+      }
+    },
+    "2026-12-12": {
+      "Air Canada, ANA": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-15",
+        "flight_no": "",
+        "price": 7416,
+        "source": "fast_flights",
+        "stops": 1
+      }
     }
   },
-  "generated_at": "2026-10-15T12:59:13+08:00",
-  "latest_fetch_date": "2026-10-03",
+  "generated_at": "2026-10-15T20:31:36+08:00",
+  "latest_fetch_date": "2026-10-15",
   "route": "yul-hnd",
   "sources": [
     "fast_flights"
