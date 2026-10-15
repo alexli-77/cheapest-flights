@@ -18,7 +18,8 @@
       "dates": {
         "mode": "fixed",
         "fixed_dates": [
-          "2026-10-03"
+          "2026-12-11",
+          "2026-12-12"
         ]
       },
       "airlines": {
@@ -28,7 +29,9 @@
       "target_price": null,
       "drop_alert_pct": null,
       "sources": [
-        "fast_flights"
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
       ],
       "enabled": true
     },
@@ -39,7 +42,8 @@
       "dates": {
         "mode": "fixed",
         "fixed_dates": [
-          "2026-10-03"
+          "2026-12-11",
+          "2026-12-12"
         ]
       },
       "airlines": {
@@ -49,7 +53,9 @@
       "target_price": null,
       "drop_alert_pct": null,
       "sources": [
-        "fast_flights"
+        "fast_flights",
+        "serpapi",
+        "ctrip_local"
       ],
       "enabled": true
     }
@@ -92,7 +98,7 @@
     "url": "https://alexli-77.github.io/cheapest-flights/"
   },
   "hidden_city": {
-    "enabled": true,
+    "enabled": false,
     "origin": "YUL",
     "onward_routes": [
       "BKK",
