@@ -13,26 +13,26 @@ routes:
     to: NRT
     dates:
       mode: fixed
-      fixed_dates: ["2026-10-03"]
+      fixed_dates: ["2026-12-11", "2026-12-12"]
     airlines:
       whitelist: []
       blacklist: []
     target_price: null
     drop_alert_pct: null
-    sources: [fast_flights]
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
   - id: yul-hnd
     from: YUL
     to: HND
     dates:
       mode: fixed
-      fixed_dates: ["2026-10-03"]
+      fixed_dates: ["2026-12-11", "2026-12-12"]
     airlines:
       whitelist: []
       blacklist: []
     target_price: null
     drop_alert_pct: null
-    sources: [fast_flights]
+    sources: [fast_flights, serpapi, ctrip_local]
     enabled: true
 cross_check:
   source: serpapi
@@ -54,6 +54,7 @@ notifiers:
     enabled: true
     secret_env: FEISHU_WEBHOOK
     show_segments: true
+    spike_url: "https://github.com/alexli-77/cheapest-flights/actions/workflows/spike.yml"
   telegram:
     enabled: false
   email:
@@ -63,7 +64,7 @@ dashboard:
   provider: github_pages
   url: "https://alexli-77.github.io/cheapest-flights/"
 hidden_city:
-  enabled: true
+  enabled: false
   origin: YUL
   onward_routes: [BKK, SGN, MNL, DPS, KUL, HAN, SYD, MEL, TPE]
   chinese_hubs: [PEK, PVG, SHA, CAN, SZX, CTU, XMN, HGH, NKG, WUH, CKG, XIY, KMG]
