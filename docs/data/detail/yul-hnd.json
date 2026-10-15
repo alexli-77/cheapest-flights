@@ -19,16 +19,88 @@
       }
     },
     "2026-12-11": {
+      "ANA (All Nippon Airways)": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "NH",
+        "price": 7234,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "AC",
+        "price": 7234,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "Air Transat": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "TS",
+        "price": 6844,
+        "source": "skyscanner",
+        "stops": 2
+      },
+      "American Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "AA",
+        "price": 8230,
+        "source": "skyscanner",
+        "stops": 2
+      },
       "Delta": {
         "currency": "CNY",
-        "fetch_date": "2026-10-15",
-        "flight_no": "",
-        "price": 6624,
-        "source": "fast_flights",
+        "fetch_date": "2026-10-16",
+        "flight_no": "DL",
+        "price": 6159,
+        "source": "skyscanner",
         "stops": 1
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "QR",
+        "price": 8229,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "Turkish Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "TK",
+        "price": 8553,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "United": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "UA",
+        "price": 8038,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "WestJet": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "WS",
+        "price": 4486,
+        "source": "skyscanner",
+        "stops": 2
       }
     },
     "2026-12-12": {
+      "Air Canada": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "AC",
+        "price": 5230,
+        "source": "skyscanner",
+        "stops": 3
+      },
       "Air Canada, ANA": {
         "currency": "CNY",
         "fetch_date": "2026-10-15",
@@ -36,13 +108,54 @@
         "price": 7416,
         "source": "fast_flights",
         "stops": 1
+      },
+      "American Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "AA",
+        "price": 7327,
+        "source": "skyscanner",
+        "stops": 2
+      },
+      "Delta": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "DL",
+        "price": 7224,
+        "source": "skyscanner",
+        "stops": 1
+      },
+      "Flair Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "F.",
+        "price": 4718,
+        "source": "skyscanner",
+        "stops": 3
+      },
+      "Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "KE",
+        "price": 8057,
+        "source": "skyscanner",
+        "stops": 2
+      },
+      "Qatar Airways": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-16",
+        "flight_no": "QR",
+        "price": 7777,
+        "source": "skyscanner",
+        "stops": 1
       }
     }
   },
-  "generated_at": "2026-10-15T20:31:36+08:00",
-  "latest_fetch_date": "2026-10-15",
+  "generated_at": "2026-10-16T03:38:15+08:00",
+  "latest_fetch_date": "2026-10-16",
   "route": "yul-hnd",
   "sources": [
-    "fast_flights"
+    "fast_flights",
+    "skyscanner"
   ]
 }
