@@ -29,6 +29,7 @@
       "target_price": null,
       "drop_alert_pct": null,
       "sources": [
+        "skyscanner",
         "fast_flights",
         "serpapi",
         "ctrip_local"
@@ -53,6 +54,7 @@
       "target_price": null,
       "drop_alert_pct": null,
       "sources": [
+        "skyscanner",
         "fast_flights",
         "serpapi",
         "ctrip_local"
