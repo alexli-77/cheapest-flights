@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T03:43:20+08:00",
+  "generated_at": "2026-10-16T12:41:09+08:00",
   "meta": {
     "run_stats": {
       "fetched_count": 120,
@@ -8,7 +8,7 @@
       "routes_total": 2,
       "run_date": "2026-10-16"
     },
-    "serpapi_remaining_quota": 231
+    "serpapi_remaining_quota": 229
   },
   "routes": {
     "yul-hnd": {
@@ -185,62 +185,62 @@
         }
       },
       "headline": {
-        "airline": "达美航空",
-        "airplane": "Canadair RJ 700",
-        "arrive_time": "21:25",
+        "airline": "西捷航空",
+        "airplane": "Boeing 737",
+        "arrive_time": "16:30",
         "baggage_note": "",
         "depart_date": "2026-12-11",
-        "depart_time": "06:00",
-        "flight_no": "DL 5056",
+        "depart_time": "06:45",
+        "flight_no": "WS 859",
         "layover_airports": [
-          "DTW",
-          "ICN"
+          "YYZ",
+          "YYC"
         ],
         "layovers": [
           {
-            "airport": "DTW",
-            "wait_min": 194
+            "airport": "YYZ",
+            "wait_min": 70
           },
           {
-            "airport": "ICN",
-            "wait_min": 125
+            "airport": "YYC",
+            "wait_min": 95
           }
         ],
         "overnight": false,
         "price": 3879,
         "segments": [
           {
-            "airline": "达美航空",
-            "airplane": "Canadair RJ 700",
-            "duration_min": 136,
-            "flight_no": "DL 5056",
+            "airline": "西捷航空",
+            "airplane": "Boeing 737",
+            "duration_min": 100,
+            "flight_no": "WS 859",
             "from": "YUL",
-            "from_time": "2026-12-11 06:00",
+            "from_time": "2026-12-11 06:45",
             "leg": 1,
-            "to": "DTW",
-            "to_time": "2026-12-11 08:16"
+            "to": "YYZ",
+            "to_time": "2026-12-11 08:25"
           },
           {
-            "airline": "达美航空",
-            "airplane": "Airbus A350",
-            "duration_min": 920,
-            "flight_no": "DL 159",
-            "from": "DTW",
-            "from_time": "2026-12-11 11:30",
+            "airline": "西捷航空",
+            "airplane": "Boeing 737MAX 8 Passenger",
+            "duration_min": 275,
+            "flight_no": "WS 655",
+            "from": "YYZ",
+            "from_time": "2026-12-11 09:35",
             "leg": 2,
-            "to": "ICN",
-            "to_time": "2026-12-12 16:50"
+            "to": "YYC",
+            "to_time": "2026-12-11 13:10"
           },
           {
-            "airline": "大韩航空",
-            "airplane": "Airbus A321neo",
-            "duration_min": 150,
-            "flight_no": "KE 705",
-            "from": "ICN",
-            "from_time": "2026-12-12 18:55",
+            "airline": "西捷航空",
+            "airplane": "Boeing 787",
+            "duration_min": 645,
+            "flight_no": "WS 80",
+            "from": "YYC",
+            "from_time": "2026-12-11 14:45",
             "leg": 3,
             "to": "NRT",
-            "to_time": "2026-12-12 21:25"
+            "to_time": "2026-12-12 16:30"
           }
         ],
         "source": "serpapi",
