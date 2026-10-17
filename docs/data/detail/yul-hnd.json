@@ -21,9 +21,9 @@
     "2026-12-11": {
       "ANA (All Nippon Airways)": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-17",
         "flight_no": "NH",
-        "price": 7234,
+        "price": 7202,
         "source": "skyscanner",
         "stops": 1
       },
@@ -59,11 +59,19 @@
         "source": "skyscanner",
         "stops": 1
       },
+      "Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-17",
+        "flight_no": "PD",
+        "price": 4881,
+        "source": "skyscanner",
+        "stops": 2
+      },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-17",
         "flight_no": "QR",
-        "price": 8229,
+        "price": 7798,
         "source": "skyscanner",
         "stops": 1
       },
@@ -77,9 +85,9 @@
       },
       "United": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-17",
         "flight_no": "UA",
-        "price": 8038,
+        "price": 7994,
         "source": "skyscanner",
         "stops": 1
       },
@@ -103,9 +111,9 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-17",
         "flight_no": "AC",
-        "price": 5230,
+        "price": 4844,
         "source": "skyscanner",
         "stops": 3
       },
@@ -159,8 +167,8 @@
       }
     }
   },
-  "generated_at": "2026-10-16T12:41:24+08:00",
-  "latest_fetch_date": "2026-10-16",
+  "generated_at": "2026-10-17T12:38:53+08:00",
+  "latest_fetch_date": "2026-10-17",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
