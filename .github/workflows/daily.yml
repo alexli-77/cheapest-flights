@@ -18,7 +18,6 @@ jobs:
     env:
       FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
       FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
-      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
       # Skyscanner 源(omkarcloud 的 Apify Actor):计费 $0.001/条,免费 $5/月≈5000 条。
       # 月额度守卫按「条数」计(cap 4500<5000),每天跑,用量约 1800 条/月,免费额度内。
       APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}

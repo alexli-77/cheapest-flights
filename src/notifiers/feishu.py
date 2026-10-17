@@ -577,8 +577,6 @@ def build_digest_card(alerts: list, stats: dict, summary: dict = None,
         f"成功 {stats.get('routes_ok', 0)} / 失败 {stats.get('routes_failed', 0)} 条航线"
         f" · 抓取 {stats.get('fetched_count', 0)} 条"
     )
-    if stats.get("serpapi_remaining_quota") is not None:
-        stat_line += f" · SerpAPI 余额 {stats.get('serpapi_remaining_quota')}"
     elements.append({"tag": "div", "text": {"tag": "lark_md", "content": stat_line}})
     elements.append({"tag": "hr"})
 
