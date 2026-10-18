@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-17T12:38:37+08:00",
+  "generated_at": "2026-10-18T12:44:01+08:00",
   "meta": {
     "run_stats": {
       "fetched_count": 120,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-10-17"
+      "run_date": "2026-10-18"
     },
-    "serpapi_remaining_quota": 227
+    "serpapi_remaining_quota": 225
   },
   "routes": {
     "yul-hnd": {
@@ -26,9 +26,9 @@
             "airline": "Porter Airlines",
             "currency": "CNY",
             "depart_time": "17:55",
-            "fetch_date": "2026-10-17",
+            "fetch_date": "2026-10-18",
             "flight_no": "PD",
-            "price": 4881
+            "price": 4896
           },
           "series": [
             {
@@ -45,6 +45,11 @@
               "currency": "CNY",
               "fetch_date": "2026-10-17",
               "price": 4881
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-18",
+              "price": 4896
             }
           ]
         },
@@ -53,17 +58,17 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:00",
-            "fetch_date": "2026-10-16",
+            "fetch_date": "2026-10-18",
             "flight_no": "F.",
-            "price": 4718
+            "price": 4711
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Flair Airlines",
             "currency": "CNY",
-            "depart_time": "08:45",
-            "fetch_date": "2026-10-17",
-            "flight_no": "AC",
-            "price": 4844
+            "depart_time": "08:00",
+            "fetch_date": "2026-10-18",
+            "flight_no": "F.",
+            "price": 4711
           },
           "series": [
             {
@@ -80,55 +85,14 @@
               "currency": "CNY",
               "fetch_date": "2026-10-17",
               "price": 4844
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-18",
+              "price": 4711
             }
           ]
         }
-      },
-      "headline": {
-        "airline": "加航",
-        "airplane": "Boeing 777",
-        "arrive_time": "18:55",
-        "baggage_note": "",
-        "depart_date": "2026-12-12",
-        "depart_time": "18:15",
-        "flight_no": "AC 311",
-        "layover_airports": [
-          "YVR"
-        ],
-        "layovers": [
-          {
-            "airport": "YVR",
-            "wait_min": 1115
-          }
-        ],
-        "overnight": false,
-        "price": 4844,
-        "segments": [
-          {
-            "airline": "加航",
-            "airplane": "Boeing 777",
-            "duration_min": 330,
-            "flight_no": "AC 311",
-            "from": "YUL",
-            "from_time": "2026-12-12 18:15",
-            "leg": 1,
-            "to": "YVR",
-            "to_time": "2026-12-12 21:45"
-          },
-          {
-            "airline": "全日空",
-            "airplane": "Boeing 787",
-            "duration_min": 635,
-            "flight_no": "NH 115",
-            "from": "YVR",
-            "from_time": "2026-12-13 16:20",
-            "leg": 2,
-            "to": "HND",
-            "to_time": "2026-12-14 18:55"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 1
       }
     },
     "yul-nrt": {
@@ -146,9 +110,9 @@
             "airline": "WestJet",
             "currency": "CNY",
             "depart_time": "16:15",
-            "fetch_date": "2026-10-17",
+            "fetch_date": "2026-10-18",
             "flight_no": "WS",
-            "price": 4028
+            "price": 3969
           },
           "series": [
             {
@@ -165,6 +129,11 @@
               "currency": "CNY",
               "fetch_date": "2026-10-17",
               "price": 4028
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-18",
+              "price": 3969
             }
           ]
         },
@@ -173,17 +142,17 @@
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:00",
-            "fetch_date": "2026-10-16",
+            "fetch_date": "2026-10-18",
             "flight_no": "F.",
-            "price": 4485
+            "price": 4336
           },
           "latest": {
             "airline": "Flair Airlines",
             "currency": "CNY",
             "depart_time": "08:00",
-            "fetch_date": "2026-10-17",
+            "fetch_date": "2026-10-18",
             "flight_no": "F.",
-            "price": 4485
+            "price": 4336
           },
           "series": [
             {
@@ -200,71 +169,14 @@
               "currency": "CNY",
               "fetch_date": "2026-10-17",
               "price": 4485
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-10-18",
+              "price": 4336
             }
           ]
         }
-      },
-      "headline": {
-        "airline": "达美航空",
-        "airplane": "Canadair RJ 700",
-        "arrive_time": "21:25",
-        "baggage_note": "",
-        "depart_date": "2026-12-11",
-        "depart_time": "06:00",
-        "flight_no": "DL 5056",
-        "layover_airports": [
-          "DTW",
-          "ICN"
-        ],
-        "layovers": [
-          {
-            "airport": "DTW",
-            "wait_min": 194
-          },
-          {
-            "airport": "ICN",
-            "wait_min": 125
-          }
-        ],
-        "overnight": false,
-        "price": 4028,
-        "segments": [
-          {
-            "airline": "达美航空",
-            "airplane": "Canadair RJ 700",
-            "duration_min": 136,
-            "flight_no": "DL 5056",
-            "from": "YUL",
-            "from_time": "2026-12-11 06:00",
-            "leg": 1,
-            "to": "DTW",
-            "to_time": "2026-12-11 08:16"
-          },
-          {
-            "airline": "达美航空",
-            "airplane": "Airbus A350",
-            "duration_min": 920,
-            "flight_no": "DL 159",
-            "from": "DTW",
-            "from_time": "2026-12-11 11:30",
-            "leg": 2,
-            "to": "ICN",
-            "to_time": "2026-12-12 16:50"
-          },
-          {
-            "airline": "大韩航空",
-            "airplane": "Airbus A321neo",
-            "duration_min": 150,
-            "flight_no": "KE 705",
-            "from": "ICN",
-            "from_time": "2026-12-12 18:55",
-            "leg": 3,
-            "to": "NRT",
-            "to_time": "2026-12-12 21:25"
-          }
-        ],
-        "source": "serpapi",
-        "stops": 2
       }
     }
   }

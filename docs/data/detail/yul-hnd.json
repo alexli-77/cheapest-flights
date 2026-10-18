@@ -21,9 +21,9 @@
     "2026-12-11": {
       "ANA (All Nippon Airways)": {
         "currency": "CNY",
-        "fetch_date": "2026-10-17",
+        "fetch_date": "2026-10-18",
         "flight_no": "NH",
-        "price": 7202,
+        "price": 7081,
         "source": "skyscanner",
         "stops": 1
       },
@@ -103,9 +103,9 @@
     "2026-12-12": {
       "ANA (All Nippon Airways)": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-18",
         "flight_no": "NH",
-        "price": 8610,
+        "price": 8384,
         "source": "skyscanner",
         "stops": 1
       },
@@ -143,11 +143,11 @@
       },
       "Flair Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-18",
         "flight_no": "F.",
-        "price": 4718,
+        "price": 4711,
         "source": "skyscanner",
-        "stops": 3
+        "stops": 2
       },
       "Korean Air": {
         "currency": "CNY",
@@ -167,8 +167,8 @@
       }
     }
   },
-  "generated_at": "2026-10-17T12:38:53+08:00",
-  "latest_fetch_date": "2026-10-17",
+  "generated_at": "2026-10-18T12:44:03+08:00",
+  "latest_fetch_date": "2026-10-18",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
