@@ -61,11 +61,11 @@
       },
       "Porter Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-19",
         "flight_no": "PD",
-        "price": 5118,
+        "price": 5036,
         "source": "skyscanner",
-        "stops": 2
+        "stops": 3
       },
       "Turkish Airlines": {
         "currency": "CNY",
@@ -127,9 +127,9 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-10-18",
+        "fetch_date": "2026-10-19",
         "flight_no": "QR",
-        "price": 7694,
+        "price": 7645,
         "source": "skyscanner",
         "stops": 1
       },
@@ -151,8 +151,8 @@
       }
     }
   },
-  "generated_at": "2026-10-18T12:44:03+08:00",
-  "latest_fetch_date": "2026-10-18",
+  "generated_at": "2026-10-19T12:52:11+08:00",
+  "latest_fetch_date": "2026-10-19",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
