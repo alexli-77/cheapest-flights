@@ -29,11 +29,11 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-20",
         "flight_no": "AC",
-        "price": 7234,
+        "price": 6423,
         "source": "skyscanner",
-        "stops": 1
+        "stops": 2
       },
       "Air Transat": {
         "currency": "CNY",
@@ -45,9 +45,9 @@
       },
       "American Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-20",
         "flight_no": "AA",
-        "price": 8230,
+        "price": 7338,
         "source": "skyscanner",
         "stops": 2
       },
@@ -159,16 +159,16 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-20",
         "flight_no": "QR",
-        "price": 7777,
+        "price": 7622,
         "source": "skyscanner",
         "stops": 1
       }
     }
   },
-  "generated_at": "2026-10-19T12:52:11+08:00",
-  "latest_fetch_date": "2026-10-19",
+  "generated_at": "2026-10-20T13:00:28+08:00",
+  "latest_fetch_date": "2026-10-20",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",

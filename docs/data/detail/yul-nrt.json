@@ -29,9 +29,9 @@
     "2026-12-11": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-17",
+        "fetch_date": "2026-10-20",
         "flight_no": "AC",
-        "price": 5162,
+        "price": 5135,
         "source": "skyscanner",
         "stops": 2
       },
@@ -61,17 +61,17 @@
       },
       "Porter Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-19",
+        "fetch_date": "2026-10-20",
         "flight_no": "PD",
-        "price": 5036,
+        "price": 4616,
         "source": "skyscanner",
         "stops": 3
       },
       "Turkish Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-20",
         "flight_no": "TK",
-        "price": 7698,
+        "price": 7681,
         "source": "skyscanner",
         "stops": 1
       },
@@ -127,9 +127,9 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-10-19",
+        "fetch_date": "2026-10-20",
         "flight_no": "QR",
-        "price": 7645,
+        "price": 7605,
         "source": "skyscanner",
         "stops": 1
       },
@@ -143,16 +143,16 @@
       },
       "WestJet": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-20",
         "flight_no": "WS",
-        "price": 6438,
+        "price": 4031,
         "source": "skyscanner",
-        "stops": 2
+        "stops": 3
       }
     }
   },
-  "generated_at": "2026-10-19T12:52:11+08:00",
-  "latest_fetch_date": "2026-10-19",
+  "generated_at": "2026-10-20T13:00:28+08:00",
+  "latest_fetch_date": "2026-10-20",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
