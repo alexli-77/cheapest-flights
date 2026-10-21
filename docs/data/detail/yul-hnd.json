@@ -164,11 +164,19 @@
         "price": 7622,
         "source": "skyscanner",
         "stops": 1
+      },
+      "United": {
+        "currency": "CNY",
+        "fetch_date": "2026-10-21",
+        "flight_no": "UA",
+        "price": 7489,
+        "source": "skyscanner",
+        "stops": 2
       }
     }
   },
-  "generated_at": "2026-10-20T13:00:28+08:00",
-  "latest_fetch_date": "2026-10-20",
+  "generated_at": "2026-10-21T13:00:46+08:00",
+  "latest_fetch_date": "2026-10-21",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
