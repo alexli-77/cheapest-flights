@@ -82,8 +82,7 @@
     "feishu": {
       "enabled": true,
       "secret_env": "FEISHU_WEBHOOK",
-      "show_segments": true,
-      "spike_url": "https://github.com/alexli-77/cheapest-flights/actions/workflows/spike.yml"
+      "show_segments": true
     },
     "telegram": {
       "enabled": false
