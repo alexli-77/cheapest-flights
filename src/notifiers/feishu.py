@@ -111,23 +111,26 @@ def _od_from_route_id(route_id: str) -> tuple:
     return "", ""
 
 
-def gflights_url(origin: str, dest: str, depart_date: str = "", one_way: bool = True) -> str:
-    """Google Flights deep link for a one-way search (购票渠道).
+def booking_url(origin: str, dest: str, depart_date: str = "", one_way: bool = True) -> str:
+    """Skyscanner deep link for a one-way search (购票渠道).
 
-    ``https://www.google.com/travel/flights?q=<url-encoded query>`` where the
-    query is e.g. ``"Flights from YUL to PEK on 2026-07-15 one way"``. Returns ""
-    when origin/dest are missing.
+    监控价来自 Skyscanner,故购票渠道也指向 Skyscanner —— 点进去就能看到日报里那档
+    便宜的多段票(链到 Google Flights 反而找不到)。格式:
+    ``https://www.skyscanner.net/transport/flights/<o>/<d>/<yymmdd>/?...``
+    (机场码小写,日期 YYMMDD)。日期缺失/非法时退回不带日期的航线页。
+    Returns "" when origin/dest are missing.
     """
-    o = str(origin or "").upper().strip()
-    d = str(dest or "").upper().strip()
+    o = str(origin or "").lower().strip()
+    d = str(dest or "").lower().strip()
     if not o or not d:
         return ""
-    q = f"Flights from {o} to {d}"
-    if depart_date:
-        q += f" on {depart_date}"
-    if one_way:
-        q += " one way"
-    return "https://www.google.com/travel/flights?q=" + urllib.parse.quote(q)
+    base = f"https://www.skyscanner.net/transport/flights/{o}/{d}/"
+    parts = str(depart_date or "").split("-")
+    if len(parts) == 3 and all(parts):
+        yy, mm, dd = parts[0][2:], parts[1], parts[2]
+        base += f"{yy}{mm}{dd}/"
+    query = {"adultsv2": "1", "cabinclass": "economy", "rtn": "0" if one_way else "1"}
+    return base + "?" + urllib.parse.urlencode(query)
 
 
 def _mask_url(url: str) -> str:
@@ -548,7 +551,7 @@ def _route_block(route, node_map: dict, headline: dict = None,
                 content += f"\n{extra}"
 
     if link_dd:
-        url = gflights_url(origin, dest, link_dd)
+        url = booking_url(origin, dest, link_dd)
         if url:
             content += f"\n[→ 查看购票渠道]({url})"
 
@@ -558,7 +561,7 @@ def _route_block(route, node_map: dict, headline: dict = None,
 def build_digest_card(alerts: list, stats: dict, summary: dict = None,
                       routes: list = None, dashboard_url: str = "",
                       run_date: str = "", run_status: str = "运行正常",
-                      show_segments: bool = True, spike_url: str = "") -> dict:
+                      show_segments: bool = True) -> dict:
     """Build the compact daily digest interactive card (heartbeat-safe).
 
     One block per route showing that route's cheapest摘要 (from the enhanced
@@ -606,22 +609,7 @@ def build_digest_card(alerts: list, stats: dict, summary: dict = None,
         change_line = "今日无价格异动。"
     elements.append({"tag": "div", "text": {"tag": "lark_md", "content": change_line}})
 
-    # 底部按钮:Dashboard;若配置了 spike_url,并排加一个「手动查 Skyscanner 实时价」
-    # 链接(点开 GitHub Actions 手动触发 spike,结果回推飞书,免上电脑)。
-    btn_actions = [{
-        "tag": "button",
-        "text": {"tag": "plain_text", "content": "查看趋势图 Dashboard"},
-        "type": "primary",
-        "url": _dashboard_url(dashboard_url) or "",
-    }]
-    if spike_url:
-        btn_actions.append({
-            "tag": "button",
-            "text": {"tag": "plain_text", "content": "🔍 手动查 Skyscanner 实时价"},
-            "type": "default",
-            "url": spike_url,
-        })
-    elements.append({"tag": "action", "actions": btn_actions})
+    elements.append(_button("查看趋势图 Dashboard", _dashboard_url(dashboard_url)))
 
     template = "blue" if stats.get("routes_failed", 0) == 0 else "orange"
     return {
@@ -668,7 +656,7 @@ def build_urgent_card(alert, dashboard_url: str = "", flight: dict = None) -> di
         "type": "primary",
         "url": _dashboard_url(dashboard_url, alert.route_id) or "",
     }]
-    buy_url = gflights_url(origin, dest, getattr(alert, "depart_date", ""))
+    buy_url = booking_url(origin, dest, getattr(alert, "depart_date", ""))
     if buy_url:
         buttons.append({
             "tag": "button",
@@ -770,7 +758,7 @@ def _hidden_hit_block(hit: dict, show_segments: bool = True, expand: bool = True
 
     lines.append(HIDDEN_CITY_BAGGAGE)
 
-    url = gflights_url(origin, onward, dd)
+    url = booking_url(origin, onward, dd)
     if url:
         lines.append(f"[→ Google Flights 全程]({url})")
     lines.append(f"<font color='grey'>{HIDDEN_CITY_RISK}</font>")
@@ -884,10 +872,6 @@ class FeishuNotifier(Notifier):
         """notifiers.feishu.show_segments 开关（默认 True = 展开逐段行程）。"""
         return bool(self.cfg.get("show_segments", True))
 
-    def _spike_url(self) -> str:
-        """notifiers.feishu.spike_url：手动查 Skyscanner 的 GitHub Actions 链接（可空）。"""
-        return str(self.cfg.get("spike_url", "") or "")
-
     def _maybe_sign(self, payload: dict) -> dict:
         """Add timestamp + sign fields if FEISHU_SECRET is set."""
         secret = os.environ.get(SECRET_ENV)
@@ -919,7 +903,6 @@ class FeishuNotifier(Notifier):
             run_date=stats.get("run_date", ""),
             run_status=stats.get("run_status", "运行正常"),
             show_segments=self._show_segments(),
-            spike_url=self._spike_url(),
         )
         return self._send(card)
 

@@ -13,7 +13,7 @@ from src.notifiers import dispatch, build_stats, REGISTRY  # noqa: E402
 from src.notifiers import feishu  # noqa: E402
 from src.notifiers.feishu import (  # noqa: E402
     build_digest_card, build_urgent_card, sign, FeishuNotifier, _mask_url,
-    gflights_url, _airport_label,
+    booking_url, _airport_label,
 )
 
 
@@ -76,16 +76,17 @@ class TestFeishuCards(unittest.TestCase):
         self.assertEqual(btn["tag"], "button")
         self.assertEqual(btn["url"], "https://d/?route=sha-nrt")
 
-    def test_gflights_url(self):
-        url = gflights_url("YUL", "PEK", "2026-07-15")
-        self.assertTrue(url.startswith("https://www.google.com/travel/flights?q="))
-        # one-way marker + endpoints present (url-encoded)
-        self.assertIn("one%20way", url)
-        self.assertIn("YUL", url)
-        self.assertIn("PEK", url)
-        self.assertIn("2026-07-15", url)
+    def test_booking_url(self):
+        url = booking_url("YUL", "PEK", "2026-07-15")
+        # Skyscanner 深链:机场码小写,日期 YYMMDD
+        self.assertTrue(url.startswith("https://www.skyscanner.net/transport/flights/yul/pek/"))
+        self.assertIn("260715", url)
+        self.assertIn("rtn=0", url)  # one-way
+        # 缺日期 -> 退回不带日期的航线页
+        self.assertTrue(booking_url("YUL", "PEK").startswith(
+            "https://www.skyscanner.net/transport/flights/yul/pek/?"))
         # missing endpoints -> empty string, never a broken link
-        self.assertEqual(gflights_url("", "PEK", "2026-07-15"), "")
+        self.assertEqual(booking_url("", "PEK", "2026-07-15"), "")
 
     def test_airport_label_cn(self):
         # 机场全名（去掉 "国际机场"/"机场" 后缀），而非城市名
@@ -103,7 +104,7 @@ class TestFeishuCards(unittest.TestCase):
         self.assertIn("东京成田(NRT)", blob)
         # 最低价下方的购票渠道深链
         self.assertIn("查看购票渠道", blob)
-        self.assertIn("google.com/travel/flights", blob)
+        self.assertIn("skyscanner.net/transport/flights", blob)
 
     def test_urgent_card_cn_name_and_buy_button(self):
         card = build_urgent_card(_alert(), dashboard_url="https://d/")
@@ -117,7 +118,7 @@ class TestFeishuCards(unittest.TestCase):
         self.assertIn("立即查看", texts)
         self.assertIn("购票渠道", texts)
         buy = [b for b in action["actions"] if b["text"]["content"] == "购票渠道"][0]
-        self.assertIn("google.com/travel/flights", buy["url"])
+        self.assertIn("skyscanner.net/transport/flights", buy["url"])
 
     def test_urgent_card_flight_line(self):
         # When a flight record is supplied, a 航班 line is appended.
@@ -181,23 +182,6 @@ class TestFeishuCards(unittest.TestCase):
         self.assertIn("今日无价格异动", text_blob)
         self.assertIn("失败 1", text_blob)
         self.assertIn("暂无数据", text_blob)  # route present but no summary data
-
-    def test_digest_spike_button(self):
-        # spike_url 给了 -> 底部并排出现「手动查 Skyscanner」按钮;没给则只有 Dashboard
-        with_url = build_digest_card([], {"routes_failed": 0}, summary={"routes": {}},
-                                     routes=[], run_date="2026-07-10",
-                                     spike_url="https://x/actions/workflows/spike.yml")
-        action = with_url["card"]["elements"][-1]
-        texts = [b["text"]["content"] for b in action["actions"]]
-        self.assertIn("查看趋势图 Dashboard", texts)
-        self.assertTrue(any("Skyscanner" in t for t in texts))
-        spike_btn = [b for b in action["actions"] if "Skyscanner" in b["text"]["content"]][0]
-        self.assertEqual(spike_btn["url"], "https://x/actions/workflows/spike.yml")
-
-        without = build_digest_card([], {"routes_failed": 0}, summary={"routes": {}},
-                                    routes=[], run_date="2026-07-10")
-        texts2 = [b["text"]["content"] for b in without["card"]["elements"][-1]["actions"]]
-        self.assertNotIn("🔍 手动查 Skyscanner 实时价", texts2)
 
     def test_sign_matches_reference(self):
         ts = "1700000000"
