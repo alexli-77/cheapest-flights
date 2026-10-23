@@ -37,11 +37,11 @@
       },
       "Air Transat": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-23",
         "flight_no": "TS",
-        "price": 6844,
+        "price": 6048,
         "source": "skyscanner",
-        "stops": 2
+        "stops": 3
       },
       "American Airlines": {
         "currency": "CNY",
@@ -135,9 +135,9 @@
       },
       "Delta": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-23",
         "flight_no": "DL",
-        "price": 7224,
+        "price": 6211,
         "source": "skyscanner",
         "stops": 1
       },
@@ -175,8 +175,8 @@
       }
     }
   },
-  "generated_at": "2026-10-22T13:00:41+08:00",
-  "latest_fetch_date": "2026-10-22",
+  "generated_at": "2026-10-23T13:01:50+08:00",
+  "latest_fetch_date": "2026-10-23",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
