@@ -29,9 +29,9 @@
     "2026-12-11": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-22",
+        "fetch_date": "2026-10-26",
         "flight_no": "AC",
-        "price": 4362,
+        "price": 4278,
         "source": "skyscanner",
         "stops": 3
       },
@@ -111,9 +111,9 @@
       },
       "Flair Airlines": {
         "currency": "CNY",
-        "fetch_date": "2026-10-23",
+        "fetch_date": "2026-10-26",
         "flight_no": "F.",
-        "price": 4228,
+        "price": 4219,
         "source": "skyscanner",
         "stops": 2
       },
@@ -159,8 +159,8 @@
       }
     }
   },
-  "generated_at": "2026-10-25T12:53:47+08:00",
-  "latest_fetch_date": "2026-10-25",
+  "generated_at": "2026-10-26T12:58:00+08:00",
+  "latest_fetch_date": "2026-10-26",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",

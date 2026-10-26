@@ -21,17 +21,17 @@
     "2026-12-11": {
       "ANA (All Nippon Airways)": {
         "currency": "CNY",
-        "fetch_date": "2026-10-18",
+        "fetch_date": "2026-10-26",
         "flight_no": "NH",
-        "price": 7081,
+        "price": 6960,
         "source": "skyscanner",
         "stops": 1
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-22",
+        "fetch_date": "2026-10-26",
         "flight_no": "AC",
-        "price": 5918,
+        "price": 5845,
         "source": "skyscanner",
         "stops": 2
       },
@@ -53,9 +53,9 @@
       },
       "Delta": {
         "currency": "CNY",
-        "fetch_date": "2026-10-25",
+        "fetch_date": "2026-10-26",
         "flight_no": "DL",
-        "price": 5982,
+        "price": 5981,
         "source": "skyscanner",
         "stops": 1
       },
@@ -175,8 +175,8 @@
       }
     }
   },
-  "generated_at": "2026-10-25T12:53:47+08:00",
-  "latest_fetch_date": "2026-10-25",
+  "generated_at": "2026-10-26T12:58:00+08:00",
+  "latest_fetch_date": "2026-10-26",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
