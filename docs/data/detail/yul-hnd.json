@@ -29,17 +29,17 @@
       },
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-26",
+        "fetch_date": "2026-10-29",
         "flight_no": "AC",
-        "price": 5845,
+        "price": 5414,
         "source": "skyscanner",
-        "stops": 2
+        "stops": 3
       },
       "Air Transat": {
         "currency": "CNY",
-        "fetch_date": "2026-10-28",
+        "fetch_date": "2026-10-29",
         "flight_no": "TS",
-        "price": 5634,
+        "price": 5549,
         "source": "skyscanner",
         "stops": 3
       },
@@ -53,9 +53,9 @@
       },
       "Delta": {
         "currency": "CNY",
-        "fetch_date": "2026-10-26",
+        "fetch_date": "2026-10-29",
         "flight_no": "DL",
-        "price": 5981,
+        "price": 5957,
         "source": "skyscanner",
         "stops": 1
       },
@@ -69,9 +69,9 @@
       },
       "Qatar Airways": {
         "currency": "CNY",
-        "fetch_date": "2026-10-17",
+        "fetch_date": "2026-10-29",
         "flight_no": "QR",
-        "price": 7798,
+        "price": 7572,
         "source": "skyscanner",
         "stops": 1
       },
@@ -135,9 +135,9 @@
       },
       "Delta": {
         "currency": "CNY",
-        "fetch_date": "2026-10-27",
+        "fetch_date": "2026-10-29",
         "flight_no": "DL",
-        "price": 6200,
+        "price": 6194,
         "source": "skyscanner",
         "stops": 1
       },
@@ -175,8 +175,8 @@
       }
     }
   },
-  "generated_at": "2026-10-28T13:54:18+08:00",
-  "latest_fetch_date": "2026-10-28",
+  "generated_at": "2026-10-29T13:58:26+08:00",
+  "latest_fetch_date": "2026-10-29",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
