@@ -29,9 +29,9 @@
     "2026-12-11": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-28",
+        "fetch_date": "2026-10-30",
         "flight_no": "AC",
-        "price": 3913,
+        "price": 3859,
         "source": "skyscanner",
         "stops": 3
       },
@@ -77,9 +77,9 @@
       },
       "United": {
         "currency": "CNY",
-        "fetch_date": "2026-10-16",
+        "fetch_date": "2026-10-30",
         "flight_no": "UA",
-        "price": 7688,
+        "price": 7504,
         "source": "skyscanner",
         "stops": 1
       },
@@ -143,9 +143,9 @@
       },
       "United": {
         "currency": "CNY",
-        "fetch_date": "2026-10-29",
+        "fetch_date": "2026-10-30",
         "flight_no": "UA",
-        "price": 7156,
+        "price": 7144,
         "source": "skyscanner",
         "stops": 1
       },
@@ -159,8 +159,8 @@
       }
     }
   },
-  "generated_at": "2026-10-29T13:58:26+08:00",
-  "latest_fetch_date": "2026-10-29",
+  "generated_at": "2026-10-30T13:59:30+08:00",
+  "latest_fetch_date": "2026-10-30",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
