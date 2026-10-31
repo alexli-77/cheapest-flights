@@ -29,9 +29,9 @@
     "2026-12-11": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-30",
+        "fetch_date": "2026-10-31",
         "flight_no": "AC",
-        "price": 3859,
+        "price": 3810,
         "source": "skyscanner",
         "stops": 3
       },
@@ -85,11 +85,11 @@
       },
       "WestJet": {
         "currency": "CNY",
-        "fetch_date": "2026-10-22",
+        "fetch_date": "2026-10-31",
         "flight_no": "WS",
-        "price": 3698,
+        "price": 3658,
         "source": "skyscanner",
-        "stops": 3
+        "stops": 2
       }
     },
     "2026-12-12": {
@@ -159,8 +159,8 @@
       }
     }
   },
-  "generated_at": "2026-10-30T13:59:30+08:00",
-  "latest_fetch_date": "2026-10-30",
+  "generated_at": "2026-10-31T13:55:19+08:00",
+  "latest_fetch_date": "2026-10-31",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
