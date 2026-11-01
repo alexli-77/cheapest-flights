@@ -95,11 +95,11 @@
     "2026-12-12": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-17",
+        "fetch_date": "2026-11-01",
         "flight_no": "AC",
-        "price": 4693,
+        "price": 3841,
         "source": "skyscanner",
-        "stops": 3
+        "stops": 2
       },
       "American Airlines": {
         "currency": "CNY",
@@ -159,8 +159,8 @@
       }
     }
   },
-  "generated_at": "2026-10-31T13:55:19+08:00",
-  "latest_fetch_date": "2026-10-31",
+  "generated_at": "2026-11-01T14:21:15+08:00",
+  "latest_fetch_date": "2026-11-01",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
