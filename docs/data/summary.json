@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-01T14:21:10+08:00",
+  "generated_at": "2026-11-02T14:22:14+08:00",
   "meta": {
     "run_stats": {
       "fetched_count": 120,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-11-01"
+      "run_date": "2026-11-02"
     },
     "serpapi_remaining_quota": 240
   },
@@ -23,12 +23,12 @@
             "price": 4486
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Porter Airlines",
             "currency": "CNY",
-            "depart_time": "07:30",
-            "fetch_date": "2026-11-01",
-            "flight_no": "AC",
-            "price": 5097
+            "depart_time": "17:55",
+            "fetch_date": "2026-11-02",
+            "flight_no": "PD",
+            "price": 5241
           },
           "series": [
             {
@@ -120,6 +120,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-01",
               "price": 5097
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-02",
+              "price": 5241
             }
           ]
         },
@@ -136,9 +141,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "07:30",
-            "fetch_date": "2026-11-01",
+            "fetch_date": "2026-11-02",
             "flight_no": "AC",
-            "price": 4067
+            "price": 4795
           },
           "series": [
             {
@@ -230,6 +235,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-01",
               "price": 4067
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-02",
+              "price": 4795
             }
           ]
         }
@@ -247,12 +257,12 @@
             "price": 3658
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "WestJet",
             "currency": "CNY",
-            "depart_time": "21:35",
-            "fetch_date": "2026-11-01",
-            "flight_no": "AC",
-            "price": 3860
+            "depart_time": "20:00",
+            "fetch_date": "2026-11-02",
+            "flight_no": "WS",
+            "price": 4040
           },
           "series": [
             {
@@ -344,6 +354,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-01",
               "price": 3860
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-02",
+              "price": 4040
             }
           ]
         },
@@ -360,9 +375,9 @@
             "airline": "Air Canada",
             "currency": "CNY",
             "depart_time": "07:30",
-            "fetch_date": "2026-11-01",
+            "fetch_date": "2026-11-02",
             "flight_no": "AC",
-            "price": 3841
+            "price": 4052
           },
           "series": [
             {
@@ -454,6 +469,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-01",
               "price": 3841
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-02",
+              "price": 4052
             }
           ]
         }

@@ -172,11 +172,19 @@
         "price": 7172,
         "source": "skyscanner",
         "stops": 1
+      },
+      "WestJet": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-02",
+        "flight_no": "WS",
+        "price": 4795,
+        "source": "skyscanner",
+        "stops": 3
       }
     }
   },
-  "generated_at": "2026-11-01T14:21:15+08:00",
-  "latest_fetch_date": "2026-11-01",
+  "generated_at": "2026-11-02T14:22:17+08:00",
+  "latest_fetch_date": "2026-11-02",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
