@@ -29,9 +29,9 @@
     "2026-12-11": {
       "Air Canada": {
         "currency": "CNY",
-        "fetch_date": "2026-10-31",
+        "fetch_date": "2026-11-03",
         "flight_no": "AC",
-        "price": 3810,
+        "price": 3724,
         "source": "skyscanner",
         "stops": 3
       },
@@ -57,6 +57,14 @@
         "flight_no": "",
         "price": 6422,
         "source": "fast_flights",
+        "stops": 2
+      },
+      "EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-03",
+        "flight_no": "BR",
+        "price": 9113,
+        "source": "skyscanner",
         "stops": 2
       },
       "Porter Airlines": {
@@ -109,6 +117,14 @@
         "source": "skyscanner",
         "stops": 2
       },
+      "EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-03",
+        "flight_no": "BR",
+        "price": 8083,
+        "source": "skyscanner",
+        "stops": 2
+      },
       "Flair Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-10-27",
@@ -151,16 +167,16 @@
       },
       "WestJet": {
         "currency": "CNY",
-        "fetch_date": "2026-10-28",
+        "fetch_date": "2026-11-03",
         "flight_no": "WS",
-        "price": 3847,
+        "price": 3843,
         "source": "skyscanner",
         "stops": 3
       }
     }
   },
-  "generated_at": "2026-11-02T14:22:17+08:00",
-  "latest_fetch_date": "2026-11-02",
+  "generated_at": "2026-11-03T14:58:14+08:00",
+  "latest_fetch_date": "2026-11-03",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",
