@@ -59,6 +59,14 @@
         "source": "skyscanner",
         "stops": 1
       },
+      "EVA Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-06",
+        "flight_no": "BR",
+        "price": 9138,
+        "source": "skyscanner",
+        "stops": 2
+      },
       "Porter Airlines": {
         "currency": "CNY",
         "fetch_date": "2026-10-17",
@@ -151,9 +159,9 @@
       },
       "EVA Air": {
         "currency": "CNY",
-        "fetch_date": "2026-11-04",
+        "fetch_date": "2026-11-06",
         "flight_no": "BR",
-        "price": 8610,
+        "price": 8108,
         "source": "skyscanner",
         "stops": 2
       },
@@ -199,8 +207,8 @@
       }
     }
   },
-  "generated_at": "2026-11-05T14:59:13+08:00",
-  "latest_fetch_date": "2026-11-05",
+  "generated_at": "2026-11-06T14:58:47+08:00",
+  "latest_fetch_date": "2026-11-06",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",

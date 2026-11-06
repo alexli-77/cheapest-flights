@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-05T14:59:10+08:00",
+  "generated_at": "2026-11-06T14:58:44+08:00",
   "meta": {
     "run_stats": {
       "fetched_count": 120,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-11-05"
+      "run_date": "2026-11-06"
     },
     "serpapi_remaining_quota": 240
   },
@@ -23,12 +23,12 @@
             "price": 4486
           },
           "latest": {
-            "airline": "Porter Airlines",
+            "airline": "Air Transat",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-11-05",
-            "flight_no": "PD",
-            "price": 5369
+            "depart_time": "20:30",
+            "fetch_date": "2026-11-06",
+            "flight_no": "TS",
+            "price": 5875
           },
           "series": [
             {
@@ -140,6 +140,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-05",
               "price": 5369
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-06",
+              "price": 5875
             }
           ]
         },
@@ -153,12 +158,12 @@
             "price": 4067
           },
           "latest": {
-            "airline": "WestJet",
+            "airline": "Flair Airlines",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-11-05",
-            "flight_no": "WS",
-            "price": 4753
+            "depart_time": "08:00",
+            "fetch_date": "2026-11-06",
+            "flight_no": "F.",
+            "price": 5352
           },
           "series": [
             {
@@ -270,6 +275,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-05",
               "price": 4753
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-06",
+              "price": 5352
             }
           ]
         }
@@ -287,12 +297,12 @@
             "price": 3658
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "WestJet",
             "currency": "CNY",
-            "depart_time": "21:35",
-            "fetch_date": "2026-11-05",
-            "flight_no": "AC",
-            "price": 3881
+            "depart_time": "20:00",
+            "fetch_date": "2026-11-06",
+            "flight_no": "WS",
+            "price": 4196
           },
           "series": [
             {
@@ -404,6 +414,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-05",
               "price": 3881
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-06",
+              "price": 4196
             }
           ]
         },
@@ -417,12 +432,12 @@
             "price": 3841
           },
           "latest": {
-            "airline": "WestJet",
+            "airline": "Flair Airlines",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-11-05",
-            "flight_no": "WS",
-            "price": 4066
+            "depart_time": "08:00",
+            "fetch_date": "2026-11-06",
+            "flight_no": "F.",
+            "price": 4485
           },
           "series": [
             {
@@ -534,6 +549,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-05",
               "price": 4066
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-06",
+              "price": 4485
             }
           ]
         }
