@@ -37,9 +37,9 @@
       },
       "Air Transat": {
         "currency": "CNY",
-        "fetch_date": "2026-11-08",
+        "fetch_date": "2026-11-09",
         "flight_no": "TS",
-        "price": 5414,
+        "price": 5380,
         "source": "skyscanner",
         "stops": 3
       },
@@ -61,9 +61,9 @@
       },
       "EVA Air": {
         "currency": "CNY",
-        "fetch_date": "2026-11-06",
+        "fetch_date": "2026-11-09",
         "flight_no": "BR",
-        "price": 9138,
+        "price": 9125,
         "source": "skyscanner",
         "stops": 2
       },
@@ -207,8 +207,8 @@
       }
     }
   },
-  "generated_at": "2026-11-08T14:16:00+08:00",
-  "latest_fetch_date": "2026-11-08",
+  "generated_at": "2026-11-09T14:49:15+08:00",
+  "latest_fetch_date": "2026-11-09",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
