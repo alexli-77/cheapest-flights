@@ -181,6 +181,14 @@
         "source": "skyscanner",
         "stops": 2
       },
+      "Porter Airlines": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-11",
+        "flight_no": "PD",
+        "price": 4860,
+        "source": "skyscanner",
+        "stops": 3
+      },
       "Qatar Airways": {
         "currency": "CNY",
         "fetch_date": "2026-10-20",
@@ -207,8 +215,8 @@
       }
     }
   },
-  "generated_at": "2026-11-10T15:29:00+08:00",
-  "latest_fetch_date": "2026-11-10",
+  "generated_at": "2026-11-11T14:41:16+08:00",
+  "latest_fetch_date": "2026-11-11",
   "route": "yul-hnd",
   "sources": [
     "fast_flights",
