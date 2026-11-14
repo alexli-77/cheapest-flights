@@ -53,9 +53,9 @@
       },
       "Delta, Korean Air": {
         "currency": "CNY",
-        "fetch_date": "2026-10-15",
+        "fetch_date": "2026-11-14",
         "flight_no": "",
-        "price": 6422,
+        "price": 5393,
         "source": "fast_flights",
         "stops": 2
       },
@@ -133,6 +133,14 @@
         "source": "skyscanner",
         "stops": 2
       },
+      "Delta, Korean Air": {
+        "currency": "CNY",
+        "fetch_date": "2026-11-14",
+        "flight_no": "",
+        "price": 7855,
+        "source": "fast_flights",
+        "stops": 2
+      },
       "EVA Air": {
         "currency": "CNY",
         "fetch_date": "2026-11-06",
@@ -191,8 +199,8 @@
       }
     }
   },
-  "generated_at": "2026-11-13T14:56:13+08:00",
-  "latest_fetch_date": "2026-11-13",
+  "generated_at": "2026-11-14T14:39:30+08:00",
+  "latest_fetch_date": "2026-11-14",
   "route": "yul-nrt",
   "sources": [
     "fast_flights",

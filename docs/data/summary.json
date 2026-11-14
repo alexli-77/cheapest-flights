@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-13T14:56:11+08:00",
+  "generated_at": "2026-11-14T14:39:28+08:00",
   "meta": {
     "run_stats": {
-      "fetched_count": 623,
+      "fetched_count": 928,
       "routes_failed": 0,
       "routes_ok": 2,
       "routes_total": 2,
-      "run_date": "2026-11-13"
+      "run_date": "2026-11-14"
     },
     "serpapi_remaining_quota": 240
   },
@@ -26,9 +26,9 @@
             "airline": "Delta",
             "currency": "CNY",
             "depart_time": "06:00",
-            "fetch_date": "2026-11-13",
+            "fetch_date": "2026-11-14",
             "flight_no": "",
-            "price": 5342
+            "price": 5335
           },
           "series": [
             {
@@ -180,6 +180,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-13",
               "price": 5342
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-14",
+              "price": 5335
             }
           ]
         },
@@ -193,12 +198,12 @@
             "price": 4067
           },
           "latest": {
-            "airline": "Air Canada, ANA",
+            "airline": "Delta",
             "currency": "CNY",
-            "depart_time": "18:15",
-            "fetch_date": "2026-11-13",
+            "depart_time": "06:00",
+            "fetch_date": "2026-11-14",
             "flight_no": "",
-            "price": 8064
+            "price": 9346
           },
           "series": [
             {
@@ -350,6 +355,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-13",
               "price": 8064
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-14",
+              "price": 9346
             }
           ]
         }
@@ -367,12 +377,12 @@
             "price": 3658
           },
           "latest": {
-            "airline": "Air Canada",
+            "airline": "Delta, Korean Air",
             "currency": "CNY",
-            "depart_time": "08:05",
-            "fetch_date": "2026-11-12",
-            "flight_no": "AC",
-            "price": 5221
+            "depart_time": "06:00",
+            "fetch_date": "2026-11-14",
+            "flight_no": "",
+            "price": 5393
           },
           "series": [
             {
@@ -519,6 +529,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-12",
               "price": 5221
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-14",
+              "price": 5393
             }
           ]
         },
@@ -532,12 +547,12 @@
             "price": 3841
           },
           "latest": {
-            "airline": "WestJet",
+            "airline": "Delta, Korean Air",
             "currency": "CNY",
-            "depart_time": "06:45",
-            "fetch_date": "2026-11-13",
+            "depart_time": "07:10",
+            "fetch_date": "2026-11-14",
             "flight_no": "",
-            "price": 8510
+            "price": 7855
           },
           "series": [
             {
@@ -689,6 +704,11 @@
               "currency": "CNY",
               "fetch_date": "2026-11-13",
               "price": 8510
+            },
+            {
+              "currency": "CNY",
+              "fetch_date": "2026-11-14",
+              "price": 7855
             }
           ]
         }
